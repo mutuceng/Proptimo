@@ -1,0 +1,56 @@
+# Build results
+bin/
+obj/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# Resharper
+_ReSharper*/
+
+# DotCover
+*.dotCover
+
+# NCrunch
+*.ncrunch*
+
+# Coverlet coverage files
+coverage*.json
+*.coverage
+*.coveragexml
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# Microsoft Visual Studio Code
+.vscode/
+
+# Publish output
+publish/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Others
+*.pidb
+*.svd
+*.pdb
+*.cache
+*.ilk
+*.log
+*.vspscc
+*.vssscc
