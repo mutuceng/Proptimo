@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proptimo.Domain.Entities.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Proptimo.Domain.Entities
 {
-    public class RealEstateTypeFeature
+    public class RealEstateTypeFeature : BaseEntity
     {
-        public string RealEstateTypeFeatureId { get; set; }
         public string Name { get; set; }
         public string DataType { get; set; }
         public bool IsUnit { get; set; }

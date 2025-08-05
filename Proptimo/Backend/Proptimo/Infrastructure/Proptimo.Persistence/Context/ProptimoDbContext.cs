@@ -25,7 +25,7 @@ namespace Proptimo.Persistence.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // RealEstateTypeFeatureValue relationships'i manuel configure et
+           
             modelBuilder.Entity<RealEstateTypeFeatureValue>()
                 .HasOne(fv => fv.RealEstate)
                 .WithMany(re => re.FeatureValues)

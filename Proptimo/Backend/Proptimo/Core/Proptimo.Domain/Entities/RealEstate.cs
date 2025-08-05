@@ -1,4 +1,5 @@
-﻿using Proptimo.Domain.Entities.Enum;
+﻿using Proptimo.Domain.Entities.Common;
+using Proptimo.Domain.Entities.Enum;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace Proptimo.Domain.Entities
 {
-    public class RealEstate
+    public class RealEstate:BaseEntity
     {
-        public string RealEstateId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime StartDate { get; set; }

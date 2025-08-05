@@ -5,12 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proptimo.Domain.Entities
+namespace Proptimo.Application.Repositories
 {
-    public class Currency: BaseEntity
+    public interface IRepository<T> where T : BaseEntity
     {
-        public string Name { get; set; }
-        public char Symbol { get; set; }
 
     }
 }

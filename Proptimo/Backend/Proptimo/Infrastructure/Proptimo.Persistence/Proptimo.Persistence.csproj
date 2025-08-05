@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Proptimo.Application\Proptimo.Application.csproj" />
     <ProjectReference Include="..\..\Core\Proptimo.Domain\Proptimo.Domain.csproj" />
   </ItemGroup>
 

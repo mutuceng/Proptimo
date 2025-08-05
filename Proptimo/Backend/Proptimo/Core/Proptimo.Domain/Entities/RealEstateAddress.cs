@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proptimo.Domain.Entities.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Proptimo.Domain.Entities
 {
-    public class RealEstateAddress
+    public class RealEstateAddress: BaseEntity
     {
-        public string RealEstateAddressId { get; set; }
         public string CityName { get; set; }           
         public string DistrictName { get; set; }       
         public string NeighborhoodName { get; set; }  
