@@ -16,17 +16,17 @@ namespace Proptimo.Persistence.Repositories
         private readonly ProptimoDbContext _context;
         public DbSet<T> _dbSet;
 
-        public ReadRepository(ProptimoDbContext context, DbSet<T> dbSet)
+        public ReadRepository(ProptimoDbContext context)
         {
             _context = context;
             _dbSet = _context.Set<T>();
         }
 
-        public IQueryable<T> GetAll()
+        public async Task<List<T>> GetAllAsync()
         {
-           return _dbSet;
+            var list = await _dbSet.ToListAsync();
+            return list;
         }
-
         public async Task<T> GetByIdAsync(string id)
         {
            return await _dbSet.FirstOrDefaultAsync( p => p.Id == id );

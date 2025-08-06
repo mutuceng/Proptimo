@@ -1,16 +1,15 @@
-﻿using Proptimo.Domain.Entities.Common;
-using Proptimo.Domain.Entities.Enum;
+﻿using Proptimo.Domain.Entities.Enum;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proptimo.Domain.Entities
+namespace Proptimo.Application.Repositories.Features.CQRS.Results.RealEstateQueryResults
 {
-    public class RealEstate:BaseEntity
+    public class GetEstateByIdQueryResult
     {
+        public string Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
@@ -25,11 +24,5 @@ namespace Proptimo.Domain.Entities
 
         public string RealEstateTypeId { get; set; }
         public string RealEstateAddressId { get; set; }
-
-        public ICollection<RealEstateImage> Images { get; set; }
-        public RealEstateType RealEstateType {  get; set; }
-        public RealEstateAddress RealEstateAddress { get; set; }
-        public ICollection<RealEstateTypeFeatureValue> FeatureValues { get; set; }
-
     }
 }

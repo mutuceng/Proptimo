@@ -1,4 +1,6 @@
 using Proptimo.Persistence;
+using Proptimo.Application;
+using Proptimo.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddPersistenceServices(builder.Configuration);
+builder.Services.AddApplicationLayerServices();
+builder.Services.AddInfrastructureServices();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

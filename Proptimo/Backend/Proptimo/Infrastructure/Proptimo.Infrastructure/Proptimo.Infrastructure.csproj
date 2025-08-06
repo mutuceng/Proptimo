@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Proptimo.Application\Proptimo.Application.csproj" />
+  </ItemGroup>
+
 </Project>

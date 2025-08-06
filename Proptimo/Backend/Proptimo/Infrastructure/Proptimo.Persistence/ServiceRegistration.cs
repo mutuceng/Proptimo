@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Proptimo.Application.Repositories;
 using Proptimo.Persistence.Context;
+using Proptimo.Persistence.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +19,11 @@ namespace Proptimo.Persistence
             var connectionString = configuration.GetConnectionString("DefaultConnection")
                                             ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-            services.AddDbContext<ProptimoDbContext>(options => options.UseSqlServer(connectionString));    
+            services.AddDbContext<ProptimoDbContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
+            services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
+
         }
     }
 }

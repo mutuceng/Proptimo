@@ -16,7 +16,7 @@ namespace Proptimo.Persistence.Repositories
         private readonly ProptimoDbContext _context;
         private readonly DbSet<T> _dbSet;
 
-        public WriteRepository(ProptimoDbContext context, DbSet<T> dbSet)
+        public WriteRepository(ProptimoDbContext context)
         {
             _context = context;
             _dbSet = _context.Set<T>();
@@ -25,6 +25,7 @@ namespace Proptimo.Persistence.Repositories
         public async Task<bool> AddAsync(T entity)
         {
             EntityEntry<T> entityEntry= await _dbSet.AddAsync(entity);
+            await _context.SaveChangesAsync();
             return entityEntry.State == EntityState.Added;
         }
 
@@ -33,13 +34,17 @@ namespace Proptimo.Persistence.Repositories
             T deletedEntity = await _dbSet.FirstOrDefaultAsync(p => p.Id == id);
 
             EntityEntry<T> entityEntry = _dbSet.Remove(deletedEntity);
+
+            await _context.SaveChangesAsync();
             return entityEntry.State == EntityState.Deleted;
         }
 
-        public bool Update(T entity)
+        public async Task<bool> Update(T entity)
         {
             EntityEntry<T> entityEntry = _dbSet.Update(entity);
+            await _context.SaveChangesAsync();
             return entityEntry.State == EntityState.Modified;
+
         }
 
         public async Task<bool> SaveChangesAsync()

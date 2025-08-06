@@ -67,6 +67,11 @@ namespace Proptimo.Persistence.Context
                 .Property(v => v.ValueDecimal)
                 .HasPrecision(18, 2);
 
+            modelBuilder.Entity<RealEstate>()
+                .HasOne(r => r.RealEstateAddress)
+                .WithOne(a => a.RealEstate)
+                .HasForeignKey<RealEstate>(r => r.RealEstateAddressId);
+
             base.OnModelCreating(modelBuilder);
         }
     }

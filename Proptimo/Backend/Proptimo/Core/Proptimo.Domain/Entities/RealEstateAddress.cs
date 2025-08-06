@@ -16,7 +16,11 @@ namespace Proptimo.Domain.Entities
         public string? BuildingNo { get; set; }
         public string DoorNumber { get; set; }
         public decimal Latitude { get; set; }          
-        public decimal Longitude { get; set; }         
+        public decimal Longitude { get; set; }
+
+
+        public string RealEstateId { get; set; }
+        public RealEstate RealEstate { get; set; }
      
     }
 }

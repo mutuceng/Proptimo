@@ -12,7 +12,7 @@ namespace Proptimo.Domain.Entities
         public string Name { get; set; }
 
 
-        public List<RealEstate> RealEstates { get; set; }
-        public List<RealEstateTypeFeature> RealEstateTypeFeatures { get; set; }
+        public ICollection<RealEstate> RealEstates { get; set; }
+        public ICollection<RealEstateTypeFeature> RealEstateTypeFeatures { get; set; }
     }
 }

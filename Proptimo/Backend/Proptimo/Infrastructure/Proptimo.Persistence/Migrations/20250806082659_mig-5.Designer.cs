@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proptimo.Persistence.Context;
 
@@ -11,9 +12,11 @@ using Proptimo.Persistence.Context;
 namespace Proptimo.Persistence.Migrations
 {
     [DbContext(typeof(ProptimoDbContext))]
-    partial class ProptimoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250806082659_mig-5")]
+    partial class mig5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,7 +67,7 @@ namespace Proptimo.Persistence.Migrations
 
                     b.Property<string>("RealEstateAddressId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RealEstateTypeId")
                         .IsRequired()
@@ -84,9 +87,6 @@ namespace Proptimo.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RealEstateAddressId")
-                        .IsUnique();
 
                     b.HasIndex("RealEstateTypeId");
 
@@ -127,12 +127,15 @@ namespace Proptimo.Persistence.Migrations
 
                     b.Property<string>("RealEstateId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Street")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RealEstateId")
+                        .IsUnique();
 
                     b.ToTable("RealEstateAddresses");
                 });
@@ -250,21 +253,24 @@ namespace Proptimo.Persistence.Migrations
 
             modelBuilder.Entity("Proptimo.Domain.Entities.RealEstate", b =>
                 {
-                    b.HasOne("Proptimo.Domain.Entities.RealEstateAddress", "RealEstateAddress")
-                        .WithOne("RealEstate")
-                        .HasForeignKey("Proptimo.Domain.Entities.RealEstate", "RealEstateAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Proptimo.Domain.Entities.RealEstateType", "RealEstateType")
                         .WithMany("RealEstates")
                         .HasForeignKey("RealEstateTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("RealEstateAddress");
-
                     b.Navigation("RealEstateType");
+                });
+
+            modelBuilder.Entity("Proptimo.Domain.Entities.RealEstateAddress", b =>
+                {
+                    b.HasOne("Proptimo.Domain.Entities.RealEstate", "RealEstate")
+                        .WithOne("RealEstateAddress")
+                        .HasForeignKey("Proptimo.Domain.Entities.RealEstateAddress", "RealEstateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RealEstate");
                 });
 
             modelBuilder.Entity("Proptimo.Domain.Entities.RealEstateImage", b =>
@@ -313,11 +319,8 @@ namespace Proptimo.Persistence.Migrations
                     b.Navigation("FeatureValues");
 
                     b.Navigation("Images");
-                });
 
-            modelBuilder.Entity("Proptimo.Domain.Entities.RealEstateAddress", b =>
-                {
-                    b.Navigation("RealEstate")
+                    b.Navigation("RealEstateAddress")
                         .IsRequired();
                 });
 
