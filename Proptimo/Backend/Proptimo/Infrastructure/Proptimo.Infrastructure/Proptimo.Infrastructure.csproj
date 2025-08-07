@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\Core\Proptimo.Application\Proptimo.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\AuthServices\UserServices\" />
+  </ItemGroup>
+
 </Project>

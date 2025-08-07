@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Proptimo.Application.Behaviors;
 using System;
@@ -25,9 +26,10 @@ namespace Proptimo.Application
             {
                 cfg.RegisterServicesFromAssembly(typeof(ServiceRegistration).Assembly);
                 cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
-            }); 
+                cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            });
 
- 
+            services.AddValidatorsFromAssembly(typeof(ServiceRegistration).Assembly);
         }
     }
 }

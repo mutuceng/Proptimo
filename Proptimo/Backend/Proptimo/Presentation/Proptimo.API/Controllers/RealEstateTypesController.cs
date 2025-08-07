@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Proptimo.Application.Repositories.Features.CQRS.Commands.RealEstateCommands;
-using Proptimo.Application.Repositories.Features.CQRS.Commands.RealEstateTypeCommands;
-using Proptimo.Infrastructure.Services.ApiServices.RealEstateTypeServices;
+using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeCommands;
+using Proptimo.Application.Features.CQRS.Queries.RealEstateTypeQueries;
 
 namespace Proptimo.API.Controllers
 {
@@ -10,24 +10,24 @@ namespace Proptimo.API.Controllers
     [ApiController]
     public class RealEstateTypesController : ControllerBase
     {
-        private readonly IRealEstateTypeService _service;
+        private readonly IMediator _mediator;
 
-        public RealEstateTypesController(IRealEstateTypeService service)
+        public RealEstateTypesController(IMediator mediator)
         {
-            _service = service;
+            _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllEstateTypes()
         {
-            var realEstates = await _service.GetAllAsync();
+            var realEstates = await _mediator.Send(new GetAllEstateTypesQuery());
             return Ok(realEstates);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEstateTypeById(string id)
         {
-            var realEstate = await _service.GetByIdAsync(id);
+            var realEstate = await _mediator.Send(new GetEstateTypeByIdQuery(id));
             if (realEstate == null)
             {
                 return NotFound();
@@ -38,7 +38,7 @@ namespace Proptimo.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEstateType(CreateEstateTypeCommand command)
         {
-            await _service.CreateAsync(command);
+            await _mediator.Send(command);
 
             return Ok("Basarıyla eklendi.");
         }
@@ -46,15 +46,15 @@ namespace Proptimo.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEstateType(string id)
         {
-            var deletedEstate = await _service.DeleteAsync(id);
+            await _mediator.Send(new DeleteEstateTypeCommand(id));
 
-            return deletedEstate ? Ok("Basarıyla silindi.") : NotFound();
+            return Ok("Basarıyla silindi.");
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateEstateType(UpdateEstateTypeCommand command)
         {
-            await _service.UpdateAsync(command);
+            await _mediator.Send(command);
             return Ok("Basarıyla güncellendi. ");
         }
     }

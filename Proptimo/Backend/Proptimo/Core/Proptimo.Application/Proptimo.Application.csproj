@@ -7,32 +7,35 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\Features\CQRS\Commands\RealEstateImageCommands\" />
-    <Folder Include="Repositories\Features\CQRS\Commands\RealEstateTypeFeatureCommands\" />
-    <Folder Include="Repositories\Features\CQRS\Commands\RealEstateTypeFeatureValueCommands\" />
-    <Folder Include="Repositories\Features\CQRS\Handlers\CurrencyHandlers\CurrencyCommandHandlers\" />
-    <Folder Include="Repositories\Features\CQRS\Handlers\CurrencyHandlers\CurrencyQueryHandlers\" />
-    <Folder Include="Repositories\Features\CQRS\Handlers\RealEstateImageHandlers\RealEstateImageCommandHandlers\" />
-    <Folder Include="Repositories\Features\CQRS\Handlers\RealEstateImageHandlers\RealEstateImageQueryHandlers\" />
-    <Folder Include="Repositories\Features\CQRS\Handlers\RealEstateTypeFeatureHandlers\RealEstateTypeFeatureCommandHandlers\" />
-    <Folder Include="Repositories\Features\CQRS\Handlers\RealEstateTypeFeatureHandlers\RealEstateTypeFeatureQueryHandlers\" />
-    <Folder Include="Repositories\Features\CQRS\Handlers\RealEstateTypeFeatureValueHandlers\RealEstateTypeFeatureValueCommandHandlers\" />
-    <Folder Include="Repositories\Features\CQRS\Handlers\RealEstateTypeFeatureValueHandlers\RealEstateTypeFeatureValueQueryHandlers\" />
-    <Folder Include="Repositories\Features\CQRS\Queries\RealEstateTypeFeatureValueQueries\" />
-    <Folder Include="Repositories\Features\CQRS\Queries\RealEstateTypeFeatureQueries\" />
-    <Folder Include="Repositories\Features\CQRS\Queries\RealEstateImageQueries\" />
-    <Folder Include="Repositories\Features\CQRS\Queries\CurrencyQueries\" />
-    <Folder Include="Repositories\Features\CQRS\Results\CurrencyQueryResults\" />
-    <Folder Include="Repositories\Features\CQRS\Results\RealEstateImageQueryResults\" />
-    <Folder Include="Repositories\Features\CQRS\Results\RealEstateTypeFeatureQueryResults\" />
-    <Folder Include="Repositories\Features\CQRS\Results\RealEstateTypeFeatureValueQueryResults\" />
-    <Folder Include="Validators\" />
+    <Folder Include="Abstractions\" />
+    <Folder Include="Features\CQRS\Commands\RealEstateImageCommands\" />
+    <Folder Include="Features\CQRS\Commands\RealEstateTypeFeatureCommands\" />
+    <Folder Include="Features\CQRS\Commands\RealEstateTypeFeatureValueCommands\" />
+    <Folder Include="Features\CQRS\Handlers\CurrencyHandlers\CurrencyCommandHandlers\" />
+    <Folder Include="Features\CQRS\Handlers\CurrencyHandlers\CurrencyQueryHandlers\" />
+    <Folder Include="Features\CQRS\Handlers\RealEstateImageHandlers\RealEstateImageCommandHandlers\" />
+    <Folder Include="Features\CQRS\Handlers\RealEstateImageHandlers\RealEstateImageQueryHandlers\" />
+    <Folder Include="Features\CQRS\Handlers\RealEstateTypeFeatureHandlers\RealEstateTypeFeatureCommandHandlers\" />
+    <Folder Include="Features\CQRS\Handlers\RealEstateTypeFeatureHandlers\RealEstateTypeFeatureQueryHandlers\" />
+    <Folder Include="Features\CQRS\Handlers\RealEstateTypeFeatureValueHandlers\RealEstateTypeFeatureValueCommandHandlers\" />
+    <Folder Include="Features\CQRS\Handlers\RealEstateTypeFeatureValueHandlers\RealEstateTypeFeatureValueQueryHandlers\" />
+    <Folder Include="Features\CQRS\Queries\RealEstateTypeFeatureValueQueries\" />
+    <Folder Include="Features\CQRS\Queries\RealEstateTypeFeatureQueries\" />
+    <Folder Include="Features\CQRS\Queries\RealEstateImageQueries\" />
+    <Folder Include="Features\CQRS\Queries\CurrencyQueries\" />
+    <Folder Include="Features\CQRS\Results\CurrencyQueryResults\" />
+    <Folder Include="Features\CQRS\Results\RealEstateImageQueryResults\" />
+    <Folder Include="Features\CQRS\Results\RealEstateTypeFeatureQueryResults\" />
+    <Folder Include="Features\CQRS\Results\RealEstateTypeFeatureValueQueryResults\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="13.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
   </ItemGroup>
 
   <ItemGroup>

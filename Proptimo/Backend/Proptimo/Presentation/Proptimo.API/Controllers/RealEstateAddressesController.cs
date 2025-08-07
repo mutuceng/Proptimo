@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Proptimo.Application.Repositories.Features.CQRS.Commands.RealEstateCommands;
-using Proptimo.Infrastructure.Services.ApiServices.RealEstateAddressServices;
+using Proptimo.Application.Features.CQRS.Commands.RealEstateAddressCommands;
+using Proptimo.Application.Features.CQRS.Queries.RealEstateAddressQueries;
 using System.Threading.Tasks;
 
 namespace Proptimo.API.Controllers
@@ -10,45 +11,45 @@ namespace Proptimo.API.Controllers
     [ApiController]
     public class RealEstateAddressesController : ControllerBase
     {
-        private readonly IRealEstateAddressServices _service;
+        private readonly IMediator _mediator;
 
-        public RealEstateAddressesController(IRealEstateAddressServices service)
+        public RealEstateAddressesController(IMediator mediator)
         {
-            _service = service;
+            _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllAddresses()
         {
-            var addresses = await _service.GetAllAsync();
+            var addresses = await _mediator.Send(new GetAllAddressQuery());
             return Ok(addresses);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAddressById(string id)
         {
-            var address = await _service.GetByIdAsync(id);
+            var address = await _mediator.Send(new GetAddressByIdQuery(id));
             return Ok(address);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAddress(string id)
         {
-            await _service.DeleteAsync(id);
+            await _mediator.Send( new DeleteAddressCommand(id));
             return Ok("Basarıyla silindi.");
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateAddress(CreateAddressCommand command)
         {
-            await _service.CreateAsync(command);
+            await _mediator.Send(command);
             return Ok("Basariyla Eklendi");
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateAddress (UpdateAddressCommand command)
         {
-            await _service.UpdateAsync(command);
+            await _mediator.Send(command);
 
             return Ok("Basariyla güncellendi.");
         }

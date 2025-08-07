@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
-using Proptimo.Application.Repositories.Features.CQRS.Commands.RealEstateCommands;
-using Proptimo.Application.Repositories.Features.CQRS.Commands.RealEstateTypeCommands;
-using Proptimo.Application.Repositories.Features.CQRS.Results.RealEstateAddressQueryResults;
-using Proptimo.Application.Repositories.Features.CQRS.Results.RealEstateQueryResults;
-using Proptimo.Application.Repositories.Features.CQRS.Results.RealEstateTypeQueryResults;
+using Proptimo.Application.Features.CQRS.Commands.AppUserCommands;
+using Proptimo.Application.Features.CQRS.Commands.RealEstateAddressCommands;
+using Proptimo.Application.Features.CQRS.Commands.RealEstateCommands;
+using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeCommands;
+using Proptimo.Application.Features.CQRS.Results.RealEstateAddressQueryResults;
+using Proptimo.Application.Features.CQRS.Results.RealEstateQueryResults;
+using Proptimo.Application.Features.CQRS.Results.RealEstateTypeQueryResults;
 using Proptimo.Domain.Entities;
+using Proptimo.Domain.Entities.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +35,9 @@ namespace Proptimo.Application.Mapping
             CreateMap<RealEstateType, UpdateEstateTypeCommand>().ReverseMap();
             CreateMap<RealEstateType, GetAllEstateTypesQueryResult>().ReverseMap();
             CreateMap<RealEstateType, GetEstateTypeByIdQueryResult>().ReverseMap();
+
+
+            CreateMap<AppUser, UserRegisterCommand>().ReverseMap();
         }
     }
 }
