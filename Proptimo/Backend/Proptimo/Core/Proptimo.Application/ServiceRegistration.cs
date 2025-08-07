@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Proptimo.Application.Behaviors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +16,18 @@ namespace Proptimo.Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ServiceRegistration).Assembly));
+            // iki farklı registration
+            //services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ServiceRegistration).Assembly));
+            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+            // her cagırıldıgında farklı bir instance olusturuluyor
+
+            services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssembly(typeof(ServiceRegistration).Assembly);
+                cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+            }); 
+
+ 
         }
     }
 }

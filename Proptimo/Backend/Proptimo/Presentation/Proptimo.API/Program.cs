@@ -15,6 +15,8 @@ builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationLayerServices();
 builder.Services.AddInfrastructureServices();
 
+builder.Logging.AddConsole();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

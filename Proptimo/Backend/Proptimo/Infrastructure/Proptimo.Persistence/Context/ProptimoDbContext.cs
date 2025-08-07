@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Proptimo.Domain.Entities;
+using Proptimo.Domain.Entities.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Proptimo.Persistence.Context
 {
-    public class ProptimoDbContext : DbContext
+    public class ProptimoDbContext : IdentityDbContext<AppUser, AppRole, string>
     {
-        public ProptimoDbContext(DbContextOptions options) : base(options)
+        public ProptimoDbContext(DbContextOptions<ProptimoDbContext> options) : base(options)
         {
 
         }

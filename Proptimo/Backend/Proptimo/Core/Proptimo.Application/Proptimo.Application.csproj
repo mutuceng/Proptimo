@@ -7,9 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\Features\CQRS\Commands\CurrencyCommands\" />
     <Folder Include="Repositories\Features\CQRS\Commands\RealEstateImageCommands\" />
-    <Folder Include="Repositories\Features\CQRS\Commands\RealEstateTypeCommands\" />
     <Folder Include="Repositories\Features\CQRS\Commands\RealEstateTypeFeatureCommands\" />
     <Folder Include="Repositories\Features\CQRS\Commands\RealEstateTypeFeatureValueCommands\" />
     <Folder Include="Repositories\Features\CQRS\Handlers\CurrencyHandlers\CurrencyCommandHandlers\" />
@@ -20,18 +18,14 @@
     <Folder Include="Repositories\Features\CQRS\Handlers\RealEstateTypeFeatureHandlers\RealEstateTypeFeatureQueryHandlers\" />
     <Folder Include="Repositories\Features\CQRS\Handlers\RealEstateTypeFeatureValueHandlers\RealEstateTypeFeatureValueCommandHandlers\" />
     <Folder Include="Repositories\Features\CQRS\Handlers\RealEstateTypeFeatureValueHandlers\RealEstateTypeFeatureValueQueryHandlers\" />
-    <Folder Include="Repositories\Features\CQRS\Handlers\RealEstateTypeHandlers\RealEstateTypeCommandHandlers\" />
-    <Folder Include="Repositories\Features\CQRS\Handlers\RealEstateTypeHandlers\RealEstateTypeQueryHandlers\" />
     <Folder Include="Repositories\Features\CQRS\Queries\RealEstateTypeFeatureValueQueries\" />
     <Folder Include="Repositories\Features\CQRS\Queries\RealEstateTypeFeatureQueries\" />
-    <Folder Include="Repositories\Features\CQRS\Queries\RealEstateTypeQueries\" />
     <Folder Include="Repositories\Features\CQRS\Queries\RealEstateImageQueries\" />
     <Folder Include="Repositories\Features\CQRS\Queries\CurrencyQueries\" />
     <Folder Include="Repositories\Features\CQRS\Results\CurrencyQueryResults\" />
     <Folder Include="Repositories\Features\CQRS\Results\RealEstateImageQueryResults\" />
     <Folder Include="Repositories\Features\CQRS\Results\RealEstateTypeFeatureQueryResults\" />
     <Folder Include="Repositories\Features\CQRS\Results\RealEstateTypeFeatureValueQueryResults\" />
-    <Folder Include="Repositories\Features\CQRS\Results\RealEstateTypeQueryResults\" />
     <Folder Include="Validators\" />
   </ItemGroup>
 

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Proptimo.Application.Repositories.Features.CQRS.Commands.RealEstateCommands;
+using Proptimo.Application.Repositories.Features.CQRS.Commands.RealEstateTypeCommands;
 using Proptimo.Application.Repositories.Features.CQRS.Results.RealEstateAddressQueryResults;
 using Proptimo.Application.Repositories.Features.CQRS.Results.RealEstateQueryResults;
+using Proptimo.Application.Repositories.Features.CQRS.Results.RealEstateTypeQueryResults;
 using Proptimo.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,11 @@ namespace Proptimo.Application.Mapping
             CreateMap<RealEstateAddress, UpdateAddressCommand>().ReverseMap();
             CreateMap<RealEstateAddress, GetAllAdressQueryResult>().ReverseMap();
             CreateMap<RealEstateAddress, GetAddressByIdQueryResult>().ReverseMap();
+
+            CreateMap<RealEstateType, CreateEstateTypeCommand>().ReverseMap();
+            CreateMap<RealEstateType, UpdateEstateTypeCommand>().ReverseMap();
+            CreateMap<RealEstateType, GetAllEstateTypesQueryResult>().ReverseMap();
+            CreateMap<RealEstateType, GetEstateTypeByIdQueryResult>().ReverseMap();
         }
     }
 }
