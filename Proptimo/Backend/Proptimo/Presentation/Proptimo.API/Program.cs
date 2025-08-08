@@ -1,6 +1,10 @@
 using Proptimo.Persistence;
 using Proptimo.Application;
 using Proptimo.Infrastructure;
+using System.Text;
+using Proptimo.API.Settings;
+using Microsoft.IdentityModel.Tokens;
+using Proptimo.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,12 +17,18 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationLayerServices();
-builder.Services.AddInfrastructureServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 builder.Logging.AddConsole();
 
 var app = builder.Build();
 
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await SeedDataService.SeedAsync(services);
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -28,6 +38,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

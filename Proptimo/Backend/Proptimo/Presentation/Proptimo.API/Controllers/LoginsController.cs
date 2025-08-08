@@ -23,7 +23,7 @@ namespace Proptimo.API.Controllers
 
             if(result.Succeeded)
             {
-                return Ok("Giriş işlemi başarılı");
+                return Ok(result);
             }
             return NotFound();
         }

@@ -74,6 +74,10 @@ namespace Proptimo.Persistence.Context
                 .WithOne(a => a.RealEstate)
                 .HasForeignKey<RealEstate>(r => r.RealEstateAddressId);
 
+            modelBuilder.Entity<RealEstateTypeFeature>()
+                .Property(e => e.DataType)
+                .HasConversion<string>();
+
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using Proptimo.Application.Features.CQRS.Commands.AppUserCommands;
+using Proptimo.Application.Features.CQRS.Commands.CurrencyCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateAddressCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeCommands;
+using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeFeatureCommands;
 using Proptimo.Application.Features.CQRS.Results.RealEstateAddressQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateQueryResults;
+using Proptimo.Application.Features.CQRS.Results.RealEstateTypeFeatureQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateTypeQueryResults;
 using Proptimo.Domain.Entities;
 using Proptimo.Domain.Entities.Identity;
@@ -35,6 +38,13 @@ namespace Proptimo.Application.Mapping
             CreateMap<RealEstateType, UpdateEstateTypeCommand>().ReverseMap();
             CreateMap<RealEstateType, GetAllEstateTypesQueryResult>().ReverseMap();
             CreateMap<RealEstateType, GetEstateTypeByIdQueryResult>().ReverseMap();
+
+            CreateMap<RealEstateTypeFeature,  GetRealEstateTypeFeaturesByTypeIdQueryResult>().ReverseMap();
+            CreateMap<RealEstateTypeFeature, CreateRealEstateTypeFeatureCommand>().ReverseMap();
+            CreateMap<RealEstateTypeFeature, UpdateRealEstateTypeFeatureCommand>().ReverseMap();
+
+            CreateMap<Currency, CreateCurrencyCommand>().ReverseMap();
+            CreateMap<Currency, UpdateCurrencyCommand>().ReverseMap();
 
 
             CreateMap<AppUser, UserRegisterCommand>().ReverseMap();

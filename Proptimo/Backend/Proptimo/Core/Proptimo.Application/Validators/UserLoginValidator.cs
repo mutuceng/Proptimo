@@ -14,9 +14,6 @@ namespace Proptimo.Application.Validators
         {
             RuleFor(x => x.Password).NotEmpty().WithMessage("Şifre boş olamaz.");
 
-            RuleFor(x => x)
-                .Must(x => !string.IsNullOrWhiteSpace(x.Email) || !string.IsNullOrWhiteSpace(x.UserName))
-                .WithMessage("Email/KullanıcıAdı boş bırakılamaz.");
         }
     }
 }

@@ -7,25 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Abstractions\" />
     <Folder Include="Features\CQRS\Commands\RealEstateImageCommands\" />
-    <Folder Include="Features\CQRS\Commands\RealEstateTypeFeatureCommands\" />
-    <Folder Include="Features\CQRS\Commands\RealEstateTypeFeatureValueCommands\" />
-    <Folder Include="Features\CQRS\Handlers\CurrencyHandlers\CurrencyCommandHandlers\" />
-    <Folder Include="Features\CQRS\Handlers\CurrencyHandlers\CurrencyQueryHandlers\" />
     <Folder Include="Features\CQRS\Handlers\RealEstateImageHandlers\RealEstateImageCommandHandlers\" />
     <Folder Include="Features\CQRS\Handlers\RealEstateImageHandlers\RealEstateImageQueryHandlers\" />
-    <Folder Include="Features\CQRS\Handlers\RealEstateTypeFeatureHandlers\RealEstateTypeFeatureCommandHandlers\" />
-    <Folder Include="Features\CQRS\Handlers\RealEstateTypeFeatureHandlers\RealEstateTypeFeatureQueryHandlers\" />
-    <Folder Include="Features\CQRS\Handlers\RealEstateTypeFeatureValueHandlers\RealEstateTypeFeatureValueCommandHandlers\" />
     <Folder Include="Features\CQRS\Handlers\RealEstateTypeFeatureValueHandlers\RealEstateTypeFeatureValueQueryHandlers\" />
     <Folder Include="Features\CQRS\Queries\RealEstateTypeFeatureValueQueries\" />
-    <Folder Include="Features\CQRS\Queries\RealEstateTypeFeatureQueries\" />
     <Folder Include="Features\CQRS\Queries\RealEstateImageQueries\" />
-    <Folder Include="Features\CQRS\Queries\CurrencyQueries\" />
-    <Folder Include="Features\CQRS\Results\CurrencyQueryResults\" />
     <Folder Include="Features\CQRS\Results\RealEstateImageQueryResults\" />
-    <Folder Include="Features\CQRS\Results\RealEstateTypeFeatureQueryResults\" />
     <Folder Include="Features\CQRS\Results\RealEstateTypeFeatureValueQueryResults\" />
   </ItemGroup>
 

@@ -30,10 +30,15 @@ namespace Proptimo.Application.Features.CQRS.Handlers.AppUserHandlers
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
             {
+
+                await _userManager.AddToRoleAsync(user, "User");
+
                 return new UserRegisterCommandResult { 
                     Succeeded = true,
                     Message = "Kullanici basariyla eklendi."
                 };
+
+               
             }
 
             return new UserRegisterCommandResult
