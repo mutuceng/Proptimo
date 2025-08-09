@@ -28,4 +28,4 @@ export const api = createApi(
 
 })
 
-export const baseApiSlice = api;
+export const baseApi = api;

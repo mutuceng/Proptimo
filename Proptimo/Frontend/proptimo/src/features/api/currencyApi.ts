@@ -1,8 +1,8 @@
-import { baseApiSlice } from "./baseApiSlice";
+import { baseApi } from "./baseApi";
 import { type CreateCurrencyRequest, type Currency, type CurrencyQuery, type GetAllCurrencyResponse, type UpdateCurrencyRequest } from "./types/currency";
 
 
-export const currencySlice = baseApiSlice.injectEndpoints({
+export const currencyApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
             getAllCurrencies : builder.query<GetAllCurrencyResponse, CurrencyQuery | void>({
                     query: (params = {}) => ({
@@ -40,7 +40,7 @@ export const currencySlice = baseApiSlice.injectEndpoints({
                         const {data: createdCurrency} = await queryFulfilled;
 
                         dispatch(
-                            currencySlice.util.updateQueryData('getAllCurrencies', undefined, (draft) => {
+                            currencyApi.util.updateQueryData('getAllCurrencies', undefined, (draft) => {
                                 draft.data.unshift(createdCurrency),
                                 draft.total = (draft.total ?? 0) + 1;
                             })
@@ -63,7 +63,7 @@ export const currencySlice = baseApiSlice.injectEndpoints({
                 async onQueryStarted({id, ...patch}, {dispatch, queryFulfilled}) {
                    
                     const patchResult = dispatch(
-                        currencySlice.util.updateQueryData('getCurrencyById', id, (draft: any) => {
+                        currencyApi.util.updateQueryData('getCurrencyById', id, (draft: any) => {
                             Object.assign(draft, patch);
                         })
                     );
@@ -85,7 +85,7 @@ export const currencySlice = baseApiSlice.injectEndpoints({
 
                 onQueryStarted: async (id, {dispatch, queryFulfilled}) => {
                     const patchResult = dispatch(
-                        currencySlice.util.updateQueryData('getAllCurrencies', undefined, (draft:any) => 
+                        currencyApi.util.updateQueryData('getAllCurrencies', undefined, (draft:GetAllCurrencyResponse) => 
                         {
                             const index = draft.data.findIndex((currency: Currency) => currency.id === id);
                             if(index !== -1){
@@ -115,4 +115,4 @@ export const {
 
     useLazyGetAllCurrenciesQuery,
     useLazyGetCurrencyByIdQuery
-} = currencySlice;
+} = currencyApi;

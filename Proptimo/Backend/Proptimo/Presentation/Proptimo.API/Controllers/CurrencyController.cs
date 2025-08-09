@@ -36,7 +36,7 @@ namespace Proptimo.API.Controllers
         public async Task<IActionResult> DeleteCurrency(string id)
         {
             await _mediator.Send(new DeleteCurrencyCommand(id));
-            return Ok("Basarıyla silindi.");
+            return Ok(new { success = true });
         }
 
         [HttpPost]

@@ -1,7 +1,7 @@
 import { Box, Typography, Paper, TextField, Button } from "@mui/material";
 import { useState } from 'react';
 import { type CreateCurrencyRequest } from '../../../features/api/types/currency';
-import { useCreateCurrencyMutation } from "../../../features/api/currencySlice";
+import { useCreateCurrencyMutation } from "../../../features/api/currencyApi";
 
 
 

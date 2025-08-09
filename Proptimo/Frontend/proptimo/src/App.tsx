@@ -8,6 +8,9 @@ import AdminLayout from './components/admin/AdminLayout';
 // Admin Pages
 import AdminCurrencyListingPage from './pages/admin/currency/AdminCurrencyListingPage';
 import AdminEstateListingPage from './pages/admin/estate/AdminEstateListingPage';
+import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
+import UserLayout from './components/user/UserLayout';
 
 // User Pages (placeholder components)
 const UserHomePage = () => (
@@ -83,6 +86,8 @@ function App() {
         {/* User Routes */}
         <Route path="/user" element={<UserHomePage />} />
         <Route path="/user/profile" element={<UserProfilePage />} />
+        <Route path="/user/login" element={<UserLayout><LoginPage /></UserLayout>} />
+        <Route path="/user/register" element={<UserLayout><RegisterPage /></UserLayout>} />
         
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminLayout><AdminHomePage /></AdminLayout>} />
@@ -93,7 +98,7 @@ function App() {
         <Route path="/admin/settings" element={<AdminLayout><AdminSettingsPage /></AdminLayout>} />
         
         {/* Default redirect */}
-        <Route path="/" element={<Navigate to="/admin" replace />} />
+        <Route path="/" element={<Navigate to="/user/login" replace />} />
         <Route path="*" element={<Navigate to="/admin" replace />} />
       </Routes>
     </Router>

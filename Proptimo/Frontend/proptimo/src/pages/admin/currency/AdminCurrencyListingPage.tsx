@@ -1,18 +1,39 @@
-import { Box, Typography, Paper } from "@mui/material";
+import { Box, Typography, Paper, IconButton, Tooltip } from "@mui/material";
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
-import { type GetAllCurrencyResponse, type Currency } from '../../../features/api/types/currency';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { type Currency } from '../../../features/api/types/currency';
 import CurrencyAddForm from '../../../components/admin/currency/CurrencyAddForm';
-import { useState, useEffect } from "react";
-import { useGetAllCurrenciesQuery } from "../../../features/api/currencySlice";
+import { useEffect } from "react";
+import { useDeleteCurrencyMutation, useGetAllCurrenciesQuery } from "../../../features/api/currencyApi";
 
 const AdminCurrencyListingPage = () => {
     const {data, isLoading, isFetching, refetch, error} = useGetAllCurrenciesQuery();
+    const [deleteCurrency] = useDeleteCurrencyMutation();
+
+    const handleDeleteCurrency = (id: string) => {
+        if (window.confirm('Bu para birimini silmek istediğinizden emin misiniz?')) {
+            
+            deleteCurrency(id)
+                .unwrap()
+                .then(() => {
+                    alert('Para birimi başarıyla silindi.');
+                    refetch();
+                })
+                .catch((err) => {
+                    alert('Silme işlemi sırasında bir hata oluştu.');
+                    console.error(err);
+                });
+        }
+    };
 
 
-    // Sayfa yüklendiğinde veriyi çek
     useEffect(() => {
         console.log('useEffect triggered - calling refetch()');
-        refetch();
+        try{
+            refetch();
+        } catch(error){
+            console.error(error);
+        }  
     }, [refetch]);
 
     // API'den gelen veriyi kullan
@@ -27,7 +48,7 @@ const AdminCurrencyListingPage = () => {
             field: 'id',
             headerName: 'ID',
             width: 120,
-            resizable: true,
+            resizable: false,
             sortable: true,
             headerAlign: 'center',
             align: 'center',
@@ -36,7 +57,7 @@ const AdminCurrencyListingPage = () => {
             field: 'name',
             headerName: 'Para Birimi Adı',
             width: 200,
-            resizable: true,
+            resizable: false,
             sortable: true,
             flex: 1,
             minWidth: 150,
@@ -45,17 +66,42 @@ const AdminCurrencyListingPage = () => {
             field: 'symbol',
             headerName: 'Sembol',
             width: 100,
-            resizable: true,
+            resizable: false,
             sortable: true,
             headerAlign: 'center',
             align: 'center',
         },
+        {
+            field: 'actions',
+            headerName: 'İşlemler',
+            width: 100,
+            sortable: false,
+            filterable: false,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: (params) => (
+                <Tooltip title="Para Birimini Sil" arrow>
+                    <IconButton
+                        onClick={() => handleDeleteCurrency(params.row.id)}
+                        size="small"
+                        sx={{
+                            color: '#d32f2f',
+                            '&:hover': {
+                                backgroundColor: 'rgba(211, 47, 47, 0.1)',
+                                color: '#b71c1c',
+                            },
+                            transition: 'all 0.2s ease-in-out',
+                        }}
+                    >
+                        <DeleteIcon fontSize="small" />
+                    </IconButton>
+                </Tooltip>
+            ),
+        },
     ];
 
-    // Dinamik tablo yüksekliği hesaplama
-    // currencies'in her zaman bir dizi olduğundan emin ol, yoksa .length hatası alırsın
-    const rowCount = Math.min(Array.isArray(currencies) ? currencies.length : 0, 10);
-    const tableHeight = rowCount * 52 + 56; // 52px her satır için + 56px başlık
+    // Sadece mevcut verileri kullan - maksimum 5 satır
+    const displayCurrencies = currencies.slice(0, 5);
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -83,22 +129,22 @@ const AdminCurrencyListingPage = () => {
                 </Typography>
                 
                 <Box sx={{ 
-                    height: tableHeight,
                     width: '100%',
-                    overflow: 'hidden',
                 }}>
                     <DataGrid
-                        rows={currencies}
+                        rows={displayCurrencies}
                         columns={columns}
                         initialState={{
                             pagination: {
-                                paginationModel: { page: 0, pageSize: 10 },
+                                paginationModel: { page: 0, pageSize: 5 },
                             },
                         }}
-                        pageSizeOptions={[5, 10]}
+                        pageSizeOptions={[5]}
                         checkboxSelection
                         disableRowSelectionOnClick
                         loading={loading}
+                        rowHeight={52}
+
                         sx={{
                             border: 'none',
                             '& .MuiDataGrid-cell': {
@@ -121,6 +167,7 @@ const AdminCurrencyListingPage = () => {
                             '& .MuiDataGrid-virtualScroller': {
                                 overflow: 'auto',
                             },
+
                         }}
                     />
                 </Box>
