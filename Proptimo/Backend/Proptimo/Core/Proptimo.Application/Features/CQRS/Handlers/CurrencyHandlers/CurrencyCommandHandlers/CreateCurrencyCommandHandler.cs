@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Proptimo.Application.Features.CQRS.Handlers.CurrencyHandlers.CurrencyCommandHandlers
 {
-    public class CreateCurrencyCommandHandler : IRequestHandler<CreateCurrencyCommand>
+    public class CreateCurrencyCommandHandler : IRequestHandler<CreateCurrencyCommand,Currency>
     {
         private readonly IWriteRepository<Currency> _repository;
         private readonly IMapper _mapper;
@@ -22,11 +22,13 @@ namespace Proptimo.Application.Features.CQRS.Handlers.CurrencyHandlers.CurrencyC
             _mapper = mapper;
         }
 
-        public async Task Handle(CreateCurrencyCommand request, CancellationToken cancellationToken)
+        public async Task<Currency> Handle(CreateCurrencyCommand request, CancellationToken cancellationToken)
         {
             var currency = _mapper.Map<Currency>(request);
 
             await _repository.AddAsync(currency);
+
+            return currency;
         }
     }
 }

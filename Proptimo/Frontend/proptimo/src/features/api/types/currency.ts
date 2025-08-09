@@ -5,7 +5,6 @@ export interface Currency {
 }
 
 export interface CreateCurrencyRequest {
-    id: string;
     name: string;
     symbol: string;
 }

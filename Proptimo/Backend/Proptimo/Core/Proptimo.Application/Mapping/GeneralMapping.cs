@@ -5,6 +5,7 @@ using Proptimo.Application.Features.CQRS.Commands.RealEstateAddressCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeFeatureCommands;
+using Proptimo.Application.Features.CQRS.Results.CurrencyQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateAddressQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateTypeFeatureQueryResults;
@@ -45,6 +46,8 @@ namespace Proptimo.Application.Mapping
 
             CreateMap<Currency, CreateCurrencyCommand>().ReverseMap();
             CreateMap<Currency, UpdateCurrencyCommand>().ReverseMap();
+            CreateMap<Currency, GetAllCurrenciesQueryResult>().ReverseMap();
+            CreateMap<Currency, GetByIdCurrencyQueryResult>().ReverseMap();
 
 
             CreateMap<AppUser, UserRegisterCommand>().ReverseMap();

@@ -1,45 +1,39 @@
-import { Box, Typography, Paper, TextField, Button, Switch, FormControlLabel } from "@mui/material";
+import { Box, Typography, Paper, TextField, Button } from "@mui/material";
 import { useState } from 'react';
+import { type CreateCurrencyRequest } from '../../../features/api/types/currency';
+import { useCreateCurrencyMutation } from "../../../features/api/currencySlice";
 
-interface CurrencyFormData {
-    code: string;
-    name: string;
-    symbol: string;
-    rate: string;
-    isActive: boolean;
-}
 
-interface CurrencyAddFormProps {
-    onSubmit: (data: CurrencyFormData) => void;
-}
 
-const CurrencyAddForm = ({ onSubmit }: CurrencyAddFormProps) => {
-    const [formData, setFormData] = useState<CurrencyFormData>({
-        code: '',
+const CurrencyAddForm = ( ) => {
+    const [formData, setFormData] = useState<CreateCurrencyRequest>({
         name: '',
-        symbol: '',
-        rate: '',
-        isActive: true
+        symbol: ''
     });
 
-    const handleFormChange = (field: keyof CurrencyFormData, value: any) => {
+    const [createCurrency, {isLoading}] = useCreateCurrencyMutation();
+
+    const handleFormChange = (field: keyof CreateCurrencyRequest, value: string) => {
         setFormData(prev => ({
             ...prev,
             [field]: value
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit(formData);
-        // Form'u temizle
-        setFormData({
-            code: '',
-            name: '',
-            symbol: '',
-            rate: '',
-            isActive: true
-        });
+
+        try{
+            const created = await createCurrency(formData).unwrap();
+            console.log('created', created);
+
+            setFormData({
+                name: '',
+                symbol: ''
+            });
+        } catch(err){
+            console.error(err);
+        }     
     };
 
     return (
@@ -69,16 +63,6 @@ const CurrencyAddForm = ({ onSubmit }: CurrencyAddFormProps) => {
                     <Box sx={{ flex: '1 1 200px', minWidth: '200px' }}>
                         <TextField
                             fullWidth
-                            label="Para Birimi Kodu"
-                            value={formData.code}
-                            onChange={(e) => handleFormChange('code', e.target.value)}
-                            placeholder="USD"
-                            required
-                        />
-                    </Box>
-                    <Box sx={{ flex: '1 1 200px', minWidth: '200px' }}>
-                        <TextField
-                            fullWidth
                             label="Para Birimi Adı"
                             value={formData.name}
                             onChange={(e) => handleFormChange('name', e.target.value)}
@@ -96,35 +80,12 @@ const CurrencyAddForm = ({ onSubmit }: CurrencyAddFormProps) => {
                             required
                         />
                     </Box>
-                    <Box sx={{ flex: '1 1 150px', minWidth: '150px' }}>
-                        <TextField
-                            fullWidth
-                            label="Kur"
-                            type="number"
-                            value={formData.rate}
-                            onChange={(e) => handleFormChange('rate', e.target.value)}
-                            placeholder="1.00"
-                            inputProps={{ step: 0.01, min: 0 }}
-                            required
-                        />
-                    </Box>
-                    <Box sx={{ flex: '1 1 150px', minWidth: '150px', display: 'flex', alignItems: 'center' }}>
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={formData.isActive}
-                                    onChange={(e) => handleFormChange('isActive', e.target.checked)}
-                                    color="primary"
-                                />
-                            }
-                            label="Aktif"
-                        />
-                    </Box>
                 </Box>
                 <Box sx={{ mt: 3 }}>
                     <Button
                         type="submit"
                         variant="contained"
+                        disabled={isLoading}
                         sx={{
                             backgroundColor: '#1976D2',
                             '&:hover': {
@@ -132,7 +93,7 @@ const CurrencyAddForm = ({ onSubmit }: CurrencyAddFormProps) => {
                             },
                         }}
                     >
-                        Para Birimi Ekle
+                        {isLoading ? 'Ekleniyor...' : 'Para Birimi Ekle'}
                     </Button>
                 </Box>
             </Box>

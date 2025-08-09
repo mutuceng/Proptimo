@@ -19,9 +19,18 @@ builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationLayerServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
+builder.Services.AddCors(opt => opt.AddPolicy(name: "CorsPolicy", builder =>
+    builder.WithOrigins("http://localhost:5173")
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+           .AllowCredentials()));
+
 builder.Logging.AddConsole();
 
 var app = builder.Build();
+
+app.UseCors("CorsPolicy");
+
 
 
 using (var scope = app.Services.CreateScope())
