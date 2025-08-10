@@ -7,13 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\CQRS\Commands\RealEstateImageCommands\" />
-    <Folder Include="Features\CQRS\Handlers\RealEstateImageHandlers\RealEstateImageCommandHandlers\" />
-    <Folder Include="Features\CQRS\Handlers\RealEstateImageHandlers\RealEstateImageQueryHandlers\" />
     <Folder Include="Features\CQRS\Handlers\RealEstateTypeFeatureValueHandlers\RealEstateTypeFeatureValueQueryHandlers\" />
     <Folder Include="Features\CQRS\Queries\RealEstateTypeFeatureValueQueries\" />
-    <Folder Include="Features\CQRS\Queries\RealEstateImageQueries\" />
-    <Folder Include="Features\CQRS\Results\RealEstateImageQueryResults\" />
     <Folder Include="Features\CQRS\Results\RealEstateTypeFeatureValueQueryResults\" />
   </ItemGroup>
 

@@ -1,49 +1,48 @@
-import { Box, Typography, Paper, TextField, Button } from "@mui/material";
-import { useState } from 'react';
-import { type CreateCurrencyRequest } from '../../../features/api/types/currency';
-import { useCreateCurrencyMutation } from "../../../features/api/currencyApi";
+import { useState } from "react";
+import { type CreateRealEstateTypeRequest } from "../../../features/api/types/realEstateType";
+import { useCreateRealEstateTypeMutation } from "../../../features/api/realEstateTypeApi";
+import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 
+const EstateTypeAddForm = () => {
 
-const CurrencyAddForm = ( ) => {
-    const [formData, setFormData] = useState<CreateCurrencyRequest>({
-        name: '',
-        symbol: ''
-    });
+    const [formData, setFormData] = useState<CreateRealEstateTypeRequest>({
+        name:''
+    })
 
-    const [createCurrency, {isLoading}] = useCreateCurrencyMutation();
+    const [createEstateType, {isLoading}] = useCreateRealEstateTypeMutation();
 
-    const handleFormChange = (field: keyof CreateCurrencyRequest, value: string) => {
-        setFormData(prev => ({
-            ...prev,
+    const handleFormChange = (field: keyof CreateRealEstateTypeRequest, value:string) => {
+        setFormData( prev => ({
+            ...prev, 
             [field]: value
         }));
-    };
-
+    }
+    
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        try{
-            const created = await createCurrency(formData).unwrap();
-            console.log('created', created);
+        try {
+            const type = await createEstateType(formData).unwrap();
+            console.log('created',type);
 
             setFormData({
-                name: '',
-                symbol: ''
+                name:''
             });
-        } catch(err){
+
+        } catch(err) {
             console.error(err);
-        }     
-    };
+        }
+    }
 
     return (
         <Paper
-            elevation={2}
-            sx={{
-                padding: 3,
-                backgroundColor: 'white',
-                borderRadius: 2,
-            }}
+        elevation={2}
+        sx={{
+            padding: 3,
+            backgroundColor: 'white',
+            borderRadius: 2,
+        }}
         >
             <Typography
                 variant="h6"
@@ -55,39 +54,39 @@ const CurrencyAddForm = ( ) => {
                     fontFamily: 'Poppins, sans-serif',
                 }}
             >
-                Yeni Para Birimi Ekle
+                Yeni Emlak Türü Ekle
             </Typography>
 
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
-                    <Box sx={{ flex: '1 1 200px', minWidth: '200px' }}>
-                        <TextField
-                            fullWidth
-                            label="Para Birimi Adı"
-                            value={formData.name}
-                            onChange={(e) => handleFormChange('name', e.target.value)}
-                            placeholder="US Dollar"
-                            required
-                        />
-                    </Box>
-                    <Box sx={{ flex: '1 1 150px', minWidth: '150px' }}>
-                        <TextField
-                            fullWidth
-                            label="Sembol"
-                            value={formData.symbol}
-                            onChange={(e) => handleFormChange('symbol', e.target.value)}
-                            placeholder="$"
-                            required
-                        />
-                    </Box>
-                </Box>
-                <Box sx={{ 
+                <Box sx={{ flex: '1 1 300px', minWidth: '250px' }}>
+                    <TextField
+                        fullWidth
+                        label="Emlak Türü Adı"
+                        value={formData.name}
+                        onChange={(e) => handleFormChange('name', e.target.value)}
+                        placeholder="Arsa, Daire, Villa..."
+                        required
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                '&:hover fieldset': {
+                                    borderColor: '#1976D2',
+                                },
+                                '&.Mui-focused fieldset': {
+                                    borderColor: '#1976D2',
+                                },
+                            },
+                            '& .MuiInputLabel-root.Mui-focused': {
+                                color: '#1976D2',
+                            },
+                        }}
+                    />
+                    <Box sx={{ 
                     display: 'flex', 
                     justifyContent: 'flex-end',
                     width: '100%',
-                    marginTop: '14px'
+                    marginTop: '14px',
                     }}>
-                       <Button
+                        <Button
                             type="submit"
                             variant="contained"
                             disabled={isLoading || !formData.name.trim()}
@@ -118,10 +117,11 @@ const CurrencyAddForm = ( ) => {
                         >
                             {isLoading ? 'Ekleniyor...' : 'Emlak Türü Ekle'}
                         </Button>
+                    </Box>
                 </Box>
             </Box>
         </Paper>
-    );
-};
+    )
+}
 
-export default CurrencyAddForm;
+export default EstateTypeAddForm;

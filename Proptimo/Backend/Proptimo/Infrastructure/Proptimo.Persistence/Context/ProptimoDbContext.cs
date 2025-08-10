@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Proptimo.Domain.Entities;
+using Proptimo.Domain.Entities.Address;
 using Proptimo.Domain.Entities.Identity;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,9 @@ namespace Proptimo.Persistence.Context
         public DbSet<RealEstateTypeFeature> RealEstateTypeFeatures { get; set; }
         public DbSet<RealEstateTypeFeatureValue> realEstateTypeFeatureValues { get; set; }
         public DbSet<Currency> Currencies { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<District> Districts { get; set; }
+        public DbSet<Neighborhood> Neighborhoods { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -100,8 +100,7 @@ const AdminCurrencyListingPage = () => {
         },
     ];
 
-    // Sadece mevcut verileri kullan - maksimum 5 satır
-    const displayCurrencies = currencies.slice(0, 5);
+   const displayCurrencies = currencies.slice(0, 5);
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -128,9 +127,7 @@ const AdminCurrencyListingPage = () => {
                     Para Birimi Listesi
                 </Typography>
                 
-                <Box sx={{ 
-                    width: '100%',
-                }}>
+                <Box>
                     <DataGrid
                         rows={displayCurrencies}
                         columns={columns}

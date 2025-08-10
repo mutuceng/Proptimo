@@ -38,9 +38,9 @@ namespace Proptimo.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEstateType(CreateEstateTypeCommand command)
         {
-            await _mediator.Send(command);
+            var result = await _mediator.Send(command);
 
-            return Ok("Basarıyla eklendi.");
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
@@ -48,7 +48,7 @@ namespace Proptimo.API.Controllers
         {
             await _mediator.Send(new DeleteEstateTypeCommand(id));
 
-            return Ok("Basarıyla silindi.");
+            return Ok((new { success = true }));
         }
 
         [HttpPut]

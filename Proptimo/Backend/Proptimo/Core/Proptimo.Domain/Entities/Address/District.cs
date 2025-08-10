@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Proptimo.Domain.Entities.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,14 +11,11 @@ namespace Proptimo.Domain.Entities.Address
 {
     public class District
     {
-        public int DistrictId { get; set; }
-
-        [Required]
-        [StringLength(100)]
+        [Key]
+        public string Id { get; set; }
         public string Name { get; set; }
 
-        [Required]
-        public int CityId { get; set; }
+        public string CityId { get; set; }
         public City City { get; set; }
 
         public ICollection<Neighborhood> Neighborhoods { get; set; }

@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { baseApiSlice } from "../features/api/baseApi";
+import { baseApi } from "../features/api/baseApi";
 
 const store = configureStore( {
     reducer: {
-        [baseApiSlice.reducerPath]: baseApiSlice.reducer,
+        [baseApi.reducerPath]: baseApi.reducer,
     },
-    middleware: (gDM) => gDM().concat(baseApiSlice.middleware),
+    middleware: (gDM) => gDM().concat(baseApi.middleware),
 })
 
 export default store;

@@ -3,10 +3,13 @@ using Proptimo.Application.Features.CQRS.Commands.AppUserCommands;
 using Proptimo.Application.Features.CQRS.Commands.CurrencyCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateAddressCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateCommands;
+using Proptimo.Application.Features.CQRS.Commands.RealEstateImageCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeFeatureCommands;
+using Proptimo.Application.Features.CQRS.Results.CommandQueryResults;
 using Proptimo.Application.Features.CQRS.Results.CurrencyQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateAddressQueryResults;
+using Proptimo.Application.Features.CQRS.Results.RealEstateImageQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateTypeFeatureQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateTypeQueryResults;
@@ -49,6 +52,17 @@ namespace Proptimo.Application.Mapping
             CreateMap<Currency, GetAllCurrenciesQueryResult>().ReverseMap();
             CreateMap<Currency, GetByIdCurrencyQueryResult>().ReverseMap();
 
+            CreateMap<RealEstateImage, CreateRealEstateImageCommand>().ReverseMap();
+            CreateMap<RealEstateImage, GetAllRealEstateImagesByEstateIdQueryResult>().ReverseMap();
+
+
+            CreateMap<Currency, CurrencyReturnDto>().ReverseMap();
+            CreateMap<RealEstateType, RealEstateTypeReturnDto>().ReverseMap();
+            CreateMap<RealEstateTypeFeature, RealEstateTypeFeatureReturnDto>().ReverseMap();
+            CreateMap<RealEstateTypeFeatureValue, RealEstateTypeFeatureValueReturnDto>().ReverseMap();
+            CreateMap<RealEstateAddress, RealEstateAddressReturnDto>().ReverseMap();
+            CreateMap<RealEstateImage, RealEstateImageReturnDto>().ReverseMap();
+            CreateMap<RealEstate, RealEstateReturnDto>().ReverseMap();
 
             CreateMap<AppUser, UserRegisterCommand>().ReverseMap();
         }

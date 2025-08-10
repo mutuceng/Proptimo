@@ -11,6 +11,7 @@ import AdminEstateListingPage from './pages/admin/estate/AdminEstateListingPage'
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import UserLayout from './components/user/UserLayout';
+import AdminEstateTypesListingPage from './pages/admin/estateType/AdminEstateTypesListingPage';
 
 // User Pages (placeholder components)
 const UserHomePage = () => (
@@ -53,19 +54,6 @@ const AdminUsersPage = () => (
 );
 
 
-const AdminRealEstateTypesPage = () => (
-  <Box sx={{ padding: 3 }}>
-    <Paper elevation={2} sx={{ padding: 3, backgroundColor: 'white', borderRadius: 2 }}>
-      <Typography variant="h5" sx={{ color: '#1976D2', fontWeight: 600, fontFamily: 'Poppins, sans-serif' }}>
-        Emlak Türleri
-      </Typography>
-      <Typography variant="body1" sx={{ mt: 2 }}>
-        Emlak türleri listesi burada görüntülenecek.
-      </Typography>
-    </Paper>
-  </Box>
-);
-
 const AdminSettingsPage = () => (
   <Box sx={{ padding: 3 }}>
     <Paper elevation={2} sx={{ padding: 3, backgroundColor: 'white', borderRadius: 2 }}>
@@ -93,7 +81,7 @@ function App() {
         <Route path="/admin" element={<AdminLayout><AdminHomePage /></AdminLayout>} />
         <Route path="/admin/users" element={<AdminLayout><AdminUsersPage /></AdminLayout>} />
         <Route path="/admin/real-estates" element={<AdminLayout><AdminEstateListingPage /></AdminLayout>} />
-        <Route path="/admin/real-estate-types" element={<AdminLayout><AdminRealEstateTypesPage /></AdminLayout>} />
+        <Route path="/admin/real-estate-types" element={<AdminLayout><AdminEstateTypesListingPage /></AdminLayout>} />
         <Route path="/admin/currencies" element={<AdminLayout><AdminCurrencyListingPage /></AdminLayout>} />
         <Route path="/admin/settings" element={<AdminLayout><AdminSettingsPage /></AdminLayout>} />
         
