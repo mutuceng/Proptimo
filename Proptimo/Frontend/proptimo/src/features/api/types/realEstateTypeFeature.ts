@@ -17,7 +17,7 @@ export interface CreateRealEstateTypeFeature{
     realEstateTypeId: string
 }
 
-export interface updatedRealEstateTypeFeature {
+export interface UpdateRealEstateTypeFeature {
     id: string,
     name: string,
     dataType : number,

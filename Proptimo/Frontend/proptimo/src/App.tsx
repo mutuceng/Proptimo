@@ -12,6 +12,7 @@ import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import UserLayout from './components/user/UserLayout';
 import AdminEstateTypesListingPage from './pages/admin/estateType/AdminEstateTypesListingPage';
+import AdminEstateTypeFeaturesListingPage from './pages/admin/estateTypeFeature/AdminEstateTypeFeaturesListingPage';
 
 // User Pages (placeholder components)
 const UserHomePage = () => (
@@ -82,10 +83,11 @@ function App() {
         <Route path="/admin/users" element={<AdminLayout><AdminUsersPage /></AdminLayout>} />
         <Route path="/admin/real-estates" element={<AdminLayout><AdminEstateListingPage /></AdminLayout>} />
         <Route path="/admin/real-estate-types" element={<AdminLayout><AdminEstateTypesListingPage /></AdminLayout>} />
+        <Route path="/admin/real-estate-type-features/:typeId" element={<AdminLayout><AdminEstateTypeFeaturesListingPage /></AdminLayout>} />
         <Route path="/admin/currencies" element={<AdminLayout><AdminCurrencyListingPage /></AdminLayout>} />
         <Route path="/admin/settings" element={<AdminLayout><AdminSettingsPage /></AdminLayout>} />
-        
-        {/* Default redirect */}
+
+        {/* Varsayılan yönlendirme */}
         <Route path="/" element={<Navigate to="/user/login" replace />} />
         <Route path="*" element={<Navigate to="/admin" replace />} />
       </Routes>

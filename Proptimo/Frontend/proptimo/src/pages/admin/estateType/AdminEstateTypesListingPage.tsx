@@ -1,15 +1,18 @@
 import { Box, Typography, Paper, IconButton, Tooltip } from "@mui/material";
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import { type RealEstateType } from '../../../features/api/types/realEstateType';
 import { useEffect } from "react";
 import { useDeleteRealEstateTypeMutation, useGetAllRealEstateTypesQuery } from "../../../features/api/realEstateTypeApi";
 import EstateTypeAddForm from "../../../components/admin/realEstateType/EstateTypeAddForm";
+import { useNavigate } from "react-router-dom";
 
 const AdminEstateTypesListingPage = () => {
 
-    const {data, isLoading, isFetching, refetch, error} = useGetAllRealEstateTypesQuery();
+    const {data, isLoading, isFetching, refetch} = useGetAllRealEstateTypesQuery();
     const [deleteRealEstateType] = useDeleteRealEstateTypeMutation();
+    const navigate = useNavigate();
 
     const handleDeleteRealEstateType = (id: string) => {
         if (window.confirm('Bu emlak tipini silmek istediğinizden emin misiniz?')) {
@@ -86,6 +89,33 @@ const AdminEstateTypesListingPage = () => {
                         }}
                     >
                         <DeleteIcon fontSize="small" />
+                    </IconButton>
+                </Tooltip>
+            ),
+        },
+        {
+            field: 'addFeature',
+            headerName: 'Özellik Ekle',
+            width: 140,
+            sortable: false,
+            filterable: false,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: (params) => (
+                <Tooltip title="Özellik Ekle" arrow>
+                    <IconButton
+                        onClick={() => navigate(`/admin/real-estate-type-features/${params.row.id}`)}
+                        size="small"
+                        sx={{
+                            color: '#1976D2',
+                            '&:hover': {
+                                backgroundColor: 'rgba(25, 118, 210, 0.1)',
+                                color: '#0D47A1',
+                            },
+                            transition: 'all 0.2s ease-in-out',
+                        }}
+                    >
+                        <PlaylistAddIcon fontSize="small" />
                     </IconButton>
                 </Tooltip>
             ),

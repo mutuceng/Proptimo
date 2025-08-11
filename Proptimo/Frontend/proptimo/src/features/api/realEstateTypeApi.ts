@@ -110,6 +110,7 @@ export const realEstateTypeApi = baseApi.injectEndpoints({
                 } catch (err) {
                     console.error(err);
                     patchResultList.undo();
+                    patchResultById.undo();
                 }
             }
         })
