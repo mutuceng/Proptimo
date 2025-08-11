@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Proptimo.Application.Features.CQRS.Commands.AppUserCommands;
+using Proptimo.Application.Features.CQRS.Commands.CsvLocationCommands;
 using Proptimo.Application.Features.CQRS.Commands.CurrencyCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateAddressCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateCommands;
@@ -7,6 +8,7 @@ using Proptimo.Application.Features.CQRS.Commands.RealEstateImageCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeFeatureCommands;
 using Proptimo.Application.Features.CQRS.Results.CommandQueryResults;
+using Proptimo.Application.Features.CQRS.Results.CsvLocationQueryResults;
 using Proptimo.Application.Features.CQRS.Results.CurrencyQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateAddressQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateImageQueryResults;
@@ -14,12 +16,15 @@ using Proptimo.Application.Features.CQRS.Results.RealEstateQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateTypeFeatureQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateTypeQueryResults;
 using Proptimo.Domain.Entities;
+using Proptimo.Domain.Entities.Address;
 using Proptimo.Domain.Entities.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Proptimo.Application.Features.CQRS.Commands.CsvLocationCommands.CreateDistrictCommand;
+using static Proptimo.Application.Features.CQRS.Commands.CsvLocationCommands.CreateNeighborhoodCommand;
 
 namespace Proptimo.Application.Mapping
 {
@@ -63,6 +68,14 @@ namespace Proptimo.Application.Mapping
             CreateMap<RealEstateAddress, RealEstateAddressReturnDto>().ReverseMap();
             CreateMap<RealEstateImage, RealEstateImageReturnDto>().ReverseMap();
             CreateMap<RealEstate, RealEstateReturnDto>().ReverseMap();
+
+            CreateMap<City, CityDto>().ReverseMap();
+            CreateMap<District, DistrictDto>().ReverseMap();
+            CreateMap<Neighborhood, NeighborhoodDto>().ReverseMap();
+
+            CreateMap<District, CreateDistricDto>().ReverseMap();
+            CreateMap<Neighborhood, CreateNeighborhoodDto>().ReverseMap();
+
 
             CreateMap<AppUser, UserRegisterCommand>().ReverseMap();
         }

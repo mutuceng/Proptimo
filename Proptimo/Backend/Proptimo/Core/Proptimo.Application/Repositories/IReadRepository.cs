@@ -14,5 +14,7 @@ namespace Proptimo.Application.Repositories
         Task<List<T>> GetAllAsync();
         IQueryable<T> GetWhere(Expression<Func<T, bool>> method);
         Task<T> GetSingleAsync(Expression<Func<T, bool>> method);
+        Task<bool> AnyAsync();
+
     }
 }

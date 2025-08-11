@@ -52,5 +52,12 @@ namespace Proptimo.Persistence.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
+        {
+            _dbSet.AddRange(entities);
+            await _context.SaveChangesAsync();
+            return entities;
+        }
     }
 }

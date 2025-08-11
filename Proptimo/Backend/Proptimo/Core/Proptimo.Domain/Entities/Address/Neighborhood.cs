@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace Proptimo.Domain.Entities.Address
 {
-    public class Neighborhood 
+    public class Neighborhood : BaseEntity
     {
-        public string Id { get; set; }
         public string Name { get; set; }
 
         public string DistrictId { get; set; }

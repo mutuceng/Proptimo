@@ -1,4 +1,5 @@
-﻿using Proptimo.Domain.Entities.Common;
+﻿using Proptimo.Domain.Entities.Address;
+using Proptimo.Domain.Entities.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Proptimo.Application.Repositories
         Task<bool> AddAsync(T entity);
         Task<bool> Update(T entity);
         Task<bool> DeleteAsync(string id);
+        Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
         Task<bool> SaveChangesAsync();
     }
 }

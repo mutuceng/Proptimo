@@ -1,10 +1,11 @@
-using Proptimo.Persistence;
-using Proptimo.Application;
-using Proptimo.Infrastructure;
-using System.Text;
-using Proptimo.API.Settings;
 using Microsoft.IdentityModel.Tokens;
+using Proptimo.API.Settings;
+using Proptimo.Application;
+using Proptimo.Application.Abstractions;
+using Proptimo.Infrastructure;
 using Proptimo.Infrastructure.Services;
+using Proptimo.Persistence;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +37,12 @@ app.UseCors("CorsPolicy");
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+
     await SeedDataService.SeedAsync(services);
+
+    var AddressSeederService = services.GetRequiredService<IAddressCsvToDbService>();
+    await AddressSeederService.SeedAsync();
+
 }
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

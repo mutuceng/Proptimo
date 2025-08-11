@@ -37,6 +37,12 @@ namespace Proptimo.Persistence.Repositories
             return await _dbSet.FirstOrDefaultAsync(method);
         }
 
+        public async Task<bool> AnyAsync()
+        {
+            return await _dbSet.AnyAsync();
+        }
+
+
         public IQueryable<T> GetWhere(Expression<Func<T, bool>> method)
         {
             return _dbSet.Where(method);
