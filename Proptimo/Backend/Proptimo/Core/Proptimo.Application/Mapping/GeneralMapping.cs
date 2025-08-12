@@ -7,6 +7,8 @@ using Proptimo.Application.Features.CQRS.Commands.RealEstateCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateImageCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeCommands;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeFeatureCommands;
+using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeFeatureValueCommands;
+using Proptimo.Application.Features.CQRS.Queries.RealEstateTypeFeatureValueQueries;
 using Proptimo.Application.Features.CQRS.Results.CommandQueryResults;
 using Proptimo.Application.Features.CQRS.Results.CsvLocationQueryResults;
 using Proptimo.Application.Features.CQRS.Results.CurrencyQueryResults;
@@ -14,6 +16,7 @@ using Proptimo.Application.Features.CQRS.Results.RealEstateAddressQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateImageQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateTypeFeatureQueryResults;
+using Proptimo.Application.Features.CQRS.Results.RealEstateTypeFeatureValueQueryResults;
 using Proptimo.Application.Features.CQRS.Results.RealEstateTypeQueryResults;
 using Proptimo.Domain.Entities;
 using Proptimo.Domain.Entities.Address;
@@ -51,15 +54,19 @@ namespace Proptimo.Application.Mapping
             CreateMap<RealEstateTypeFeature,  GetRealEstateTypeFeaturesByTypeIdQueryResult>().ReverseMap();
             CreateMap<RealEstateTypeFeature, CreateRealEstateTypeFeatureCommand>().ReverseMap();
             CreateMap<RealEstateTypeFeature, UpdateRealEstateTypeFeatureCommand>().ReverseMap();
+            CreateMap<RealEstateTypeFeature, GetRealEstateTypeFeatureValuesByEstateIdQueryResult>().ReverseMap();
+
+            CreateMap<RealEstateTypeFeatureValue, CreateRealEstateTypeFeatureValueCommand>().ReverseMap();
+            CreateMap<RealEstateTypeFeatureValue, GetRealEstateTypeFeatureValuesByEstateIdQueryResult>().ReverseMap();
+
+
+            CreateMap<RealEstateImage, CreateRealEstateImageCommand>().ReverseMap();
+            CreateMap<RealEstateImage, GetAllRealEstateImagesByEstateIdQueryResult>().ReverseMap();
 
             CreateMap<Currency, CreateCurrencyCommand>().ReverseMap();
             CreateMap<Currency, UpdateCurrencyCommand>().ReverseMap();
             CreateMap<Currency, GetAllCurrenciesQueryResult>().ReverseMap();
             CreateMap<Currency, GetByIdCurrencyQueryResult>().ReverseMap();
-
-            CreateMap<RealEstateImage, CreateRealEstateImageCommand>().ReverseMap();
-            CreateMap<RealEstateImage, GetAllRealEstateImagesByEstateIdQueryResult>().ReverseMap();
-
 
             CreateMap<Currency, CurrencyReturnDto>().ReverseMap();
             CreateMap<RealEstateType, RealEstateTypeReturnDto>().ReverseMap();

@@ -23,7 +23,7 @@ export const api = createApi(
     {
         reducerPath: 'api',
         baseQuery: baseQueryWithReauth,
-        tagTypes: ['Currency', 'RealEstate', 'RealEstateType', 'RealEstateTypeFeature', 'RealEstateTypeFeatureValue', 'RealEstateAddress', 'RealEstateImage', 'User'],
+        tagTypes: ['Currency', 'RealEstate', 'RealEstateType', 'RealEstateTypeFeature', 'RealEstateTypeFeatureValue', 'RealEstateAddress', 'RealEstateImage', 'User', 'LocationData'],
         endpoints: () => ({}),
 
 })

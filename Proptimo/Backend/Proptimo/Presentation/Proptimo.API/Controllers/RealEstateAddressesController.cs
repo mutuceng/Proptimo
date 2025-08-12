@@ -42,8 +42,8 @@ namespace Proptimo.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAddress(CreateAddressCommand command)
         {
-            await _mediator.Send(command);
-            return Ok("Basariyla Eklendi");
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
 
         [HttpPut]

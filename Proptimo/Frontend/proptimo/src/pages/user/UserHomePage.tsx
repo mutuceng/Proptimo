@@ -1,0 +1,208 @@
+import React from "react";
+import { 
+  Box, 
+  Typography, 
+  Container, 
+  Paper, 
+  Button, 
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  Stack,
+  Chip
+} from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+import HomeIcon from '@mui/icons-material/Home';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CityGrid from "../../components/user/Home/CityGrid";
+
+
+// Hero Section Component
+const HeroSection = () => {
+  return (
+    <Box
+      sx={{
+        background: 'linear-gradient(135deg, #1976D2 0%, #42A5F5 100%)',
+        color: 'white',
+        py: 8,
+        mb: 6,
+        borderRadius: 3,
+        position: 'relative',
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+          opacity: 0.3,
+        }
+      }}
+    >
+      <Container maxWidth="lg">
+        <Box sx={{ position: 'relative', zIndex: 1 }}>
+          <Typography variant="h2" sx={{ fontWeight: 700, mb: 2, textAlign: 'center' }}>
+            Hayalinizdeki Evi Bulun
+          </Typography>
+          <Typography variant="h5" sx={{ mb: 4, textAlign: 'center', opacity: 0.9 }}>
+            Türkiye'nin en güvenilir emlak platformu ile doğru adrese ulaşın
+          </Typography>
+          
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
+            <Button
+              variant="contained"
+              size="large"
+              startIcon={<SearchIcon />}
+              sx={{
+                backgroundColor: 'white',
+                color: '#1976D2',
+                px: 4,
+                py: 1.5,
+                borderRadius: 3,
+                textTransform: 'none',
+                fontSize: '1.1rem',
+                fontWeight: 600,
+                '&:hover': {
+                  backgroundColor: '#f5f5f5',
+                }
+              }}
+            >
+              Emlak Ara
+            </Button>
+
+          </Box>
+        </Box>
+      </Container>
+    </Box>
+  );
+};
+
+// Features Section Component
+const FeaturesSection = () => {
+  const features = [
+    {
+      icon: <SearchIcon sx={{ fontSize: 40, color: '#1976D2' }} />,
+      title: "Kolay Arama",
+      description: "Gelişmiş filtreler ile istediğiniz özelliklerdeki emlağı kolayca bulun"
+    },
+    {
+      icon: <LocationOnIcon sx={{ fontSize: 40, color: '#1976D2' }} />,
+      title: "Güvenilir Konum",
+      description: "Türkiye'nin her yerinden güvenilir emlak ilanları"
+    },
+    {
+      icon: <AttachMoneyIcon sx={{ fontSize: 40, color: '#1976D2' }} />,
+      title: "Uygun Fiyat",
+      description: "Piyasa değerine uygun, şeffaf fiyatlandırma"
+    }
+  ];
+
+  return (
+    <Box sx={{ py: 6 }}>
+      <Container maxWidth="lg">
+        <Typography variant="h3" sx={{ textAlign: 'center', mb: 6, fontWeight: 600, color: '#1976D2' }}>
+          Neden Proptimo?
+        </Typography>
+        <Box sx={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: 4 
+        }}>
+          {features.map((feature, index) => (
+            <Paper
+              key={index}
+              elevation={2}
+              sx={{
+                p: 4,
+                textAlign: 'center',
+                height: '100%',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-8px)',
+                  boxShadow: '0 12px 40px rgba(0,0,0,0.15)',
+                }
+              }}
+            >
+              <Box sx={{ mb: 3 }}>
+                {feature.icon}
+              </Box>
+              <Typography variant="h5" sx={{ mb: 2, fontWeight: 600, color: '#1976D2' }}>
+                {feature.title}
+              </Typography>
+              <Typography variant="body1" sx={{ color: '#666', lineHeight: 1.6 }}>
+                {feature.description}
+              </Typography>
+            </Paper>
+          ))}
+        </Box>
+      </Container>
+    </Box>
+  );
+};
+
+// Popular Cities Section Component
+const PopularCitiesSection = () => {
+  return (
+    <Box sx={{ py: 6, backgroundColor: '#f8f9fa' }}>
+      <Container maxWidth="lg">
+        <Typography variant="h3" sx={{ textAlign: 'center', mb: 2, fontWeight: 600, color: '#1976D2' }}>
+          Popüler Şehirler
+        </Typography>
+        <Typography variant="h6" sx={{ textAlign: 'center', mb: 6, color: '#666' }}>
+          Türkiye'nin en çok tercih edilen şehirlerinde emlak fırsatları
+        </Typography>
+        <CityGrid />
+      </Container>
+    </Box>
+  );
+};
+
+// Stats Section Component
+const StatsSection = () => {
+  const stats = [
+    { number: "50,000+", label: "Aktif İlan" },
+    { number: "25,000+", label: "Mutlu Müşteri" },
+    { number: "81", label: "İl Kapsamı" },
+    { number: "24/7", label: "Destek" }
+  ];
+
+  return (
+    <Box sx={{ py: 6, backgroundColor: '#1976D2', color: 'white' }}>
+      <Container maxWidth="lg">
+        <Box sx={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: 4 
+        }}>
+          {stats.map((stat, index) => (
+            <Box key={index} sx={{ textAlign: 'center' }}>
+              <Typography variant="h2" sx={{ fontWeight: 700, mb: 1 }}>
+                {stat.number}
+              </Typography>
+              <Typography variant="h6" sx={{ opacity: 0.9 }}>
+                {stat.label}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      </Container>
+    </Box>
+  );
+};
+
+const UserHomePage = () => {
+    return (
+        <Box sx={{ minHeight: '100vh' }}>
+            <HeroSection />
+            <FeaturesSection />
+            <PopularCitiesSection />
+            <StatsSection />
+        </Box>
+    );
+};
+
+export default UserHomePage;

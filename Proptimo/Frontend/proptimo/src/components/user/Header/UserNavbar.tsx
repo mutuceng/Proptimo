@@ -16,17 +16,19 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useNavigate } from 'react-router-dom';
 
 export const UserNavbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const navigationItems = ['Estates', 'Rent', 'Sell', 'Mortgage', 'Find Agent'];
+  const navigationItems = ['Emlak Listesi', 'Satılık', 'Kiralık', 'Hakkımızda', 'İletişim'];
 
   const drawer = (
     <Box sx={{ width: 250, pt: 2 }}>
@@ -47,6 +49,49 @@ export const UserNavbar = () => {
           </ListItem>
         ))}
       </List>
+      
+      {/* Mobile Butonlar */}
+      <Box sx={{ p: 3, pt: 2 }}>
+        <Button
+          variant="outlined"
+          fullWidth
+          sx={{
+            color: '#1976d2',
+            borderColor: '#1976d2',
+            borderRadius: '8px',
+            textTransform: 'none',
+            fontWeight: 600,
+            py: 1.5,
+            mb: 2,
+            transition: 'all 0.2s ease-in-out',
+            '&:hover': {
+              backgroundColor: '#1976d2',
+              color: 'white',
+              borderColor: '#1976d2'
+            }
+          }}
+        >
+          Giriş Yap
+        </Button>
+        
+        <Button
+          variant="contained"
+          fullWidth
+          sx={{
+            backgroundColor: '#1976d2',
+            borderRadius: '8px',
+            textTransform: 'none',
+            fontWeight: 600,
+            py: 1.5,
+            transition: 'all 0.2s ease-in-out',
+            '&:hover': {
+              backgroundColor: '#1565c0'
+            }
+          }}
+        >
+          Kaydol
+        </Button>
+      </Box>
     </Box>
   );
 
@@ -103,13 +148,20 @@ export const UserNavbar = () => {
             </SvgIcon>
             <Typography 
               variant="h5" 
+              onClick={() => navigate('/')}
               sx={{ 
                 color: '#1976d2', 
                 fontWeight: 700,
                 fontSize: '1.75rem',
                 fontFamily: '"Poppins", "Roboto", "Helvetica", "Arial", sans-serif',
                 letterSpacing: '0.5px',
-                textShadow: '0 1px 2px rgba(25, 118, 210, 0.1)'
+                textShadow: '0 1px 2px rgba(25, 118, 210, 0.1)',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  color: '#1565c0',
+                  transform: 'scale(1.02)'
+                }
               }}
             >
               Proptimo
@@ -146,8 +198,9 @@ export const UserNavbar = () => {
             </Box>
           )}
 
-          {/* Sağ Taraf - Dil Seçimi */}
-          <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto' }}>
+          {/* Sağ Taraf - Butonlar */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, ml: 'auto' }}>
+            {/* Dil Seçimi */}
             <IconButton
               sx={{
                 color: '#666',
@@ -165,6 +218,52 @@ export const UserNavbar = () => {
             >
               🌐
             </IconButton>
+
+            {/* Giriş Yap Butonu */}
+            <Button
+              variant="outlined"
+              sx={{
+                color: '#1976d2',
+                borderColor: '#1976d2',
+                borderRadius: '8px',
+                textTransform: 'none',
+                fontWeight: 600,
+                px: 3,
+                py: 1,
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  backgroundColor: '#1976d2',
+                  color: 'white',
+                  borderColor: '#1976d2',
+                  transform: 'translateY(-1px)',
+                  boxShadow: '0 4px 12px rgba(25, 118, 210, 0.3)'
+                }
+              }}
+            >
+              Giriş Yap
+            </Button>
+
+            {/* Kaydol Butonu */}
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: '#1976d2',
+                borderRadius: '8px',
+                textTransform: 'none',
+                fontWeight: 600,
+                px: 3,
+                py: 1,
+                transition: 'all 0.2s ease-in-out',
+                boxShadow: '0 2px 8px rgba(25, 118, 210, 0.2)',
+                '&:hover': {
+                  backgroundColor: '#1565c0',
+                  transform: 'translateY(-1px)',
+                  boxShadow: '0 4px 12px rgba(25, 118, 210, 0.4)'
+                }
+              }}
+            >
+              Kaydol
+            </Button>
           </Box>
         </Toolbar>
       </Container>

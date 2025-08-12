@@ -17,11 +17,22 @@ const realEstateImageApi = baseApi.injectEndpoints( {
             uploadRealEstateImages: builder.mutation<RealEstateImage[], UploadRealEstateImagesRequest>({
                 query : (data) => {
                     const formData = new FormData();
-                    formData.append("Commands", JSON.stringify(data.commands));
-                    data.imageFiles.forEach( (file) => { formData.append("ImageFiles", file)});
+
+                    // UploadRealEstateImagesRequest wrapper'ı ile Commands
+                    data.commands.forEach((cmd, index) => {
+                        formData.append(`Commands[${index}].ImageUrl`, 'https://placeholder.com/image.jpg'); // Geçici URL
+                        formData.append(`Commands[${index}].IsPrimary`, String(cmd.isPrimary));
+                        formData.append(`Commands[${index}].Order`, String(cmd.order));
+                        formData.append(`Commands[${index}].RealEstateId`, cmd.realEstateId);
+                    });
+
+                    // UploadRealEstateImagesRequest wrapper'ı ile ImageFiles
+                    data.imageFiles.forEach((file) => {
+                        formData.append('ImageFiles', file);
+                    });
 
                     return {
-                        url: '/realestatesimages',
+                        url: '/realestateimages',
                         method: 'POST',
                         body: formData
                     }
@@ -56,7 +67,7 @@ const realEstateImageApi = baseApi.injectEndpoints( {
 
             deleteRealEstateImage: builder.mutation<{success: boolean}, { estateId: string; imageId: string }>({
                 query : ({imageId}) => ({
-                    url: `/realestatesimages/${imageId}`,
+                    url: `/realestateimages/${imageId}`,
                     method: 'DELETE',
                 }),
             

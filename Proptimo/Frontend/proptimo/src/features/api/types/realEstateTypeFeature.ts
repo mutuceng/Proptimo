@@ -1,7 +1,17 @@
+export const TypeFeatureDataType = {
+    Int: 0,
+    Decimal: 1,
+    Bool: 2,
+    String: 3,
+    DateTime: 4
+} as const;
+
+export type TypeFeatureDataType = typeof TypeFeatureDataType[keyof typeof TypeFeatureDataType];
+
 export interface RealEstateTypeFeature {
     id: string,
     name: string,
-    dataType : number,
+    dataType : TypeFeatureDataType,
     isUnit : boolean,
     isRequired: boolean,
     options: string[]
@@ -10,7 +20,7 @@ export interface RealEstateTypeFeature {
 
 export interface CreateRealEstateTypeFeature{
     name: string,
-    dataType : number,
+    dataType : TypeFeatureDataType,
     isUnit : boolean,
     isRequired: boolean,
     options: string[]
@@ -20,7 +30,7 @@ export interface CreateRealEstateTypeFeature{
 export interface UpdateRealEstateTypeFeature {
     id: string,
     name: string,
-    dataType : number,
+    dataType : TypeFeatureDataType,
     isUnit : boolean,
     isRequired: boolean,
     options: string[]
@@ -30,7 +40,7 @@ export interface UpdateRealEstateTypeFeature {
 export interface GetByIdRealEstateTypeFeature {
     id: string,
     name: string,
-    dataType : number,
+    dataType : TypeFeatureDataType,
     isUnit : boolean,
     isRequired: boolean,
     options: string[]
@@ -41,4 +51,6 @@ export interface GetAllEstateTypeFeaturesByTypeId{
     data: RealEstateTypeFeature[];
     total: number;
 }
+
+
 

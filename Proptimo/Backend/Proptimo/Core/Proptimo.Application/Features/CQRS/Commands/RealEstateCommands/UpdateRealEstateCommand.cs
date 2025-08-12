@@ -23,6 +23,5 @@ namespace Proptimo.Application.Features.CQRS.Commands.RealEstateCommands
         public DateTime UpdatedAt { get; set; }
 
         public string RealEstateTypeId { get; set; }
-        public string RealEstateAddressId { get; set; }
     }
 }

@@ -24,7 +24,6 @@ namespace Proptimo.Domain.Entities
         public DateTime UpdatedAt { get; set; }
 
         public string RealEstateTypeId { get; set; }
-        public string RealEstateAddressId { get; set; }
 
         public ICollection<RealEstateImage> Images { get; set; }
         public RealEstateType RealEstateType {  get; set; }

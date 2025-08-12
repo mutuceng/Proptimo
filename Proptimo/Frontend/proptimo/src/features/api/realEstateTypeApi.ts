@@ -15,7 +15,9 @@ export const realEstateTypeApi = baseApi.injectEndpoints({
         }),
 
         getRealEstateTypeById: builder.query<GetByIdRealEstateTypeResponse, string>({
-            query : (id) => `/realestates/${id}`,
+            query : (id) => ({
+                url:`/realestatetypes/${id}`
+            }),
             providesTags: (result, error, id) => [{type: 'RealEstateType', id}]
         }),
 

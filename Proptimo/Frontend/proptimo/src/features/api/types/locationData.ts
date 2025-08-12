@@ -15,17 +15,17 @@ export interface Neighborhood {
     districtId: string
 }
 
-export interface GetAllCitiesRequest{
+export interface GetAllCitiesResponse{
     data: City[],
     total: number
 }
 
-export interface GetAllDistrictsByCityIdRequest {
+export interface GetAllDistrictsByCityIdResponse {
     data: District[],
     total: number
 }
 
-export interface GetAllDistrictsByDistrictRequest {
+export interface GetAllNeighborhoodsByDistrictResponse {
     data: Neighborhood[],
     total: number
 }

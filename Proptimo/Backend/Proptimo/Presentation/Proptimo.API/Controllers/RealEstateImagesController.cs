@@ -29,6 +29,9 @@ namespace Proptimo.API.Controllers
             if (photos.ImageFiles == null || photos.ImageFiles.Count == 0)
                 return BadRequest("En az bir fotoğraf yüklenmeli.");
 
+            if (photos.Commands == null || photos.Commands.Count != photos.ImageFiles.Count)
+                return BadRequest("Komutlar ve resim dosyaları eşleşmiyor.");
+
             var returnedList = new List<RealEstateImageReturnDto>();
 
             for (int i = 0; i < photos.ImageFiles.Count; i++)
@@ -36,8 +39,8 @@ namespace Proptimo.API.Controllers
                 var command = photos.Commands[i];
                 var imageFile = photos.ImageFiles[i];
 
+                var imageUrl = await _fileStorageService.SaveFileAsync(imageFile, command.RealEstateId.ToString());
 
-                var imageUrl = await _fileStorageService.SaveFileAsync(imageFile, $"/{command.RealEstateId}");
                 command.ImageUrl = imageUrl;
 
                 var result = await _mediator.Send(command);
@@ -47,10 +50,11 @@ namespace Proptimo.API.Controllers
             return Ok(returnedList);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetImagesByEstateId(GetAllRealEstateImagesByEstateIdQuery query)
+
+        [HttpGet("{estateId}")]
+        public async Task<IActionResult> GetImagesByEstateId(string estateId)
         {
-            var images = await _mediator.Send(new GetAllRealEstateImagesByEstateIdQuery(query.RealEstateId));
+            var images = await _mediator.Send(new GetAllRealEstateImagesByEstateIdQuery(estateId));
 
             return Ok(images);
 

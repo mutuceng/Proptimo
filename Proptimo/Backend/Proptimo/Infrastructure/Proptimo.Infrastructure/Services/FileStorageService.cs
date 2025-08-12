@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Proptimo.Application.Abstractions;
 using System;
 using System.Collections.Generic;
@@ -10,19 +11,39 @@ namespace Proptimo.Infrastructure.Services
 {
     public class FileStorageService : IFileStorageService
     {
-        public async Task<string> SaveFileAsync(IFormFile file, string folder)
+        private readonly IWebHostEnvironment _env;
+
+        public FileStorageService(IWebHostEnvironment env)
         {
+            _env = env;
+        }
+
+        public async Task<string> SaveFileAsync(IFormFile file, string estateId)
+        {
+            // Dosya adı (benzersiz)
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads", folder);
 
-            Directory.CreateDirectory(filePath);
+            // Klasör yolu (wwwroot/uploads/{estateId})
+            var folderPath = Path.Combine(_env.WebRootPath, "uploads", estateId);
 
+            // Klasör yoksa oluştur
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            // Dosyanın tam yolu
+            var filePath = Path.Combine(folderPath, fileName);
+
+            // Dosyayı kaydet
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
 
-            return $"/{folder}/{fileName}";
+            // Geriye tarayıcıdan erişilebilecek bir path döndür
+            return $"/uploads/{estateId}/{fileName}";
         }
+
     }
 }

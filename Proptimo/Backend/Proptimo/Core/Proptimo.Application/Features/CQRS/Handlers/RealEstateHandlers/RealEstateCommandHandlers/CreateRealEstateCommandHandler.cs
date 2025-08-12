@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateCommands;
+using Proptimo.Application.Features.CQRS.Results.CommandQueryResults;
 using Proptimo.Application.Repositories;
 using Proptimo.Domain.Entities;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Proptimo.Application.Features.CQRS.Handlers.RealEstateHandlers.RealEstateCommandHandlers
 {
-    public class CreateRealEstateCommandHandler : IRequestHandler<CreateRealEstateCommand>
+    public class CreateRealEstateCommandHandler : IRequestHandler<CreateRealEstateCommand, RealEstateReturnDto>
     {
         private readonly IWriteRepository<RealEstate> _repository;
         private readonly IMapper _mapper;
@@ -22,11 +23,13 @@ namespace Proptimo.Application.Features.CQRS.Handlers.RealEstateHandlers.RealEst
             _mapper = mapper;
         }
 
-        public async Task Handle(CreateRealEstateCommand request, CancellationToken cancellationToken)
+        public async Task<RealEstateReturnDto> Handle(CreateRealEstateCommand request, CancellationToken cancellationToken)
         {
             var RealEstate = _mapper.Map<RealEstate>(request);
 
             await _repository.AddAsync(RealEstate);
+
+            return _mapper.Map<RealEstateReturnDto>(RealEstate);
         }
     }
 }
