@@ -10,6 +10,7 @@ namespace Proptimo.Application.Repositories
 {
     public interface IReadRepository<T> : IRepository<T> where T : BaseEntity
     {
+        IQueryable<T> Table { get; }
         Task<T> GetByIdAsync(string id);
         Task<List<T>> GetAllAsync();
         IQueryable<T> GetWhere(Expression<Func<T, bool>> method);

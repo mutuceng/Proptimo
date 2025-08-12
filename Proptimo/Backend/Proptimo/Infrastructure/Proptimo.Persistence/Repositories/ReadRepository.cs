@@ -21,6 +21,7 @@ namespace Proptimo.Persistence.Repositories
             _context = context;
             _dbSet = _context.Set<T>();
         }
+        public IQueryable<T> Table => _dbSet.AsQueryable();
 
         public async Task<List<T>> GetAllAsync()
         {
