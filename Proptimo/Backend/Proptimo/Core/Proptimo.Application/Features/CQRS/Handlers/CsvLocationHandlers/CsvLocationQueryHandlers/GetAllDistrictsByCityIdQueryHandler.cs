@@ -27,7 +27,9 @@ namespace Proptimo.Application.Features.CQRS.Handlers.CsvLocationHandlers.CsvLoc
         {
             var distritcs = _repository.GetWhere( dst => dst.CityId == request.CityId );
 
-            return _mapper.Map<List<DistrictDto>>( distritcs );
+            var orderedDistritcs = distritcs.OrderBy(c => c.Name).ToList();
+
+            return _mapper.Map<List<DistrictDto>>(orderedDistritcs);
         }
     }
 }

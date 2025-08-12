@@ -20,6 +20,7 @@ import AddRealEstateFeaturesPage from './pages/admin/estate/AddRealEstateFeature
 import { EstateCreationProvider } from './context/EstateCreationContext';
 import UserHomePage from './pages/user/UserHomePage';
 import UserEstateListingPage from './pages/user/UserEstateListingPage';
+import UserEstateDetailPage from './pages/user/UserEstateDetailPage';
 
 const AdminUsersPage = () => (
   <Box sx={{ padding: 3 }}>
@@ -56,6 +57,7 @@ function App() {
           {/* User Routes */}
           <Route path="/" element={<UserLayout><UserHomePage /></UserLayout>} />
           <Route path="/listings" element={<UserLayout><UserEstateListingPage /></UserLayout>} />
+          <Route path="/listings/:estateId" element={<UserLayout><UserEstateDetailPage /></UserLayout>} />
           <Route path="/login" element={<UserLayout><LoginPage /></UserLayout>} />
           <Route path="/register" element={<UserLayout><RegisterPage /></UserLayout>} />
           

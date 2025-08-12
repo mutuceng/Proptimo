@@ -31,6 +31,7 @@ namespace Proptimo.Application.Features.CQRS.Handlers.RealEstateHandlers.RealEst
             var result = await query
                 .Select(r => new GetAllRealEstatesPreviewQueryResult
                 {
+                    RealEstateId = r.Id,
                     PrimaryImageUrl = r.Images.FirstOrDefault(i => i.IsPrimary).ImageUrl,
                     RealEstateTypeName = r.RealEstateType.Name,
                     RealEstateTitle = r.Title,
@@ -39,8 +40,8 @@ namespace Proptimo.Application.Features.CQRS.Handlers.RealEstateHandlers.RealEst
                     Price = r.Price,
                     CityName = r.RealEstateAddress.CityName,
                     DistrictName = r.RealEstateAddress.DistrictName,
-                    RealEstateListingType = r.ListingType,
-                    RealEstateState = r.State
+                    RealEstateState = r.State,
+                    RealEstateListingType = r.ListingType
                 }).ToListAsync();
 
             return result;

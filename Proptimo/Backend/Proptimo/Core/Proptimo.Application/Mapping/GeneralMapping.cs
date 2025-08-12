@@ -38,13 +38,13 @@ namespace Proptimo.Application.Mapping
             CreateMap<RealEstate, CreateRealEstateCommand>().ReverseMap();
             CreateMap<RealEstate, UpdateRealEstateCommand>().ReverseMap();
             CreateMap<RealEstate, GetAllEstatesQueryResult>().ReverseMap();
-            CreateMap<RealEstate, GetAllEstatesByConditionQueryResult>().ReverseMap();
             CreateMap<RealEstate, GetEstateByIdQueryResult>().ReverseMap();
 
             CreateMap<RealEstateAddress, CreateAddressCommand>().ReverseMap();
             CreateMap<RealEstateAddress, UpdateAddressCommand>().ReverseMap();
             CreateMap<RealEstateAddress, GetAllAdressQueryResult>().ReverseMap();
             CreateMap<RealEstateAddress, GetAddressByIdQueryResult>().ReverseMap();
+            CreateMap<RealEstateAddress, GetAddressByEstateIdQueryResult>().ReverseMap();
 
             CreateMap<RealEstateType, CreateEstateTypeCommand>().ReverseMap();
             CreateMap<RealEstateType, UpdateEstateTypeCommand>().ReverseMap();

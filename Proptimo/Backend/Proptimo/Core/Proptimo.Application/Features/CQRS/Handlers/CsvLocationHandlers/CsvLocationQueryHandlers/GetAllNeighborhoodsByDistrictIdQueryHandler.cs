@@ -27,7 +27,10 @@ namespace Proptimo.Application.Features.CQRS.Handlers.CsvLocationHandlers.CsvLoc
         {
             var neighborhoods = _repository.GetWhere( a => a.DistrictId == request.DistrictId );
 
-            return _mapper.Map<List<NeighborhoodDto>>( neighborhoods );
+            var orderedNeighborhoods = neighborhoods.OrderBy(c => c.Name).ToList();
+
+
+            return _mapper.Map<List<NeighborhoodDto>>(orderedNeighborhoods);
         }
     }
 }

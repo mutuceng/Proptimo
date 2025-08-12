@@ -27,7 +27,9 @@ namespace Proptimo.Application.Features.CQRS.Handlers.CsvLocationHandlers.CsvLoc
         {
             var cities = await _repository.GetAllAsync();
 
-            return _mapper.Map<List<CityDto>>(cities);
+            var orderedCities = cities.OrderBy(c => c.Name).ToList();
+
+            return _mapper.Map<List<CityDto>>(orderedCities);
         }
     }
 }

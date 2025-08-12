@@ -1,5 +1,5 @@
 import { baseApi } from "./baseApi";
-import { type GetRealEstateById, type GetAllRealEstates, type RealEstate, type CreateRealEstateRequest, type UpdateEstateRequest } from "./types/realEstate";
+import { type GetRealEstateById, type GetAllRealEstates, type RealEstate, type CreateRealEstateRequest, type UpdateEstateRequest, type GetAllRealEstatesPreviewRequest, type GetAllRealEstatesPreviewResponse } from "./types/realEstate";
 
 export const realEstateApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -13,6 +13,22 @@ export const realEstateApi = baseApi.injectEndpoints({
                     ...result.map( ({id}) => ({type: 'RealEstate' as const, id})),
                     {  type: 'RealEstate', id: 'LIST' },
                 ] : [{ type: 'RealEstate', id:'LIST'}]
+        }),
+
+        getAllRealEstatesPreview: builder.query<GetAllRealEstatesPreviewResponse[],GetAllRealEstatesPreviewRequest>({
+            query: (params) => {
+                const queryParams = new URLSearchParams();
+
+                Object.entries(params).forEach(([key, value]) => {
+                    if (value !== null && value !== undefined) {
+                        queryParams.append(key, String(value));
+                    }
+                });
+        
+                return {
+                    url: `/realestates/allpreview?${queryParams.toString()}`
+                };
+            },
         }),
 
         getRealEstateById: builder.query<GetRealEstateById,string>({
@@ -125,6 +141,7 @@ export const {
     useCreateRealEstateMutation,
     useUpdateRealEstateMutation,
     useDeleteRealEstateMutation,
+    useGetAllRealEstatesPreviewQuery,
     
     useLazyGetAllRealEstatesQuery,
     useLazyGetRealEstateByIdQuery,

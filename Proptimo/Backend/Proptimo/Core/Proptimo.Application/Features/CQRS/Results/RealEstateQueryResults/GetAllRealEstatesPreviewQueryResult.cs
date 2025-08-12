@@ -9,6 +9,7 @@ namespace Proptimo.Application.Features.CQRS.Results.RealEstateQueryResults
 {
     public class GetAllRealEstatesPreviewQueryResult
     {
+        public string RealEstateId { get; set; }
         public string PrimaryImageUrl { get; set; }
         public string RealEstateTypeName { get; set; }
         public string RealEstateTitle { get; set; }
