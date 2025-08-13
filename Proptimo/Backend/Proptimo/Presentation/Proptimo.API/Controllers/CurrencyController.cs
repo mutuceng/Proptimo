@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Proptimo.Application.Abstractions;
+using Proptimo.Application.Dtos.CurrencyDtos;
 using Proptimo.Application.Features.CQRS.Commands.CurrencyCommands;
 using Proptimo.Application.Features.CQRS.Queries.CurrencyQueries;
 
@@ -12,10 +14,12 @@ namespace Proptimo.API.Controllers
     public class CurrencyController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IExternalCurrencyService _externalCurrencyService;
 
-        public CurrencyController(IMediator mediator)
+        public CurrencyController(IMediator mediator, IExternalCurrencyService externalCurrencyService)
         {
             _mediator = mediator;
+            _externalCurrencyService = externalCurrencyService;
         }
 
         [HttpGet]
@@ -44,6 +48,14 @@ namespace Proptimo.API.Controllers
         {
             var result = await _mediator.Send(command);
             return Ok(result);
+        }
+
+
+        [HttpPost("convert-to")]
+        public async Task<IActionResult> ConvertCurrency(CurrencyConversionRequestDto dto)
+        {
+            var result = await _externalCurrencyService.ExchangeCurrencyAsync(dto);
+            return Ok(result.Result);
         }
 
         [HttpPut]

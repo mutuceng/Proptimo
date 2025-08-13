@@ -80,7 +80,22 @@ namespace Proptimo.API.Controllers
                 realEstates = realEstates.Where(l => l.RealEstateState == request.RealEstateState).ToList();
             }
 
-            return Ok(realEstates);
+            var totalCount = realEstates.Count;
+
+            var pagedData = realEstates
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .ToList();
+
+            var response = new
+            {
+                TotalCount = totalCount,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
+                Data = pagedData
+            };
+
+            return Ok(response);
         }
 
         [HttpGet("detail/{id}")]

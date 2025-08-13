@@ -44,6 +44,7 @@ namespace Proptimo.Infrastructure
                 });
 
             services.AddScoped<IExternalCurrencyService, ExternalCurrencyService>();
+            services.AddHttpClient<ExternalCurrencyService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IFileStorageService, FileStorageService>();

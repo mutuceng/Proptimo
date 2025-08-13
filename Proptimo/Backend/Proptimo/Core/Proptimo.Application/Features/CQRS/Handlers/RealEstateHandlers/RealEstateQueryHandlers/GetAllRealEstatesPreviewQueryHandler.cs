@@ -40,6 +40,8 @@ namespace Proptimo.Application.Features.CQRS.Handlers.RealEstateHandlers.RealEst
                     Price = r.Price,
                     CityName = r.RealEstateAddress.CityName,
                     DistrictName = r.RealEstateAddress.DistrictName,
+                    Latitude = r.RealEstateAddress.Latitude,
+                    Longitude = r.RealEstateAddress.Longitude,
                     RealEstateState = r.State,
                     RealEstateListingType = r.ListingType
                 }).ToListAsync();

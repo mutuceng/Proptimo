@@ -1,5 +1,5 @@
 import { baseApi } from "./baseApi";
-import { type CreateCurrencyRequest, type Currency, type CurrencyQuery, type GetAllCurrencyResponse, type UpdateCurrencyRequest } from "./types/currency";
+import { type ConvertCurrencyRequest, type CreateCurrencyRequest, type Currency, type CurrencyQuery, type GetAllCurrencyResponse, type UpdateCurrencyRequest } from "./types/currency";
 
 
 export const currencyApi = baseApi.injectEndpoints({
@@ -50,6 +50,14 @@ export const currencyApi = baseApi.injectEndpoints({
                         // error durumunda cache'i geri al.
                     }
                 }
+            }),
+
+            convertCurrency: builder.mutation<number, ConvertCurrencyRequest>({
+                query: (convertCurrencyRequest) => ({
+                    url: '/currency/convert-to',
+                    method: 'POST',
+                    body: convertCurrencyRequest,
+                }),
             }),
 
             updateCurrency: builder.mutation<Currency, UpdateCurrencyRequest>({
@@ -112,6 +120,7 @@ export const {
     useCreateCurrencyMutation,
     useUpdateCurrencyMutation,
     useDeleteCurrencyMutation,
+    useConvertCurrencyMutation,
 
     useLazyGetAllCurrenciesQuery,
     useLazyGetCurrencyByIdQuery

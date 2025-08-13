@@ -77,7 +77,7 @@ function App() {
           <Route path="/admin/settings" element={<AdminLayout><AdminSettingsPage /></AdminLayout>} />
 
           {/* Varsayılan yönlendirme */}
-          <Route path="*" element={<Navigate to="/admin" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </EstateCreationProvider>
     </Router>

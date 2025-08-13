@@ -51,9 +51,18 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
 
 
   const handleFilterChange = (field: keyof FilterState, value: any) => {
+    // Şehir ve ilçe için baş harfleri büyük yap
+    let processedValue = value;
+    if (field === 'city' || field === 'district') {
+      processedValue = value
+        .split(' ')
+        .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+    }
+    
     setFilters(prev => ({
       ...prev,
-      [field]: value
+      [field]: processedValue
     }));
   };
 

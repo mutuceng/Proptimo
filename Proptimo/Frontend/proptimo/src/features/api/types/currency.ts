@@ -31,3 +31,8 @@ export interface CurrencyQuery {
     sortOrder?: 'asc' | 'desc';
   }
 
+export interface ConvertCurrencyRequest {
+    to: string,
+    amount: number,
+}
+

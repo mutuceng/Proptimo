@@ -8,18 +8,25 @@ import {
     Chip,
     Card,
     CardMedia,
-    CardContent
+    CardContent,
+    Paper,
+    Tabs,
+    Tab,
+    Pagination
 } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ListingFilterBox from "../../components/user/Listing/ListingFilterBox";
 import { useGetAllRealEstatesPreviewQuery } from "../../features/api/realEstateApi";
-import type { GetAllRealEstatesPreviewRequest } from "../../features/api/types/realEstate";
+import type { GetAllRealEstatesPreviewRequest, GetAllRealEstatesPreviewResponseWithPaging } from "../../features/api/types/realEstate";
+import ListingMap from "../../components/user/Listing/ListingMap";
 
 const UserEstateListingPage = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
+    const [viewMode, setViewMode] = useState(0); // 0: Liste, 1: Harita
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 12; // 4x3 grid için 12 adet
     
-    // Varsayılan filtre parametreleri (null olarak başlatıyoruz)
     const [filterParams, setFilterParams] = useState<GetAllRealEstatesPreviewRequest>({
         realEstateTypeName: null,
         realEstatelistingType: null,
@@ -29,10 +36,10 @@ const UserEstateListingPage = () => {
         minPrice: null,
         maxPrice: null,
         cityName: null,
-        districtName: null
+        districtName: null,
+        pageNumber: 1
     });
 
-    // URL'den filtre parametrelerini al
     useEffect(() => {
         const listingType = searchParams.get('listingType');
         const cityName = searchParams.get('cityName');
@@ -45,17 +52,14 @@ const UserEstateListingPage = () => {
             minPrice: null,
             maxPrice: null,
             cityName: cityName,
-            districtName: null
+            districtName: null,
+            pageNumber: 1
         };
         setFilterParams(newFilterParams);
+        setCurrentPage(1); // URL değiştiğinde sayfa 1'e dön
     }, [searchParams]);
 
-    // API çağrısı
     const { data: realEstates, isLoading, error } = useGetAllRealEstatesPreviewQuery(filterParams);
-
-
-
-    // Listing type zaten string olarak geliyor, direkt kullanıyoruz
 
     const getStateText = (state: number) => {
         switch (state) {
@@ -68,7 +72,6 @@ const UserEstateListingPage = () => {
         }
     };
 
-    // State rengini belirleyen fonksiyon
     const getStateColor = (state: number) => {
         switch (state) {
             case 0: return "success";
@@ -80,21 +83,27 @@ const UserEstateListingPage = () => {
         }
     };
 
-    // Fiyat formatlama
     const formatPrice = (price: number) =>
         new Intl.NumberFormat('tr-TR', {
             style: 'currency',
             currency: 'TRY'
         }).format(price);
 
-    // Tarih formatlama
     const formatDate = (dateString: string) =>
         new Date(dateString).toLocaleDateString('tr-TR');
 
-    // Detay sayfasına yönlendirme
     const handleEstateClick = (estateId: string) => {
         navigate(`/listings/${estateId}`);
     };
+
+    // Sayfa değiştirme fonksiyonu
+    const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
+        setCurrentPage(page);
+        setFilterParams(prev => ({ ...prev, pageNumber: page }));
+    };
+
+    // Backend'den gelen paging bilgilerini kullan
+    const totalPages = realEstates ? Math.ceil(realEstates.totalCount / realEstates.pageSize) : 0;
 
     return (
         <Box sx={{ 
@@ -123,9 +132,56 @@ const UserEstateListingPage = () => {
             {/* Sağ Taraf - İçerik Alanı */}
             <Box sx={{ flex: 1, p: 3, overflowY: 'auto' }}>
                 <Container maxWidth="xl" sx={{ p: 0 }}>
-                    <Typography variant="h4" sx={{ fontWeight: 600, color: '#1976D2', mb: 3 }}>
-                        Emlak Listesi
-                    </Typography>
+                    {/* Header */}
+                    <Paper elevation={1} sx={{ 
+                        mb: 3, 
+                        borderRadius: 2,
+                        backgroundColor: 'white',
+                        border: '1px solid #e0e0e0'
+                    }}>
+                        <Tabs 
+                             value={viewMode} 
+                             onChange={(_, newValue) => setViewMode(newValue)}
+                             sx={{
+                                 '& .MuiTab-root': {
+                                     textTransform: 'none',
+                                     fontWeight: 600,
+                                     fontSize: '1rem',
+                                     minHeight: 64,
+                                     color: '#666',
+                                     px: 4,
+                                     mx: 2,
+                                     '&.Mui-selected': {
+                                         color: '#1976D2',
+                                         backgroundColor: 'rgba(25, 118, 210, 0.04)'
+                                     }
+                                 },
+                                 '& .MuiTabs-indicator': {
+                                     backgroundColor: '#1976D2',
+                                     height: 3
+                                 }
+                             }}
+                         >
+                            <Tab 
+                                label={
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                                            Emlak Listesi
+                                        </Typography>
+                                    </Box>
+                                } 
+                            />
+                            <Tab 
+                                label={
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                                            Harita Görünümü
+                                        </Typography>
+                                    </Box>
+                                } 
+                            />
+                        </Tabs>
+                    </Paper>
                     
                     {isLoading && (
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
@@ -139,7 +195,7 @@ const UserEstateListingPage = () => {
                         </Alert>
                     )}
 
-                    {!isLoading && !error && (!realEstates || realEstates.length === 0) && (
+                    {!isLoading && !error && (!realEstates || realEstates.data.length === 0) && (
                         <Box sx={{
                             backgroundColor: 'white',
                             borderRadius: 2,
@@ -156,9 +212,15 @@ const UserEstateListingPage = () => {
                         </Box>
                     )}
 
-                    {!isLoading && !error && realEstates && realEstates.length > 0 && (
-                        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' }, gap: 3 }}>
-                            {realEstates.map((estate, index) => (
+                    {!isLoading && !error && realEstates && realEstates.data.length > 0 && viewMode === 0 && (
+                        <>
+                            <Box sx={{ 
+                                display: 'grid', 
+                                gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' }, 
+                                gap: 3,
+                                mb: 4
+                            }}>
+                                {realEstates.data.map((estate, index) => (
                                 <Card key={index} sx={{ 
                                     height: '100%',
                                     display: 'flex',
@@ -197,7 +259,7 @@ const UserEstateListingPage = () => {
                                         </Typography>
                                         
                                         <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
-                                                                                         <Chip 
+                                            <Chip 
                                                  label={estate.realEstateTypeName || "Bilinmiyor"}
                                                  size="small"
                                                  color="primary"
@@ -216,6 +278,52 @@ const UserEstateListingPage = () => {
                                     </CardContent>
                                 </Card>
                             ))}
+                            </Box>
+                            
+                            {/* Pagination */}
+                            {totalPages > 0 && (
+                                <Box sx={{ 
+                                    display: 'flex', 
+                                    justifyContent: 'center', 
+                                    mt: 4,
+                                    p: 2,
+                                    backgroundColor: 'white',
+                                    borderRadius: 2,
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                                }}>
+                                    <Pagination
+                                        count={totalPages}
+                                        page={currentPage}
+                                        onChange={handlePageChange}
+                                        color="primary"
+                                        size="large"
+                                        showFirstButton
+                                        showLastButton
+                                        sx={{
+                                            '& .MuiPaginationItem-root': {
+                                                fontSize: '1rem',
+                                                fontWeight: 500
+                                            }
+                                        }}
+                                    />
+                                </Box>
+                            )}
+                        </>
+                    )}
+
+                    {/* Harita Görünümü */}
+                    {!isLoading && !error && realEstates && realEstates.data.length > 0 && viewMode === 1 && (
+                        <Box sx={{
+                            backgroundColor: 'white',
+                            borderRadius: 2,
+                            p: 3,
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                            minHeight: 400,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <ListingMap realEstates={realEstates} />
                         </Box>
                     )}
                 </Container>

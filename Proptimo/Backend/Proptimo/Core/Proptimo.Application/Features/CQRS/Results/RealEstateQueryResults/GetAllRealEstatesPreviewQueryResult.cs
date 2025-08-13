@@ -18,6 +18,8 @@ namespace Proptimo.Application.Features.CQRS.Results.RealEstateQueryResults
         public decimal Price { get; set; }
         public string CityName { get; set; }
         public string DistrictName { get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
         public RealEstateListingType RealEstateListingType { get; set; }
         public RealEstateState RealEstateState { get; set; }
     }

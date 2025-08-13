@@ -9,8 +9,6 @@ namespace Proptimo.Application.Abstractions
 {
     public interface IExternalCurrencyService
     {
-        Task<List<CurrencySymbolsResponseDto>> GetAllCurrencySymbolsAsync();
-
         Task<CurrencyConversionResponseDto> ExchangeCurrencyAsync(CurrencyConversionRequestDto requestDto);
     }
 }

@@ -60,8 +60,18 @@ export interface GetAllRealEstatesPreviewResponse {
     price: number,
     cityName: string,
     districtName: string,
+    latitude: number,
+    longitude: number,
     realEstateState: number,
+    pageNumber: number,
+    pageSize: number,
+}
 
+export interface GetAllRealEstatesPreviewResponseWithPaging {
+    data: GetAllRealEstatesPreviewResponse[],
+    totalCount: number,
+    pageNumber: number,
+    pageSize: number,
 }
 
 export interface GetAllRealEstatesPreviewRequest {
@@ -74,7 +84,7 @@ export interface GetAllRealEstatesPreviewRequest {
     maxPrice?: number | null,
     cityName?: string | null,
     districtName?: string | null,
-
+    pageNumber?: number | 1,
 
 }
 

@@ -1,5 +1,5 @@
 import { baseApi } from "./baseApi";
-import { type GetRealEstateById, type GetAllRealEstates, type RealEstate, type CreateRealEstateRequest, type UpdateEstateRequest, type GetAllRealEstatesPreviewRequest, type GetAllRealEstatesPreviewResponse, type GetRealEstateDetailResponse } from "./types/realEstate";
+import { type GetRealEstateById, type GetAllRealEstates, type RealEstate, type CreateRealEstateRequest, type UpdateEstateRequest, type GetAllRealEstatesPreviewRequest, type GetAllRealEstatesPreviewResponse, type GetRealEstateDetailResponse, type GetAllRealEstatesPreviewResponseWithPaging } from "./types/realEstate";
 
 export const realEstateApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -15,7 +15,7 @@ export const realEstateApi = baseApi.injectEndpoints({
                 ] : [{ type: 'RealEstate', id:'LIST'}]
         }),
 
-        getAllRealEstatesPreview: builder.query<GetAllRealEstatesPreviewResponse[],GetAllRealEstatesPreviewRequest>({
+        getAllRealEstatesPreview: builder.query<GetAllRealEstatesPreviewResponseWithPaging,GetAllRealEstatesPreviewRequest>({
             query: (params) => {
                 const queryParams = new URLSearchParams();
 

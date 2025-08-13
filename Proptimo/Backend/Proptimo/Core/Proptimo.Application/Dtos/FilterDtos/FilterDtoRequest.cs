@@ -18,5 +18,8 @@ namespace Proptimo.Application.Dtos.FilterDtos
         public string? DistrictName { get; set; }
         public decimal? MaxPrice { get; set; }
         public decimal? MinPrice { get; set; }
+
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 8;
     }
 }

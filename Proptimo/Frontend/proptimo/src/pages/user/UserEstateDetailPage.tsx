@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useGetRealEstateDetailQuery } from '../../features/api/realEstateApi';
-import {
-  Box,
+import { useGetAllCurrenciesQuery, useConvertCurrencyMutation } from '../../features/api/currencyApi';
+import {Box,
   Container,
   Typography,
   Paper,
@@ -33,12 +33,11 @@ import {
 } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
 
-// Leaflet imports
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import type { Currency } from '../../features/api/types/currency';
 
-// Leaflet icon'larını düzelt
 const useLeafletIcons = () => {
   useEffect(() => {
     delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -50,7 +49,6 @@ const useLeafletIcons = () => {
   }, []);
 };
 
-// Harita Komponenti
 interface MapComponentProps {
   lat: number;
   lng: number;
@@ -90,6 +88,15 @@ const UserEstateDetailPage = () => {
   const { estateId } = useParams<{ estateId: string }>();
   const { data, isLoading, error } = useGetRealEstateDetailQuery(estateId || '');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [convertedPrices, setConvertedPrices] = useState<{[key: string]: number}>({});
+  const [loadingCurrencies, setLoadingCurrencies] = useState<{[key: string]: boolean}>({});
+
+  // Currency API'leri
+  const { data: currencyResponse } = useGetAllCurrenciesQuery();
+  const [convertCurrency] = useConvertCurrencyMutation();
+
+  const currencies: Currency[] = (currencyResponse as unknown as Currency[]) || [];
+
 
   // Leaflet icon'larını düzelt
   useLeafletIcons();
@@ -162,6 +169,38 @@ const UserEstateDetailPage = () => {
       style: 'currency',
       currency: 'TRY'
     }).format(price);
+  };
+
+  // Para birimi çevirme fonksiyonu
+  const handleCurrencyConvert = async (currency: Currency) => {
+    // Loading state'ini başlat
+    setLoadingCurrencies(prev => ({
+      ...prev,
+      [currency.id]: true
+    }));
+
+    try {
+      const result = await convertCurrency({
+        to: currency.symbol,
+        amount: realEstate.price
+      }).unwrap();
+      
+      // Başarılı sonucu state'e kaydet
+      setConvertedPrices(prev => ({
+        ...prev,
+        [currency.id]: result
+      }));
+    } catch (error) {
+      console.error('Para birimi çevirme hatası:', error);
+      // Hata durumunda kullanıcıya bilgi ver
+      alert('Para birimi çevirme işlemi başarısız oldu. Lütfen tekrar deneyin.');
+    } finally {
+      // Loading state'ini bitir
+      setLoadingCurrencies(prev => ({
+        ...prev,
+        [currency.id]: false
+      }));
+    }
   };
 
   // Haritada göster butonu için scroll fonksiyonu
@@ -364,7 +403,6 @@ const UserEstateDetailPage = () => {
             
             <Box sx={{ position: 'relative', zIndex: 1 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <AttachMoney sx={{ fontSize: 28, mr: 1, opacity: 0.9 }} />
                 <Typography variant="body2" sx={{ opacity: 0.9, fontWeight: 500 }}>
                   {getListingTypeText(realEstate.listingType)}
                 </Typography>
@@ -386,13 +424,76 @@ const UserEstateDetailPage = () => {
                 p: 2,
                 bgcolor: 'rgba(255,255,255,0.1)',
                 borderRadius: 2,
-                backdropFilter: 'blur(10px)'
+                backdropFilter: 'blur(10px)',
+                mb: 3
               }}>
                 <CheckCircle sx={{ fontSize: 20, opacity: 0.9 }} />
                 <Typography variant="body2" sx={{ opacity: 0.9 }}>
                   Güvenilir fiyat garantisi
                 </Typography>
               </Box>
+
+              {/* Para Birimi Çevirme Bölümü */}
+              {currencies && currencies.length > 0 && (
+                <Box sx={{ mt: 3 }}>
+                  <Typography variant="h6" sx={{ mb: 2, opacity: 0.9, fontWeight: 600 }}>
+                    Uluslararası Birimler
+                  </Typography>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    {currencies.map((currency) => (
+                      <Box key={currency.id} sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'space-between',
+                        p: 2,
+                        bgcolor: 'rgba(255,255,255,0.1)',
+                        borderRadius: 2,
+                        backdropFilter: 'blur(10px)'
+                      }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Typography variant="body2" sx={{ opacity: 0.9, fontWeight: 500 }}>
+                            {currency.symbol}
+                          </Typography>
+                          <Typography variant="body2" sx={{ opacity: 0.8 }}>
+                            {currency.name}
+                          </Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          {loadingCurrencies[currency.id] ? (
+                            <Typography variant="body2" sx={{ opacity: 0.7, fontStyle: 'italic' }}>
+                              Çevriliyor...
+                            </Typography>
+                          ) : convertedPrices[currency.id] ? (
+                            <Typography variant="body2" sx={{ opacity: 0.9, fontWeight: 600 }}>
+                              {new Intl.NumberFormat('tr-TR', {
+                                style: 'currency',
+                                currency: currency.symbol
+                              }).format(convertedPrices[currency.id])}
+                            </Typography>
+                          ) : (
+                            <Button
+                              variant="outlined"
+                              size="small"
+                              onClick={() => handleCurrencyConvert(currency)}
+                              sx={{
+                                color: 'white',
+                                borderColor: 'rgba(255,255,255,0.3)',
+                                '&:hover': {
+                                  borderColor: 'white',
+                                  backgroundColor: 'rgba(255,255,255,0.1)'
+                                },
+                                transition: 'all 0.2s ease-in-out'
+                              }}
+                            >
+                              Çevir
+                            </Button>
+                          )}
+                        </Box>
+                      </Box>
+                    ))}
+                  </Box>
+                </Box>
+              )}
             </Box>
           </Paper>
 

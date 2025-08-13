@@ -318,25 +318,50 @@ import { useParams, useNavigate } from "react-router-dom";
        case DataTypeEnum.Bool:
          return (
            <Box key={feature.id}>
-             <FormControlLabel
-               control={
-                 <Switch
-                   checked={value || false}
-                   onChange={(e) => handleChange(feature.id, e.target.checked)}
-                   color="primary"
-                 />
-               }
-               label={feature.name + (feature.isRequired ? ' *' : '')}
-               sx={{ 
-                 border: hasError ? '1px solid #d32f2f' : '1px solid #e0e0e0',
-                 borderRadius: 2,
-                 px: 2,
-                 py: 1,
-                 m: 0,
-                 width: '100%',
-                 justifyContent: 'space-between'
-               }}
-             />
+             <Typography variant="subtitle2" sx={{ mb: 1, color: hasError ? '#d32f2f' : '#333' }}>
+               {feature.name} {feature.isRequired && '*'}
+             </Typography>
+                           <Box sx={{ 
+                border: hasError ? '1px solid #d32f2f' : '1px solid #e0e0e0',
+                borderRadius: 3,
+                p: 1.5,
+                minHeight: 40,
+                backgroundColor: '#fafafa',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  borderColor: hasError ? '#d32f2f' : '#1976D2',
+                  backgroundColor: '#f5f5f5'
+                }
+              }}>
+               <Typography variant="body2" sx={{ color: '#666' }}>
+                 {value ? 'Evet' : 'Hayır'}
+               </Typography>
+               <FormControlLabel
+                 control={
+                   <Switch
+                     checked={value || false}
+                     onChange={(e) => handleChange(feature.id, e.target.checked)}
+                     color="primary"
+                     sx={{
+                       '& .MuiSwitch-switchBase.Mui-checked': {
+                         color: '#1976D2',
+                         '&:hover': {
+                           backgroundColor: 'rgba(25, 118, 210, 0.08)'
+                         }
+                       },
+                       '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                         backgroundColor: '#1976D2'
+                       }
+                     }}
+                   />
+                 }
+                 label=""
+                 sx={{ m: 0 }}
+               />
+             </Box>
              {hasError && (
                <Typography variant="caption" color="error" sx={{ mt: 0.5, ml: 1 }}>
                  {errors[feature.id]}
