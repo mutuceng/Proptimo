@@ -31,7 +31,7 @@ namespace Proptimo.API.Controllers
             return Ok(realEstates);
         }
 
-        [HttpGet("/realestatepreview")]
+        [HttpGet("allpreview")]
         public async Task<IActionResult> GetAllRealEstatesPreview([FromQuery] FilterDtoRequest request)
         {
             
@@ -83,8 +83,8 @@ namespace Proptimo.API.Controllers
             return Ok(realEstates);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetRealEstateById(string id)
+        [HttpGet("detail/{id}")]
+        public async Task<IActionResult> GetRealEstateDetail(string id)
         {
             var realEstate = await _mediator.Send(new GetRealEstateByIdQuery(id));
             if(realEstate == null)
@@ -103,12 +103,12 @@ namespace Proptimo.API.Controllers
                 FeatureValues = featureValues,
                 Features = features
             };
-            return Ok(realEstate);
+            return Ok(RealEstateDetail);
         }
 
 
-        [HttpGet("/realestatedetails/{id}")]
-        public async Task<IActionResult> GetRealEstateDetail(string id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetRealEstateById(string id)
         {
             var realEstate = await _mediator.Send(new GetRealEstateByIdQuery(id));
             if (realEstate == null)

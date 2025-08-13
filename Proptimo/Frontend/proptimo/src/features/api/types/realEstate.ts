@@ -1,3 +1,8 @@
+import type { RealEstateAddress } from "./realEstateAddress";
+import type { RealEstateImage } from "./realEstateImage";
+import type { RealEstateTypeFeature } from "./realEstateTypeFeature";
+import type { RealEstateTypeFeatureValue } from "./realEstateTypeFeatureValue";
+
 export interface RealEstate {
     id : string,
     title: string,
@@ -46,6 +51,7 @@ export interface GetAllRealEstates {
 }
 
 export interface GetAllRealEstatesPreviewResponse {
+    realEstateId: string,
     primaryImageUrl: string,
     realEstateTypeName: string,
     realEstateTitle: string,
@@ -70,6 +76,14 @@ export interface GetAllRealEstatesPreviewRequest {
     districtName?: string | null,
 
 
+}
+
+export interface GetRealEstateDetailResponse {
+    realEstate: RealEstate,
+    address: RealEstateAddress,
+    features: RealEstateTypeFeature[],
+    images: RealEstateImage[],
+    featureValues: RealEstateTypeFeatureValue[],
 }
 
 export interface GetRealEstateById {

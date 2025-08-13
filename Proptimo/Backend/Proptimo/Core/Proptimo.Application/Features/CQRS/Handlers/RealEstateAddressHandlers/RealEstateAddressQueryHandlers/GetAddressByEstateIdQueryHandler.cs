@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Proptimo.Application.Features.CQRS.Queries.RealEstateAddressQueries;
 using Proptimo.Application.Features.CQRS.Results.RealEstateAddressQueryResults;
 using Proptimo.Application.Repositories;
@@ -25,7 +27,10 @@ namespace Proptimo.Application.Features.CQRS.Handlers.RealEstateAddressHandlers.
 
         public async Task<GetAddressByEstateIdQueryResult> Handle(GetAddressByEstateIdQuery request, CancellationToken cancellationToken)
         {
-            var address =  _repository.GetWhere( add => add.RealEstateId == request.EstateId );
+            var address =  await _repository.GetWhere( add => add.RealEstateId == request.EstateId)
+                                .ProjectTo<GetAddressByEstateIdQueryResult>(_mapper.ConfigurationProvider)
+                                .FirstOrDefaultAsync(cancellationToken);
+
 
             return _mapper.Map<GetAddressByEstateIdQueryResult>(address);
         }

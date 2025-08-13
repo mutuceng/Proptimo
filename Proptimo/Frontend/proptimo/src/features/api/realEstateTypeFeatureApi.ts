@@ -66,8 +66,8 @@ export const realEstateTypeFeatureApi = baseApi.injectEndpoints({
         }),
 
         deleteRealEstateTypeFeature: builder.mutation<{success: boolean},{featureId: string, typeId: string}>({
-            query: (id) => ({
-                url: `/realestatetypefeatures/${id}`,
+            query: ({featureId}) => ({
+                url: `/realestatetypefeatures/${featureId}`,
                 method: 'DELETE',
             }),
             invalidatesTags : (result, error, {typeId}) => [{type: 'RealEstateTypeFeature', typeId}],

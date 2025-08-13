@@ -29,7 +29,7 @@ namespace Proptimo.API.Controllers
         public async Task<IActionResult> DeleteEstateTypeFeature(string id)
         {
             await _mediator.Send(new DeleteRealEstateTypeFeatureCommand(id));
-            return Ok("Basarıyla silindi.");
+            return Ok((new { success = true }));
         }
 
         [HttpPost]

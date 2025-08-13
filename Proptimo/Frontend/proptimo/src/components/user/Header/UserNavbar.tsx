@@ -28,15 +28,28 @@ export const UserNavbar = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const navigationItems = ['Emlak Listesi', 'Satılık', 'Kiralık', 'Hakkımızda', 'İletişim'];
+  const navigationItems = [
+    { name: 'Emlak Listesi', path: '/listings' },
+    { name: 'Satılık', path: '/listings?listingType=0' },
+    { name: 'Kiralık', path: '/listings?listingType=1' },
+    { name: 'Hakkımızda', path: '/about' },
+    { name: 'İletişim', path: '/contact' }
+  ];
 
   const drawer = (
     <Box sx={{ width: 250, pt: 2 }}>
       <List>
         {navigationItems.map((item) => (
-          <ListItem key={item} sx={{ py: 1 }}>
+          <ListItem 
+            key={item.name} 
+            sx={{ py: 1, cursor: 'pointer' }}
+            onClick={() => {
+              navigate(item.path);
+              setMobileOpen(false);
+            }}
+          >
             <ListItemText 
-              primary={item} 
+              primary={item.name} 
               sx={{
                 '& .MuiListItemText-primary': {
                   fontSize: '1rem',
@@ -174,7 +187,8 @@ export const UserNavbar = () => {
               <Box sx={{ display: 'flex', gap: 5 }}>
                 {navigationItems.map((item) => (
                   <Button
-                    key={item}
+                    key={item.name}
+                    onClick={() => navigate(item.path)}
                     sx={{
                       color: '#1a1a1a',
                       fontSize: '0.95rem',
@@ -191,7 +205,7 @@ export const UserNavbar = () => {
                       }
                     }}
                   >
-                    {item}
+                    {item.name}
                   </Button>
                 ))}
               </Box>

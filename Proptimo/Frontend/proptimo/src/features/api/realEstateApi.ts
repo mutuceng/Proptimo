@@ -1,5 +1,5 @@
 import { baseApi } from "./baseApi";
-import { type GetRealEstateById, type GetAllRealEstates, type RealEstate, type CreateRealEstateRequest, type UpdateEstateRequest, type GetAllRealEstatesPreviewRequest, type GetAllRealEstatesPreviewResponse } from "./types/realEstate";
+import { type GetRealEstateById, type GetAllRealEstates, type RealEstate, type CreateRealEstateRequest, type UpdateEstateRequest, type GetAllRealEstatesPreviewRequest, type GetAllRealEstatesPreviewResponse, type GetRealEstateDetailResponse } from "./types/realEstate";
 
 export const realEstateApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -26,9 +26,15 @@ export const realEstateApi = baseApi.injectEndpoints({
                 });
         
                 return {
-                    url: `/realestates/allpreview?${queryParams.toString()}`
+                    url: `/RealEstates/allpreview?${queryParams.toString()}`
                 };
             },
+        }),
+        getRealEstateDetail: builder.query<GetRealEstateDetailResponse,string>({
+            query: (id) => ({
+                url: `/RealEstates/detail/${id}`
+            }),
+
         }),
 
         getRealEstateById: builder.query<GetRealEstateById,string>({
@@ -142,6 +148,7 @@ export const {
     useUpdateRealEstateMutation,
     useDeleteRealEstateMutation,
     useGetAllRealEstatesPreviewQuery,
+    useGetRealEstateDetailQuery,
     
     useLazyGetAllRealEstatesQuery,
     useLazyGetRealEstateByIdQuery,

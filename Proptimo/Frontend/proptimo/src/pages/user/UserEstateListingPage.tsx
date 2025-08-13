@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
     Box, 
     Container, 
@@ -10,11 +10,15 @@ import {
     CardMedia,
     CardContent
 } from "@mui/material";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import ListingFilterBox from "../../components/user/Listing/ListingFilterBox";
 import { useGetAllRealEstatesPreviewQuery } from "../../features/api/realEstateApi";
 import type { GetAllRealEstatesPreviewRequest } from "../../features/api/types/realEstate";
 
 const UserEstateListingPage = () => {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    
     // Varsayılan filtre parametreleri (null olarak başlatıyoruz)
     const [filterParams, setFilterParams] = useState<GetAllRealEstatesPreviewRequest>({
         realEstateTypeName: null,
@@ -27,6 +31,24 @@ const UserEstateListingPage = () => {
         cityName: null,
         districtName: null
     });
+
+    // URL'den filtre parametrelerini al
+    useEffect(() => {
+        const listingType = searchParams.get('listingType');
+        const cityName = searchParams.get('cityName');
+        const newFilterParams: GetAllRealEstatesPreviewRequest = {
+            realEstateTypeName: null,
+            realEstatelistingType: listingType,
+            realEstatestate: null,
+            realEstateStartDate: null,
+            realEstateEndDate: null,
+            minPrice: null,
+            maxPrice: null,
+            cityName: cityName,
+            districtName: null
+        };
+        setFilterParams(newFilterParams);
+    }, [searchParams]);
 
     // API çağrısı
     const { data: realEstates, isLoading, error } = useGetAllRealEstatesPreviewQuery(filterParams);
@@ -69,6 +91,11 @@ const UserEstateListingPage = () => {
     const formatDate = (dateString: string) =>
         new Date(dateString).toLocaleDateString('tr-TR');
 
+    // Detay sayfasına yönlendirme
+    const handleEstateClick = (estateId: string) => {
+        navigate(`/listings/${estateId}`);
+    };
+
     return (
         <Box sx={{ 
             display: 'flex', 
@@ -88,9 +115,9 @@ const UserEstateListingPage = () => {
                     boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                     border: '1px solid #e0e0e0',
                     height: '100%'
-                }}>
-                    <ListingFilterBox />
-                </Box>
+                                 }}>
+                     <ListingFilterBox onFilterChange={setFilterParams} />
+                 </Box>
             </Box>
 
             {/* Sağ Taraf - İçerik Alanı */}
@@ -137,15 +164,18 @@ const UserEstateListingPage = () => {
                                     display: 'flex',
                                     flexDirection: 'column',
                                     transition: 'transform 0.2s',
+                                    cursor: 'pointer',
                                     '&:hover': {
                                         transform: 'translateY(-4px)',
                                         boxShadow: '0 8px 25px rgba(0,0,0,0.15)'
                                     }
-                                }}>
+                                }}
+                                onClick={() => handleEstateClick(estate.realEstateId)}
+                                >
                                     <CardMedia
                                         component="img"
                                         height="200"
-                                        image={estate.primaryImageUrl || '/realestate.jpg'}
+                                        image={estate.primaryImageUrl ? `${import.meta.env.VITE_API_IMG_URL}${estate.primaryImageUrl}` : '/realestate.jpg'}
                                         alt={estate.realEstateTitle}
                                         sx={{ objectFit: 'cover' }}
                                     />
