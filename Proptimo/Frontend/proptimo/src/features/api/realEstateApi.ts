@@ -69,10 +69,10 @@ export const realEstateApi = baseApi.injectEndpoints({
         }),
 
         updateRealEstate: builder.mutation<RealEstate, UpdateEstateRequest>({
-            query: ({ id, ...patch }) => ({
-                url: `/realestates/${id}`,
+            query: (updateData) => ({
+                url: `/realestates`,
                 method: 'PUT',
-                body: patch,
+                body: updateData,
             }),
             invalidatesTags: (result, error, { id }) => [
                 { type: 'RealEstate', id },

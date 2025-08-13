@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeFeatureCommands;
+using Proptimo.Application.Features.CQRS.Results.CommandQueryResults;
 using Proptimo.Application.Repositories;
 using Proptimo.Domain.Entities;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Proptimo.Application.Features.CQRS.Handlers.RealEstateTypeFeatureHandlers.RealEstateTypeFeatureCommandHandlers
 {
-    public class UpdateRealEstateTypeFeatureCommandHandler : IRequestHandler<UpdateRealEstateTypeFeatureCommand>
+    public class UpdateRealEstateTypeFeatureCommandHandler : IRequestHandler<UpdateRealEstateTypeFeatureCommand, RealEstateTypeFeatureReturnDto>
     {
         private readonly IWriteRepository<RealEstateTypeFeature> _repository;
         private readonly IMapper _mapper;
@@ -22,11 +23,13 @@ namespace Proptimo.Application.Features.CQRS.Handlers.RealEstateTypeFeatureHandl
             _mapper = mapper;
         }
 
-        public async Task Handle(UpdateRealEstateTypeFeatureCommand request, CancellationToken cancellationToken)
+        public async Task<RealEstateTypeFeatureReturnDto> Handle(UpdateRealEstateTypeFeatureCommand request, CancellationToken cancellationToken)
         {
             var feature = _mapper.Map<RealEstateTypeFeature>(request);
 
             await _repository.Update(feature);
+
+            return _mapper.Map<RealEstateTypeFeatureReturnDto>(feature);
         }
     }
 }

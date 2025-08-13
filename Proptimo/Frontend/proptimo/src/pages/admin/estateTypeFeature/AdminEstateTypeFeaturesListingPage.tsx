@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useDeleteRealEstateTypeFeatureMutation, useGetAllRealEstateTypeFeaturesByTypeIdQuery } from "../../../features/api/realEstateTypeFeatureApi";
-import type { RealEstateTypeFeature } from "../../../features/api/types/realEstateTypeFeature";
-import { Box, IconButton, Paper, Tooltip, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import { useDeleteRealEstateTypeFeatureMutation, useGetAllRealEstateTypeFeaturesByTypeIdQuery, useUpdateRealEstateTypeFeatureMutation } from "../../../features/api/realEstateTypeFeatureApi";
+import type { RealEstateTypeFeature, UpdateRealEstateTypeFeature, TypeFeatureDataType } from "../../../features/api/types/realEstateTypeFeature";
+import { Box, IconButton, Paper, Tooltip, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, FormControlLabel, Checkbox, MenuItem, Chip } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import TypeFeatureAddForm from "../../../components/admin/realEstateType/TypeFeatureAddForm";
 
@@ -23,8 +24,21 @@ const AdminEstateTypeFeaturesListingPage = () => {
     const { typeId } = useParams<{ typeId: string }>();
     const { data, isLoading, isFetching, refetch } = useGetAllRealEstateTypeFeaturesByTypeIdQuery(typeId ?? "");
     const [deleteRealEstateTypeFeature] = useDeleteRealEstateTypeFeatureMutation();
+    const [updateRealEstateTypeFeature] = useUpdateRealEstateTypeFeatureMutation();
 
     const [openAddDialog, setOpenAddDialog] = useState(false);
+    const [openEditDialog, setOpenEditDialog] = useState(false);
+    const [editingFeature, setEditingFeature] = useState<RealEstateTypeFeature | null>(null);
+    const [editForm, setEditForm] = useState<UpdateRealEstateTypeFeature>({
+        id: '',
+        name: '',
+        dataType: 0,
+        isUnit: false,
+        isRequired: false,
+        options: [],
+        realEstateTypeId: typeId ?? ''
+    });
+    const [newOption, setNewOption] = useState('');
 
     const handleDeleteRealEstateTypeFeature = (featureId: string, typeId: string ) => {
         if (window.confirm('Bu özelliği silmek istediğinizden emin misiniz?')) {
@@ -39,6 +53,50 @@ const AdminEstateTypeFeaturesListingPage = () => {
                     console.error(err);
                 });
         }
+    };
+
+    const handleEditFeature = (feature: RealEstateTypeFeature) => {
+        setEditingFeature(feature);
+        setEditForm({
+            id: feature.id,
+            name: feature.name,
+            dataType: feature.dataType,
+            isUnit: feature.isUnit,
+            isRequired: feature.isRequired,
+            options: [...feature.options],
+            realEstateTypeId: feature.realEstateTypeId
+        });
+        setOpenEditDialog(true);
+    };
+
+    const handleUpdateFeature = async () => {
+        try {
+            await updateRealEstateTypeFeature(editForm).unwrap();
+            alert('Özellik başarıyla güncellendi.');
+            setOpenEditDialog(false);
+            setEditingFeature(null);
+            refetch();
+        } catch (error) {
+            alert('Güncelleme işlemi sırasında bir hata oluştu.');
+            console.error(error);
+        }
+    };
+
+    const handleAddOption = () => {
+        if (newOption.trim() && !editForm.options.includes(newOption.trim())) {
+            setEditForm(prev => ({
+                ...prev,
+                options: [...prev.options, newOption.trim()]
+            }));
+            setNewOption('');
+        }
+    };
+
+    const handleRemoveOption = (optionToRemove: string) => {
+        setEditForm(prev => ({
+            ...prev,
+            options: prev.options.filter(option => option !== optionToRemove)
+        }));
     };
 
     useEffect(() => {
@@ -133,34 +191,58 @@ const AdminEstateTypeFeaturesListingPage = () => {
         {
             field: 'actions',
             headerName: 'İşlemler',
-            width: 100,
+            width: 200,
             sortable: false,
             filterable: false,
             headerAlign: 'center',
             align: 'center',
             renderCell: (params) => (
-                <Tooltip title="Özelliği Sil" arrow>
-                    <IconButton
-                        onClick={() => {
-                            if (params.row.id && typeId) {
-                                handleDeleteRealEstateTypeFeature(params.row.id as string, typeId as string);
-                            } else {
-                                alert("Geçersiz veri: Özellik ID veya Tip ID bulunamadı.");
-                            }
-                        }}
-                        size="small"
-                        sx={{
-                            color: '#d32f2f',
-                            '&:hover': {
-                                backgroundColor: 'rgba(211, 47, 47, 0.1)',
-                                color: '#b71c1c',
-                            },
-                            transition: 'all 0.2s ease-in-out',
-                        }}
-                    >
-                        <DeleteIcon fontSize="small" />
-                    </IconButton>
-                </Tooltip>
+                <Box sx={{ 
+                    display: 'flex', 
+                    gap: 1, 
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '100%'
+                }}>
+                    <Tooltip title="Özelliği Düzenle" arrow>
+                        <IconButton
+                            onClick={() => handleEditFeature(params.row as RealEstateTypeFeature)}
+                            size="small"
+                            sx={{
+                                color: '#FF9800',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                                    color: '#E65100',
+                                },
+                                transition: 'all 0.2s ease-in-out',
+                            }}
+                        >
+                            <EditIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Özelliği Sil" arrow>
+                        <IconButton
+                            onClick={() => {
+                                if (params.row.id && typeId) {
+                                    handleDeleteRealEstateTypeFeature(params.row.id as string, typeId as string);
+                                } else {
+                                    alert("Geçersiz veri: Özellik ID veya Tip ID bulunamadı.");
+                                }
+                            }}
+                            size="small"
+                            sx={{
+                                color: '#d32f2f',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(211, 47, 47, 0.1)',
+                                    color: '#b71c1c',
+                                },
+                                transition: 'all 0.2s ease-in-out',
+                            }}
+                        >
+                            <DeleteIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
             ),
         },
     ];
@@ -252,6 +334,109 @@ const AdminEstateTypeFeaturesListingPage = () => {
                 <DialogActions>
                     <Button onClick={() => setOpenAddDialog(false)} color="secondary">
                         İptal
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Edit Modal/Dialog Form */}
+            <Dialog open={openEditDialog} onClose={() => setOpenEditDialog(false)} maxWidth="md" fullWidth>
+                <DialogTitle>
+                    <Typography variant="h6" sx={{ color: '#1976D2', fontWeight: 600 }}>
+                        Özellik Düzenle: {editingFeature?.name}
+                    </Typography>
+                </DialogTitle>
+                <DialogContent dividers>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, pt: 2 }}>
+                        <TextField
+                            label="Özellik Adı"
+                            value={editForm.name}
+                            onChange={(e) => setEditForm(prev => ({ ...prev, name: e.target.value }))}
+                            fullWidth
+                            required
+                        />
+                        
+                        <TextField
+                            select
+                            label="Veri Tipi"
+                            value={editForm.dataType}
+                            onChange={(e) => setEditForm(prev => ({ ...prev, dataType: Number(e.target.value) as TypeFeatureDataType }))}
+                            fullWidth
+                            required
+                        >
+                            {Object.entries(dataTypeLabels).map(([value, label]) => (
+                                <MenuItem key={value} value={value}>
+                                    {label}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+
+                        <Box sx={{ display: 'flex', gap: 2 }}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={editForm.isUnit}
+                                        onChange={(e) => setEditForm(prev => ({ ...prev, isUnit: e.target.checked }))}
+                                    />
+                                }
+                                label="Birim"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={editForm.isRequired}
+                                        onChange={(e) => setEditForm(prev => ({ ...prev, isRequired: e.target.checked }))}
+                                    />
+                                }
+                                label="Zorunlu"
+                            />
+                        </Box>
+
+                        <Box>
+                            <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 600 }}>
+                                Seçenekler
+                            </Typography>
+                            <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+                                <TextField
+                                    label="Yeni Seçenek"
+                                    value={newOption}
+                                    onChange={(e) => setNewOption(e.target.value)}
+                                    size="small"
+                                    sx={{ flex: 1 }}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleAddOption()}
+                                />
+                                <Button
+                                    variant="outlined"
+                                    onClick={handleAddOption}
+                                    disabled={!newOption.trim()}
+                                >
+                                    Ekle
+                                </Button>
+                            </Box>
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                                {editForm.options.map((option, index) => (
+                                    <Chip
+                                        key={index}
+                                        label={option}
+                                        onDelete={() => handleRemoveOption(option)}
+                                        color="primary"
+                                        variant="outlined"
+                                    />
+                                ))}
+                            </Box>
+                        </Box>
+                    </Box>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenEditDialog(false)} color="secondary">
+                        İptal
+                    </Button>
+                    <Button 
+                        onClick={handleUpdateFeature}
+                        variant="contained"
+                        disabled={!editForm.name.trim()}
+                        sx={{ backgroundColor: '#1976D2', '&:hover': { backgroundColor: '#1565C0' } }}
+                    >
+                        Güncelle
                     </Button>
                 </DialogActions>
             </Dialog>

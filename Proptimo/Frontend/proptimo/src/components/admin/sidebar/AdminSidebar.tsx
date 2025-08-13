@@ -25,7 +25,7 @@ const AdminSidebar = () => {
             <Toolbar />
             <Box sx={{ overflow: 'auto' }}>
                 <List dense disablePadding>
-                    {['Home', 'Users', 'Real Estates', 'Real Estate Types','Currencies', 'Settings'].map((text) => (
+                    {['Anasayfa', 'Emlaklar', 'Emlak Tipleri','Para Birimleri'].map((text) => (
                         <AdminSidebarItem key={text} name={text} />
                     ))}
                 </List>

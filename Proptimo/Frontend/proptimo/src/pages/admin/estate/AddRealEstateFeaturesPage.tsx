@@ -44,21 +44,8 @@ import { useParams, useNavigate } from "react-router-dom";
    const { data: featuresResponse, isLoading, error } = useGetAllRealEstateTypeFeaturesByTypeIdQuery(estateTypeId || '', {skip: !estateTypeId });
  
    const features: RealEstateTypeFeature[] = (featuresResponse as unknown as RealEstateTypeFeature[]) || [];
+  
  
-   
-   console.log('Final features array:', features);
- 
-   // Debug için console log'lar
-   useEffect(() => {
-     console.log('🔍 Debug Info:');
-     console.log('estateTypeId:', estateTypeId);
-     console.log('featuresResponse:', featuresResponse);
-     console.log('features:', features);
-     console.log('isLoading:', isLoading);
-     console.log('error:', error);
-   }, [featuresResponse, features, isLoading, error, estateTypeId]);
- 
-   // estateTypeId yoksa önceki sayfaya yönlendir
    useEffect(() => {
      if (!estateTypeId || !estateId) {
        navigate('/admin/real-estates/create');
@@ -457,13 +444,10 @@ import { useParams, useNavigate } from "react-router-dom";
          featureValues.push(payload);
        });
  
-       console.log('Sending feature values:', featureValues);
  
-               // Tek bir API çağrısı ile tüm değerleri gönder
         const result = await createRealEstateTypeFeatureValue(featureValues).unwrap();
        
-       console.log('Bulk feature values saved:', result);
-       setSaveError(''); // Hata varsa temizle
+       setSaveError(''); 
        return true;
        
      } catch (error: any) {
@@ -566,9 +550,6 @@ import { useParams, useNavigate } from "react-router-dom";
  
    // Feature yoksa mesaj göster - daha detaylı kontrol
    if (!isLoading && !error && features.length === 0) {
-     console.log('⚠️ No features found - Debug info:');
-     console.log('featuresResponse structure:', Object.keys(featuresResponse || {}));
-     console.log('featuresResponse full:', JSON.stringify(featuresResponse, null, 2));
      
      return (
        <Box sx={{ 

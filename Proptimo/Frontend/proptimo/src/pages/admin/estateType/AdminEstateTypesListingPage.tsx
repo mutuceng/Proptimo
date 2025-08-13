@@ -31,11 +31,9 @@ const AdminEstateTypesListingPage = () => {
     };
 
     useEffect(() => {
-        console.log('useEffect triggered - calling refetch()');
         const fetchData = async () => {
             try {
-                const response = await refetch();
-                console.log('refetch executed successfully, data:', response);
+                 await refetch();
             } catch (error) {
                 console.error('Error during refetch:', error);
             }
@@ -94,17 +92,17 @@ const AdminEstateTypesListingPage = () => {
             ),
         },
         {
-            field: 'addFeature',
-            headerName: 'Özellik Ekle',
+            field: 'features',
+            headerName: 'Özellikler',
             width: 140,
             sortable: false,
             filterable: false,
             headerAlign: 'center',
             align: 'center',
             renderCell: (params) => (
-                <Tooltip title="Özellik Ekle" arrow>
+                <Tooltip title="Özellikleri Yönet" arrow>
                     <IconButton
-                        onClick={() => navigate(`/admin/real-estate-type-features/${params.row.id}`)}
+                        onClick={() => navigate(`/admin/real-estate-types/features/${params.row.id}`)}
                         size="small"
                         sx={{
                             color: '#1976D2',

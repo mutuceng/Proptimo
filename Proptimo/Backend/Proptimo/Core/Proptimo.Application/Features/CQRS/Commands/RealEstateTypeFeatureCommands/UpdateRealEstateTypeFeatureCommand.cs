@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Proptimo.Application.Features.CQRS.Results.CommandQueryResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Proptimo.Application.Features.CQRS.Commands.RealEstateTypeFeatureCommands
 {
-    public class UpdateRealEstateTypeFeatureCommand : IRequest
+    public class UpdateRealEstateTypeFeatureCommand : IRequest<RealEstateTypeFeatureReturnDto>
     {
         public string Id { get; set; }
         public string Name { get; set; }

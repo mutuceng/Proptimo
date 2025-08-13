@@ -32,6 +32,18 @@ namespace Proptimo.API.Controllers
             return Ok(returnedList);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> CreateEstateTypeFeatureValue(List<UpdateRealEstateTypeFeatureValueCommand> commands)
+        {
+            var returnedList = new List<RealEstateTypeFeatureValueReturnDto>();
+            foreach (var cmd in commands)
+            {
+                returnedList.Add(await _mediator.Send(cmd));
+            }
+
+            return Ok(returnedList);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEstateTypeFeatureValueByEstateId(string id)
         {

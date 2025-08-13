@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Proptimo.Application.Features.CQRS.Results.CommandQueryResults;
 using Proptimo.Domain.Entities.Enum;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Proptimo.Application.Features.CQRS.Commands.RealEstateCommands
 {
-    public class UpdateRealEstateCommand : IRequest
+    public class UpdateRealEstateCommand : IRequest<RealEstateReturnDto>
     {
         public string Id { get; set; }
         public string Title { get; set; }

@@ -1,6 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Box, Typography, Paper } from '@mui/material';
-
+import { LanguageProvider } from './context/LanguageContext';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import PublicRoute from './components/auth/PublicRoute';
+import UnauthorizedPage from './pages/UnauthorizedPage';
 
 // Admin Layout
 import AdminLayout from './components/admin/AdminLayout';
@@ -17,69 +20,117 @@ import AddRealEstatePage from './pages/admin/estate/AddRealEstatePage';
 import AddAddressPage from './pages/admin/estate/AddAddressPage';
 import UploadImagesPage from './pages/admin/estate/UploadImagesPage';
 import AddRealEstateFeaturesPage from './pages/admin/estate/AddRealEstateFeaturesPage';
-import { EstateCreationProvider } from './context/EstateCreationContext';
+import EditRealEstatePage from './pages/admin/estate/update/EditRealEstataPage';
+import EditAddressPage from './pages/admin/estate/update/EditAddressPage';
+import EditImagesPage from './pages/admin/estate/update/EditImagesPage';
+import EditRealEstateFeaturesPage from './pages/admin/estate/update/EditRealEstateFeaturesPage';
 import UserHomePage from './pages/user/UserHomePage';
 import UserEstateListingPage from './pages/user/UserEstateListingPage';
 import UserEstateDetailPage from './pages/user/UserEstateDetailPage';
 
-const AdminUsersPage = () => (
-  <Box sx={{ padding: 3 }}>
-    <Paper elevation={2} sx={{ padding: 3, backgroundColor: 'white', borderRadius: 2 }}>
-      <Typography variant="h5" sx={{ color: '#1976D2', fontWeight: 600, fontFamily: 'Poppins, sans-serif' }}>
-        Kullanıcı Yönetimi
-      </Typography>
-      <Typography variant="body1" sx={{ mt: 2 }}>
-        Kullanıcı listesi burada görüntülenecek.
-      </Typography>
-    </Paper>
-  </Box>
-);
 
-
-const AdminSettingsPage = () => (
-  <Box sx={{ padding: 3 }}>
-    <Paper elevation={2} sx={{ padding: 3, backgroundColor: 'white', borderRadius: 2 }}>
-      <Typography variant="h5" sx={{ color: '#1976D2', fontWeight: 600, fontFamily: 'Poppins, sans-serif' }}>
-        Ayarlar
-      </Typography>
-      <Typography variant="body1" sx={{ mt: 2 }}>
-        Sistem ayarları burada yapılandırılacak.
-      </Typography>
-    </Paper>
-  </Box>
-);
 
 function App() {
   return (
     <Router>
-      <EstateCreationProvider>
-        <Routes>
-          {/* User Routes */}
-          <Route path="/" element={<UserLayout><UserHomePage /></UserLayout>} />
-          <Route path="/listings" element={<UserLayout><UserEstateListingPage /></UserLayout>} />
-          <Route path="/listings/:estateId" element={<UserLayout><UserEstateDetailPage /></UserLayout>} />
-          <Route path="/login" element={<UserLayout><LoginPage /></UserLayout>} />
-          <Route path="/register" element={<UserLayout><RegisterPage /></UserLayout>} />
-          
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminLayout><AdminEstateListingPage /></AdminLayout>} />
-          <Route path="/admin/users" element={<AdminLayout><AdminUsersPage /></AdminLayout>} />
-          <Route path="/admin/real-estates" element={<AdminLayout><AdminEstateListingPage /></AdminLayout>} />
-          
-          <Route path="/admin/real-estates/create" element={<AdminLayout><AddRealEstatePage /></AdminLayout>} />
-          <Route path="/admin/real-estates/create/features/:estateId/:estateTypeId" element={<AdminLayout><AddRealEstateFeaturesPage /></AdminLayout>} />
-          <Route path="/admin/real-estates/create/address/:estateId" element={<AdminLayout><AddAddressPage /></AdminLayout>} />
-          <Route path="/admin/real-estates/create/images/:estateId" element={<AdminLayout><UploadImagesPage /></AdminLayout>} />
-      
-          <Route path="/admin/real-estate-types" element={<AdminLayout><AdminEstateTypesListingPage /></AdminLayout>} />
-          <Route path="/admin/real-estate-type-features/:typeId" element={<AdminLayout><AdminEstateTypeFeaturesListingPage /></AdminLayout>} />
-          <Route path="/admin/currencies" element={<AdminLayout><AdminCurrencyListingPage /></AdminLayout>} />
-          <Route path="/admin/settings" element={<AdminLayout><AdminSettingsPage /></AdminLayout>} />
+      <LanguageProvider>
+        <AuthProvider>
+          <Routes>
+            {/* User Routes */}
+            <Route path="/" element={<UserLayout><UserHomePage /></UserLayout>} />
+            <Route path="/listings" element={<UserLayout><UserEstateListingPage /></UserLayout>} />
+            <Route path="/listings/:estateId" element={<UserLayout><UserEstateDetailPage /></UserLayout>} />
+            <Route path="/login" element={
+              <PublicRoute>
+                <UserLayout><LoginPage /></UserLayout>
+              </PublicRoute>
+            } />
+            <Route path="/register" element={
+              <PublicRoute>
+                <UserLayout><RegisterPage /></UserLayout>
+              </PublicRoute>
+            } />
+            
+            {/* Unauthorized Page */}
+            <Route path="/unauthorized" element={<UnauthorizedPage />} />
+            
+            {/* Admin Routes - Protected */}
+            <Route path="/admin" element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminLayout><AdminEstateListingPage /></AdminLayout>
+              </ProtectedRoute>
+            } />
 
-          {/* Varsayılan yönlendirme */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </EstateCreationProvider>
+            <Route path="/admin/real-estates" element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminLayout><AdminEstateListingPage /></AdminLayout>
+              </ProtectedRoute>
+            } />
+            
+            <Route path="/admin/real-estates/create" element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminLayout><AddRealEstatePage /></AdminLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/real-estates/create/features/:estateId/:estateTypeId" element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminLayout><AddRealEstateFeaturesPage /></AdminLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/real-estates/create/address/:estateId" element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminLayout><AddAddressPage /></AdminLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/real-estates/create/images/:estateId" element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminLayout><UploadImagesPage /></AdminLayout>
+              </ProtectedRoute>
+            } />
+            
+            {/* Update Routes */}
+            <Route path="/admin/real-estates/edit/:estateId" element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminLayout><EditRealEstatePage /></AdminLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/real-estates/edit/:estateId/features/:estateTypeId" element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminLayout><EditRealEstateFeaturesPage /></AdminLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/real-estates/edit/:estateId/address" element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminLayout><EditAddressPage /></AdminLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/real-estates/edit/:estateId/images" element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminLayout><EditImagesPage /></AdminLayout>
+              </ProtectedRoute>
+            } />
+        
+            <Route path="/admin/real-estate-types" element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminLayout><AdminEstateTypesListingPage /></AdminLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/real-estate-types/features/:typeId" element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminLayout><AdminEstateTypeFeaturesListingPage /></AdminLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/currencies" element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminLayout><AdminCurrencyListingPage /></AdminLayout>
+              </ProtectedRoute>
+            } />
+
+            {/* Varsayılan yönlendirme */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </AuthProvider>
+      </LanguageProvider>
     </Router>
   );
 }

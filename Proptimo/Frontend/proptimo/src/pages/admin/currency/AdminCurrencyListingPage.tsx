@@ -28,7 +28,6 @@ const AdminCurrencyListingPage = () => {
 
 
     useEffect(() => {
-        console.log('useEffect triggered - calling refetch()');
         try{
             refetch();
         } catch(error){
@@ -39,8 +38,6 @@ const AdminCurrencyListingPage = () => {
     // API'den gelen veriyi kullan
     const currencies = (data as unknown as Currency[]) || [];
     const loading = isLoading || isFetching;
-
-
 
 
     const columns: GridColDef[] = [

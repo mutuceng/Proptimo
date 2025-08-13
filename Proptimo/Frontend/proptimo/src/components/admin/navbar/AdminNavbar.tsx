@@ -1,10 +1,12 @@
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { Logout } from "@mui/icons-material";
+import { useAuth } from "../../../context/AuthContext";
 
 const AdminNavbar = () => {
+    const { logout } = useAuth();
+
     const handleLogout = () => {
-        // TODO: Implement logout logic
-        console.log("Logout clicked");
+        logout();
     };
 
     return (

@@ -1,0 +1,198 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "share": "Share",
+    "notSpecified": "Not Specified"
+  },
+  "navigation": {
+    "home": "Home",
+    "listings": "Property Listings",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "admin": "Admin Panel"
+  },
+  "realEstate": {
+    "title": "Real Estate",
+    "listings": "Property Listings",
+    "details": "Property Details",
+    "price": "Price",
+    "location": "Location",
+    "type": "Property Type",
+    "status": "Status",
+    "features": "Features",
+    "description": "Description",
+    "images": "Images",
+    "contact": "Contact",
+    "map": "Map",
+    "listingDate": "Listing Date",
+    "listingType": {
+      "sale": "For Sale",
+      "rent": "For Rent",
+      "dailyRent": "Daily Rent"
+    },
+    "status": {
+      "active": "Active",
+      "rented": "Rented",
+      "sold": "Sold",
+      "expired": "Expired",
+      "hidden": "Hidden"
+    }
+  },
+  "filters": {
+    "title": "Filters",
+    "propertyType": "Property Type",
+    "listingType": "Listing Type",
+    "priceRange": "Price Range",
+    "location": "Location",
+    "city": "City",
+    "district": "District",
+    "dateRange": "Date Range",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "minPrice": "Minimum Price",
+    "maxPrice": "Maximum Price",
+    "apply": "Apply",
+    "clear": "Clear"
+  },
+  "map": {
+    "title": "Map View",
+    "noProperties": "No properties found to display on map.",
+    "viewDetails": "View Details"
+  },
+  "currency": {
+    "convert": "Convert",
+    "converting": "Converting...",
+    "internationalUnits": "International Units",
+    "reliablePrice": "Reliable price guarantee"
+  },
+  "contact": {
+    "call": "Call",
+    "message": "Send Message",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address"
+  },
+  "pagination": {
+    "page": "Page",
+    "of": "of",
+    "showing": "Showing",
+    "results": "results"
+  },
+  "errors": {
+    "general": "An error occurred. Please try again.",
+    "notFound": "Page not found.",
+    "unauthorized": "You don't have permission for this action.",
+    "networkError": "Network connection error.",
+    "loadingError": "An error occurred while loading data."
+  },
+  "footer": {
+    "description": "Turkey's most reliable real estate platform. Find your dream home, buy or rent safely.",
+    "quickLinks": "Quick Links",
+    "followUs": "Follow Us",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "copyright": "All rights reserved."
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your account to continue your journey with Proptimo",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "button": "Sign In",
+      "loading": "Signing In...",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "fillFields": "Please fill in email and password fields.",
+      "error": "An error occurred while signing in.",
+      "heroTitle": "Find Your Dream Home",
+      "heroSubtitle": "Discover the perfect property that matches your lifestyle and budget"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Sign up to start exploring properties and connect with real estate professionals",
+      "username": "Username",
+      "usernamePlaceholder": "Enter your username",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "Enter your first name",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Enter your last name",
+      "phoneNumber": "Phone Number (Optional)",
+      "phoneNumberPlaceholder": "Enter your phone number (optional)",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter your email address",
+      "birthDate": "Birth Date",
+      "password": "Password",
+      "passwordPlaceholder": "Create a strong password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "button": "Create Account",
+      "loading": "Creating Account...",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "fillFields": "Please fill in required fields.",
+      "passwordMismatch": "Passwords do not match.",
+      "passwordLength": "Password must be at least 6 characters.",
+      "invalidEmail": "Please enter a valid email address.",
+      "success": "Your account has been successfully created!",
+      "error": "An error occurred while registering.",
+      "heroTitle": "Join Proptimo Today",
+      "heroSubtitle": "Create your account and start your journey to find the perfect property"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Find Your Dream Home",
+      "subtitle": "Reach the right address with Turkey's most reliable real estate platform",
+      "searchButton": "Search Properties"
+    },
+    "features": {
+      "title": "Why Proptimo?",
+      "easySearch": {
+        "title": "Easy Search",
+        "description": "Find properties with the features you want easily with advanced filters"
+      },
+      "reliableLocation": {
+        "title": "Reliable Location",
+        "description": "Reliable real estate listings from all over Turkey"
+      },
+      "fairPrice": {
+        "title": "Fair Price",
+        "description": "Transparent pricing suitable for market value"
+      }
+    },
+    "popularCities": {
+      "title": "Popular Cities",
+      "subtitle": "Real estate opportunities in Turkey's most preferred cities"
+    },
+    "stats": {
+      "activeListings": "Active Listings",
+      "happyCustomers": "Happy Customers",
+      "citiesCovered": "Cities Covered",
+      "support": "Support"
+    }
+  }
+}

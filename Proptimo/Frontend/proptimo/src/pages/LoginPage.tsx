@@ -1,12 +1,38 @@
-import { Container, Typography, TextField, Box, Button, Link, InputAdornment, IconButton, Paper } from "@mui/material";
+import { Container, Typography, TextField, Box, Button, Link, InputAdornment, IconButton, Paper, Alert } from "@mui/material";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 
 const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    
+    const { login, isLoading } = useAuth();
+    const { t } = useLanguage();
 
     const handleTogglePassword = () => {
         setShowPassword(!showPassword);
+    };
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError('');
+        
+        if (!email.trim() || !password.trim()) {
+            setError(t('auth.login.fillFields'));
+            return;
+        }
+
+        try {
+            await login(email, password);
+            console.log('Başarılı login');
+        } catch (error: any) {
+            console.error('Login hatası:', error);
+            setError(error.data?.message || t('auth.login.error'));
+        }
     };
 
     return (
@@ -34,21 +60,30 @@ const LoginPage = () => {
                             mb: 4,
                             color: '#1a1a1a'
                         }}>
-                            Welcome back
+                            {t('auth.login.title')}
                         </Typography>
                         <Typography variant="body1" sx={{ 
                             mb: 4, 
                             color: '#666',
                             lineHeight: 1.6
                         }}>
-                            Sign in to your account to continue your journey with Proptimo
+                            {t('auth.login.subtitle')}
                         </Typography>
+
+                        {error && (
+                            <Alert severity="error" sx={{ mb: 3, borderRadius: '12px' }}>
+                                {error}
+                            </Alert>
+                        )}
                         
                         <TextField
                             fullWidth
-                            label="Username or Email"
+                            label={t('auth.login.email')}
                             variant="outlined"
-                            placeholder="Enter your username or email"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder={t('auth.login.emailPlaceholder')}
                             sx={{ 
                                 mb: 3,
                                 '& .MuiOutlinedInput-root': {
@@ -81,10 +116,12 @@ const LoginPage = () => {
                         />
                         <TextField
                             fullWidth
-                            label="Password"
+                            label={t('auth.login.password')}
                             type={showPassword ? "text" : "password"}
                             variant="outlined"
-                            placeholder="Enter your password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder={t('auth.login.passwordPlaceholder')}
                             sx={{ 
                                 mb: 3,
                                 '& .MuiOutlinedInput-root': {
@@ -138,6 +175,8 @@ const LoginPage = () => {
                         <Button
                             fullWidth
                             variant="contained"
+                            onClick={handleLogin}
+                            disabled={isLoading}
                             sx={{ 
                                 mb: 2, 
                                 backgroundColor: '#1976d2', 
@@ -155,43 +194,19 @@ const LoginPage = () => {
                                 },
                                 '&:active': {
                                     transform: 'translateY(0px)'
-                                }
-                            }}
-                        >
-                            Sign In
-                        </Button>
-                        <Button
-                            fullWidth
-                            variant="outlined"
-                            sx={{ 
-                                mb: 3, 
-                                color: '#666', 
-                                borderColor: '#ddd',
-                                py: 2,
-                                fontSize: '1.1rem',
-                                fontWeight: 600,
-                                borderRadius: '12px',
-                                textTransform: 'none',
-                                borderWidth: '2px',
-                                backgroundColor: '#ffffff',
-                                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
-                                transition: 'all 0.3s ease',
-                                '&:hover': { 
-                                    borderColor: '#1976d2', 
-                                    backgroundColor: 'rgba(25, 118, 210, 0.04)',
-                                    color: '#1976d2',
-                                    boxShadow: '0 4px 16px rgba(25, 118, 210, 0.15)',
-                                    transform: 'translateY(-1px)'
                                 },
-                                '&:active': {
-                                    transform: 'translateY(0px)'
+                                '&:disabled': {
+                                    backgroundColor: '#ccc',
+                                    transform: 'none',
+                                    boxShadow: 'none'
                                 }
                             }}
                         >
-                            Connect with Google
+                            {isLoading ? t('auth.login.loading') : t('auth.login.button')}
                         </Button>
+
                         <Typography variant="body2" sx={{ color: '#666' }}>
-                            Don't have an account? <Link href="#" sx={{ color: '#1976d2', fontWeight: 600 }}>Sign up</Link>
+                            {t('auth.login.noAccount')} <Link href="/register" sx={{ color: '#1976d2', fontWeight: 600 }}>{t('auth.login.signUp')}</Link>
                         </Typography>
                     </Box>
 
@@ -262,7 +277,7 @@ const LoginPage = () => {
                                     textShadow: '6px 6px 12px rgba(0, 0, 0, 0.3)',
                                     lineHeight: 1.2
                                 }}>
-                                    Find Your Dream Home
+                                    {t('auth.login.heroTitle')}
                                 </Typography>
                                 <Typography variant="body1" sx={{ 
                                     color: '#c5cdd4',
@@ -273,7 +288,7 @@ const LoginPage = () => {
                                     fontFamily: 'Roboto',
                                     textShadow: '6 6px 10px rgba(12, 15, 19, 0.2)'
                                 }}>
-                                    Discover the perfect property that matches your lifestyle and budget
+                                    {t('auth.login.heroSubtitle')}
                                 </Typography>
                             </Box>
                         </Box>

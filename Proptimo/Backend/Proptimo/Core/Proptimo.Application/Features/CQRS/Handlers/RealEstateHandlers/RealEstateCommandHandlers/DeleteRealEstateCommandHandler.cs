@@ -22,6 +22,22 @@ namespace Proptimo.Application.Features.CQRS.Handlers.RealEstateHandlers.RealEst
         public async Task Handle(DeleteRealEstateCommand request, CancellationToken cancellationToken)
         {
             await _repository.DeleteAsync(request.Id);
+
+            var estateFolder = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot","uploads",request.Id.ToString());
+
+            if (Directory.Exists(estateFolder))
+            {
+                try
+                {
+                    Directory.Delete(estateFolder, recursive: true);
+                }
+                catch (Exception ex)
+                {
+                    // Loglamak iyi olur
+                    Console.WriteLine($"Klasör silinemedi: {ex.Message}");
+                }
+            }
+            
         }
     }
 }

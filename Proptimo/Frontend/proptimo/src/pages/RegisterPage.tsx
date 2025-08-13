@@ -1,10 +1,28 @@
-import { Container, Typography, TextField, Box, Button, Link, InputAdornment, IconButton, Paper } from "@mui/material";
+import { Container, Typography, TextField, Box, Button, Link, InputAdornment, IconButton, Paper, Alert } from "@mui/material";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useState } from "react";
+import { useRegisterMutation } from "../features/api/userApi";
+import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 
 const RegisterPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    
+    // Form state'leri
+    const [userName, setUserName] = useState('');
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [birthDate, setBirthDate] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [error, setError] = useState('');
+    
+    const [register, { isLoading }] = useRegisterMutation();
+    const navigate = useNavigate();
+    const { t } = useLanguage();
 
     const handleTogglePassword = () => {
         setShowPassword(!showPassword);
@@ -12,6 +30,54 @@ const RegisterPage = () => {
 
     const handleToggleConfirmPassword = () => {
         setShowConfirmPassword(!showConfirmPassword);
+    };
+
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError('');
+        
+        // Validasyonlar
+        if (!userName.trim() || !name.trim() || !surname.trim() || !email.trim() || !password.trim() || !confirmPassword.trim() || !birthDate) {
+            setError(t('auth.register.fillFields'));
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setError(t('auth.register.passwordMismatch'));
+            return;
+        }
+
+        if (password.length < 6) {
+            setError(t('auth.register.passwordLength'));
+            return;
+        }
+
+        // Email validasyonu
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setError(t('auth.register.invalidEmail'));
+            return;
+        }
+
+        try {
+            const registerData = {
+                userName,
+                name,
+                surname,
+                email,
+                password,
+                birthDate: new Date(birthDate),
+                phoneNumber: phoneNumber.trim() || undefined
+            };
+
+            const user = await register(registerData).unwrap();
+            console.log('Başarılı kayıt:', user);
+            alert(t('auth.register.success'));
+            navigate('/login');
+        } catch (error: any) {
+            console.error('Kayıt hatası:', error);
+            setError(error.data?.message || t('auth.register.error'));
+        }
     };
 
     return (
@@ -94,7 +160,7 @@ const RegisterPage = () => {
                                     textShadow: '6px 6px 12px rgba(0, 0, 0, 0.3)',
                                     lineHeight: 1.2
                                 }}>
-                                    Join Proptimo Today
+                                    {t('auth.register.heroTitle')}
                                 </Typography>
                                 <Typography variant="body1" sx={{ 
                                     color: '#c5cdd4',
@@ -104,7 +170,7 @@ const RegisterPage = () => {
                                     fontWeight: 1000,   
                                     textShadow: '6 6px 10px rgba(12, 15, 19, 0.2)'
                                 }}>
-                                    Create your account and start your journey to find the perfect property
+                                    {t('auth.register.heroSubtitle')}
                                 </Typography>
                             </Box>
                         </Box>
@@ -123,23 +189,70 @@ const RegisterPage = () => {
                             mb: 4,
                             color: '#1a1a1a'
                         }}>
-                            Create Account
+                            {t('auth.register.title')}
                         </Typography>
                         <Typography variant="body1" sx={{ 
                             mb: 4, 
                             color: '#666',
                             lineHeight: 1.6
                         }}>
-                            Sign up to start exploring properties and connect with real estate professionals
+                            {t('auth.register.subtitle')}
                         </Typography>
+
+                        {error && (
+                            <Alert severity="error" sx={{ mb: 3, borderRadius: '12px' }}>
+                                {error}
+                            </Alert>
+                        )}
                         
+                        {/* Username */}
+                        <TextField
+                            fullWidth
+                            label={t('auth.register.username')}
+                            variant="outlined"
+                            value={userName}
+                            onChange={(e) => setUserName(e.target.value)}
+                            placeholder={t('auth.register.usernamePlaceholder')}
+                            sx={{ 
+                                mb: 3,
+                                '& .MuiOutlinedInput-root': {
+                                    borderRadius: '12px',
+                                    backgroundColor: '#ffffff',
+                                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+                                    transition: 'all 0.3s ease',
+                                    '&:hover': {
+                                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.12)',
+                                        transform: 'translateY(-1px)'
+                                    },
+                                    '&.Mui-focused': {
+                                        boxShadow: '0 4px 16px rgba(25, 118, 210, 0.15)',
+                                        borderColor: '#1976d2'
+                                    }
+                                },
+                                '& .MuiInputLabel-root': {
+                                    color: '#666',
+                                    fontWeight: 500,
+                                    '&.Mui-focused': {
+                                        color: '#1976d2'
+                                    }
+                                },
+                                '& .MuiOutlinedInput-input': {
+                                    padding: '16px 20px',
+                                    fontSize: '1rem',
+                                    fontWeight: 500
+                                }
+                            }}
+                        />
+
                         {/* Ad ve Soyad - Yan Yana */}
                         <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
                             <TextField
                                 fullWidth
-                                label="First Name"
+                                label={t('auth.register.firstName')}
                                 variant="outlined"
-                                placeholder="Enter your first name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder={t('auth.register.firstNamePlaceholder')}
                                 sx={{ 
                                     '& .MuiOutlinedInput-root': {
                                         borderRadius: '12px',
@@ -172,9 +285,11 @@ const RegisterPage = () => {
 
                             <TextField
                                 fullWidth
-                                label="Last Name"
+                                label={t('auth.register.lastName')}
                                 variant="outlined"
-                                placeholder="Enter your last name"
+                                value={surname}
+                                onChange={(e) => setSurname(e.target.value)}
+                                placeholder={t('auth.register.lastNamePlaceholder')}
                                 sx={{ 
                                     '& .MuiOutlinedInput-root': {
                                         borderRadius: '12px',
@@ -208,9 +323,11 @@ const RegisterPage = () => {
 
                         <TextField
                             fullWidth
-                            label="Phone Number"
+                            label={t('auth.register.phoneNumber')}
                             variant="outlined"
-                            placeholder="Enter your phone number"
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                            placeholder={t('auth.register.phoneNumberPlaceholder')}
                             sx={{ 
                                 mb: 3,
                                 '& .MuiOutlinedInput-root': {
@@ -244,9 +361,12 @@ const RegisterPage = () => {
 
                         <TextField
                             fullWidth
-                            label="Email Address"
+                            label={t('auth.register.email')}
                             variant="outlined"
-                            placeholder="Enter your email address"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder={t('auth.register.emailPlaceholder')}
                             sx={{ 
                                 mb: 3,
                                 '& .MuiOutlinedInput-root': {
@@ -280,10 +400,53 @@ const RegisterPage = () => {
 
                         <TextField
                             fullWidth
-                            label="Password"
+                            label={t('auth.register.birthDate')}
+                            variant="outlined"
+                            type="date"
+                            value={birthDate}
+                            onChange={(e) => setBirthDate(e.target.value)}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            sx={{ 
+                                mb: 3,
+                                '& .MuiOutlinedInput-root': {
+                                    borderRadius: '12px',
+                                    backgroundColor: '#ffffff',
+                                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+                                    transition: 'all 0.3s ease',
+                                    '&:hover': {
+                                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.12)',
+                                        transform: 'translateY(-1px)'
+                                    },
+                                    '&.Mui-focused': {
+                                        boxShadow: '0 4px 16px rgba(25, 118, 210, 0.15)',
+                                        borderColor: '#1976d2'
+                                    }
+                                },
+                                '& .MuiInputLabel-root': {
+                                    color: '#666',
+                                    fontWeight: 500,
+                                    '&.Mui-focused': {
+                                        color: '#1976d2'
+                                    }
+                                },
+                                '& .MuiOutlinedInput-input': {
+                                    padding: '16px 20px',
+                                    fontSize: '1rem',
+                                    fontWeight: 500
+                                }
+                            }}
+                        />
+
+                        <TextField
+                            fullWidth
+                            label={t('auth.register.password')}
                             type={showPassword ? "text" : "password"}
                             variant="outlined"
-                            placeholder="Create a strong password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder={t('auth.register.passwordPlaceholder')}
                             sx={{ 
                                 mb: 3,
                                 '& .MuiOutlinedInput-root': {
@@ -337,10 +500,12 @@ const RegisterPage = () => {
 
                         <TextField
                             fullWidth
-                            label="Confirm Password"
+                            label={t('auth.register.confirmPassword')}
                             type={showConfirmPassword ? "text" : "password"}
                             variant="outlined"
-                            placeholder="Confirm your password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            placeholder={t('auth.register.confirmPasswordPlaceholder')}
                             sx={{ 
                                 mb: 3,
                                 '& .MuiOutlinedInput-root': {
@@ -395,6 +560,8 @@ const RegisterPage = () => {
                         <Button
                             fullWidth
                             variant="contained"
+                            onClick={handleRegister}
+                            disabled={isLoading}
                             sx={{ 
                                 mb: 2, 
                                 backgroundColor: '#1976d2', 
@@ -412,45 +579,21 @@ const RegisterPage = () => {
                                 },
                                 '&:active': {
                                     transform: 'translateY(0px)'
+                                },
+                                '&:disabled': {
+                                    backgroundColor: '#ccc',
+                                    transform: 'none',
+                                    boxShadow: 'none'
                                 }
                             }}
                         >
-                            Create Account
+                            {isLoading ? t('auth.register.loading') : t('auth.register.button')}
                         </Button>
 
-                        <Button
-                            fullWidth
-                            variant="outlined"
-                            sx={{ 
-                                mb: 3, 
-                                color: '#666', 
-                                borderColor: '#ddd',
-                                py: 2,
-                                fontSize: '1.1rem',
-                                fontWeight: 600,
-                                borderRadius: '12px',
-                                textTransform: 'none',
-                                borderWidth: '2px',
-                                backgroundColor: '#ffffff',
-                                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
-                                transition: 'all 0.3s ease',
-                                '&:hover': { 
-                                    borderColor: '#1976d2', 
-                                    backgroundColor: 'rgba(25, 118, 210, 0.04)',
-                                    color: '#1976d2',
-                                    boxShadow: '0 4px 16px rgba(25, 118, 210, 0.15)',
-                                    transform: 'translateY(-1px)'
-                                },
-                                '&:active': {
-                                    transform: 'translateY(0px)'
-                                }
-                            }}
-                        >
-                            Connect with Google
-                        </Button>
+
 
                         <Typography variant="body2" sx={{ color: '#666' }}>
-                            Already have an account? <Link href="#" sx={{ color: '#1976d2', fontWeight: 600 }}>Sign in</Link>
+                            {t('auth.register.haveAccount')} <Link href="/login" sx={{ color: '#1976d2', fontWeight: 600 }}>{t('auth.register.signIn')}</Link>
                         </Typography>
                     </Box>
                 </Box>

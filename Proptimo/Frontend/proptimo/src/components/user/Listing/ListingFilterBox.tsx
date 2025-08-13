@@ -13,6 +13,7 @@ import {
 import { useGetAllRealEstateTypesQuery } from '../../../features/api/realEstateTypeApi';
 import type { RealEstateType } from '../../../features/api/types/realEstateType';
 import type { GetAllRealEstatesPreviewRequest } from '../../../features/api/types/realEstate';
+import { useLanguage } from '../../../context/LanguageContext';
 
 interface FilterState {
   propertyType: string;
@@ -34,6 +35,7 @@ interface ListingFilterBoxProps {
 const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) => {
   // API'den emlak tiplerini çek
   const { data: realEstateTypes, isLoading: isLoadingTypes } = useGetAllRealEstateTypesQuery();
+  const { t } = useLanguage();
   
   const [filters, setFilters] = useState<FilterState>({
     propertyType: '',
@@ -165,9 +167,9 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
   })) || [];
 
   const listingTypes = [
-    { value: '0', label: 'Satılık' },
-    { value: '1', label: 'Kiralık' },
-    { value: '2', label: 'Günlük Kiralık' }
+    { value: '0', label: t('realEstate.listingType.sale') },
+    { value: '1', label: t('realEstate.listingType.rent') },
+    { value: '2', label: t('realEstate.listingType.dailyRent') }
   ];
 
 
@@ -176,38 +178,38 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
     
     if (filters.propertyType) {
       const type = propertyTypes.find((t: any) => t.value === filters.propertyType);
-      activeFilters.push({ field: 'propertyType', label: 'Emlak Tipi', value: type?.label || '' });
+      activeFilters.push({ field: 'propertyType', label: t('filters.propertyType'), value: type?.label || '' });
     }
     
     if (filters.listingType) {
       const type = listingTypes.find(t => t.value === filters.listingType);
-      activeFilters.push({ field: 'listingType', label: 'İlan Tipi', value: type?.label || '' });
+      activeFilters.push({ field: 'listingType', label: t('filters.listingType'), value: type?.label || '' });
     }
     
     if (filters.priceRange[0] !== 0 || filters.priceRange[1] !== 10000000) {
       activeFilters.push({ 
         field: 'priceRange', 
-        label: 'Fiyat', 
+        label: t('realEstate.price'), 
         value: `${formatPrice(filters.priceRange[0])} - ${formatPrice(filters.priceRange[1])}` 
       });
     }
     
     if (filters.dateRange.startDate || filters.dateRange.endDate) {
-      const start = filters.dateRange.startDate || 'Başlangıç';
-      const end = filters.dateRange.endDate || 'Bitiş';
+      const start = filters.dateRange.startDate || t('filters.startDate');
+      const end = filters.dateRange.endDate || t('filters.endDate');
       activeFilters.push({ 
         field: 'dateRange', 
-        label: 'Tarih', 
+        label: t('filters.dateRange'), 
         value: `${start} - ${end}` 
       });
     }
     
     if (filters.city) {
-      activeFilters.push({ field: 'city', label: 'Şehir', value: filters.city });
+      activeFilters.push({ field: 'city', label: t('filters.city'), value: filters.city });
     }
     
     if (filters.district) {
-      activeFilters.push({ field: 'district', label: 'İlçe', value: filters.district });
+      activeFilters.push({ field: 'district', label: t('filters.district'), value: filters.district });
     }
     
     return activeFilters;
@@ -219,8 +221,8 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
   return (
     <Box
       sx={{
-        height: '100%',
-        overflowY: 'auto',
+        height: { xs: 'auto', lg: '100%' },
+        overflowY: { xs: 'visible', lg: 'auto' },
         backgroundColor: '#ffffff',
         borderRadius: 2,
         boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
@@ -229,15 +231,19 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
     >
              {/* Header */}
        <Box sx={{ 
-         p: 3, 
+         p: { xs: 2, sm: 3 }, 
          borderBottom: '1px solid #e0e0e0',
          backgroundColor: '#1976D2'
        }}>
          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-             <FilterIcon sx={{ color: '#ffffff', fontSize: 24 }} />
-             <Typography variant="h6" sx={{ fontWeight: 600, color: '#ffffff', fontSize: '1.1rem' }}>
-               Filtreler
+             <FilterIcon sx={{ color: '#ffffff', fontSize: { xs: 20, sm: 24 } }} />
+             <Typography variant="h6" sx={{ 
+               fontWeight: 600, 
+               color: '#ffffff', 
+               fontSize: { xs: '1rem', sm: '1.1rem' } 
+             }}>
+               {t('filters.title')}
              </Typography>
            </Box>
            {activeFiltersCount > 0 && (
@@ -292,11 +298,11 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
        </Box>
 
                            {/* Filter Content */}
-       <Box sx={{ p: 3 }}>
+       <Box sx={{ p: { xs: 2, sm: 3 } }}>
          {/* Property Type */}
          <Box sx={{ mb: 3 }}>
            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1, color: '#1976D2' }}>
-             Emlak Tipi
+             {t('filters.propertyType')}
            </Typography>
            <FormControl fullWidth size="small">
              <Select
@@ -318,7 +324,7 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
                }}
              >
                <MenuItem value="">
-                 {isLoadingTypes ? 'Yükleniyor...' : 'Tümü'}
+                 {isLoadingTypes ? t('common.loading') : t('common.clear')}
                </MenuItem>
                {propertyTypes.map((type) => (
                  <MenuItem key={type.value} value={type.value}>
@@ -336,7 +342,7 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
          {/* Listing Type */}
          <Box sx={{ mb: 3 }}>
            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1, color: '#1976D2' }}>
-             İlan Tipi
+             {t('filters.listingType')}
            </Typography>
            <FormControl fullWidth size="small">
              <Select
@@ -356,7 +362,7 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
                  }
                }}
              >
-               <MenuItem value="">Tümü</MenuItem>
+               <MenuItem value="">{t('common.clear')}</MenuItem>
                {listingTypes.map((type) => (
                  <MenuItem key={type.value} value={type.value}>
                    {type.label}
@@ -371,7 +377,7 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
                                        {/* Price Range */}
            <Box sx={{ mb: 3 }}>
              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1, color: '#1976D2' }}>
-               Fiyat Aralığı
+               {t('filters.priceRange')}
              </Typography>
              <Box sx={{ px: 1 }}>
                <Slider
@@ -406,10 +412,15 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
                    }
                  }}
                />
-               <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
+               <Box sx={{ 
+                 display: 'flex', 
+                 flexDirection: { xs: 'column', sm: 'row' },
+                 gap: { xs: 1, sm: 2 }, 
+                 mt: 3 
+               }}>
                  <TextField
                    size="small"
-                   label="Min Fiyat"
+                   label={t('filters.minPrice')}
                    value={filters.priceRange[0].toLocaleString('tr-TR')}
                    onChange={(e) => handlePriceChange('min', e.target.value)}
                    InputProps={{
@@ -430,7 +441,7 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
                  />
                  <TextField
                    size="small"
-                   label="Max Fiyat"
+                   label={t('filters.maxPrice')}
                    value={filters.priceRange[1].toLocaleString('tr-TR')}
                    onChange={(e) => handlePriceChange('max', e.target.value)}
                    InputProps={{
@@ -458,12 +469,16 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
                                        {/* Date Range */}
            <Box sx={{ mb: 3 }}>
              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1, color: '#1976D2' }}>
-               Tarih Aralığı
+               {t('filters.dateRange')}
              </Typography>
-             <Box sx={{ display: 'flex', gap: 2 }}>
+             <Box sx={{ 
+               display: 'flex', 
+               flexDirection: { xs: 'column', sm: 'row' },
+               gap: { xs: 1, sm: 2 } 
+             }}>
                <TextField
                  size="small"
-                 label="Başlangıç Tarihi"
+                 label={t('filters.startDate')}
                  type="date"
                  value={filters.dateRange.startDate}
                  onChange={(e) => handleNestedFilterChange('dateRange', 'startDate', e.target.value)}
@@ -483,7 +498,7 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
                />
                <TextField
                  size="small"
-                 label="Bitiş Tarihi"
+                 label={t('filters.endDate')}
                  type="date"
                  value={filters.dateRange.endDate}
                  onChange={(e) => handleNestedFilterChange('dateRange', 'endDate', e.target.value)}
@@ -509,57 +524,61 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
                    {/* Location */}
           <Box sx={{ mb: 3 }}>
             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: '#1976D2' }}>
-              Konum
+              {t('filters.location')}
             </Typography>
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <TextField
-                size="small"
-                label="Şehir"
-                placeholder="Şehir seçiniz..."
-                value={filters.city}
-                onChange={(e) => handleFilterChange('city', e.target.value)}
-                sx={{ 
-                  flex: 1,
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: 1,
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#1976D2'
-                    },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#1976D2'
-                    }
-                  }
-                }}
-              />
-              <TextField
-                size="small"
-                label="İlçe"
-                placeholder="İlçe seçiniz..."
-                value={filters.district}
-                onChange={(e) => handleFilterChange('district', e.target.value)}
-                sx={{ 
-                  flex: 1,
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: 1,
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#1976D2'
-                    },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#1976D2'
-                    }
-                  }
-                }}
-              />
-            </Box>
+                         <Box sx={{ 
+               display: 'flex', 
+               flexDirection: { xs: 'column', sm: 'row' },
+               gap: { xs: 1, sm: 2 } 
+             }}>
+               <TextField
+                 size="small"
+                 label={t('filters.city')}
+                 placeholder={`${t('filters.city')} seçiniz...`}
+                 value={filters.city}
+                 onChange={(e) => handleFilterChange('city', e.target.value)}
+                 sx={{ 
+                   flex: 1,
+                   '& .MuiOutlinedInput-root': {
+                     borderRadius: 1,
+                     '&:hover .MuiOutlinedInput-notchedOutline': {
+                       borderColor: '#1976D2'
+                     },
+                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                       borderColor: '#1976D2'
+                     }
+                   }
+                 }}
+               />
+               <TextField
+                 size="small"
+                 label={t('filters.district')}
+                 placeholder={`${t('filters.district')} seçiniz...`}
+                 value={filters.district}
+                 onChange={(e) => handleFilterChange('district', e.target.value)}
+                 sx={{ 
+                   flex: 1,
+                   '& .MuiOutlinedInput-root': {
+                     borderRadius: 1,
+                     '&:hover .MuiOutlinedInput-notchedOutline': {
+                       borderColor: '#1976D2'
+                     },
+                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                       borderColor: '#1976D2'
+                     }
+                   }
+                 }}
+               />
+             </Box>
           </Box>
        </Box>
 
                                                                                {/* Footer - Buttons */}
-            <Box sx={{ 
-              p: 3, 
-              borderTop: '1px solid #e0e0e0',
-              backgroundColor: '#f5f5f5'
-            }}>
+                         <Box sx={{ 
+               p: { xs: 2, sm: 3 }, 
+               borderTop: '1px solid #e0e0e0',
+               backgroundColor: '#f5f5f5'
+             }}>
               <Box sx={{ display: 'flex', gap: 1 }}>
                                <Button
                    variant="contained"
@@ -585,7 +604,7 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
                      }
                    }}
                  >
-                   Filtrele
+                   {t('filters.apply')}
                  </Button>
                 
               </Box>

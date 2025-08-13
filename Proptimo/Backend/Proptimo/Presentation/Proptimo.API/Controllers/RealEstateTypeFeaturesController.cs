@@ -42,7 +42,7 @@ namespace Proptimo.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateEstateTypeFeature(UpdateRealEstateTypeFeatureCommand command)
         {
-            await _mediator.Send(command);
+            var result = await _mediator.Send(command);
 
             return Ok("Basariyla güncellendi.");
         }

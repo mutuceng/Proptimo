@@ -53,9 +53,7 @@ const TypeFeatureAddForm = ({ onSuccess }: Props) => {
         e.preventDefault();
         try {
             const dataToSend = { ...formData, realEstateTypeId: typeId ?? '' };
-            console.log('gonderilendata', dataToSend);
-            const result = await createTypeFeature(dataToSend).unwrap();
-            console.log('created', result);
+            await createTypeFeature(dataToSend).unwrap();
             setFormData({
                 name: '',
                 dataType: 0,

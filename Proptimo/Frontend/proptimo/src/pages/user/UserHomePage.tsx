@@ -17,10 +17,13 @@ import HomeIcon from '@mui/icons-material/Home';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CityGrid from "../../components/user/Home/CityGrid";
+import { useLanguage } from "../../context/LanguageContext";
 
 
 // Hero Section Component
 const HeroSection = () => {
+  const { t } = useLanguage();
+  
   return (
     <Box
       sx={{
@@ -46,10 +49,10 @@ const HeroSection = () => {
       <Container maxWidth="lg">
         <Box sx={{ position: 'relative', zIndex: 1 }}>
           <Typography variant="h2" sx={{ fontWeight: 700, mb: 2, textAlign: 'center' }}>
-            Hayalinizdeki Evi Bulun
+            {t('home.hero.title')}
           </Typography>
           <Typography variant="h5" sx={{ mb: 4, textAlign: 'center', opacity: 0.9 }}>
-            Türkiye'nin en güvenilir emlak platformu ile doğru adrese ulaşın
+            {t('home.hero.subtitle')}
           </Typography>
           
           <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
@@ -71,7 +74,7 @@ const HeroSection = () => {
                 }
               }}
             >
-              Emlak Ara
+              {t('home.hero.searchButton')}
             </Button>
 
           </Box>
@@ -83,21 +86,23 @@ const HeroSection = () => {
 
 // Features Section Component
 const FeaturesSection = () => {
+  const { t } = useLanguage();
+  
   const features = [
     {
       icon: <SearchIcon sx={{ fontSize: 40, color: '#1976D2' }} />,
-      title: "Kolay Arama",
-      description: "Gelişmiş filtreler ile istediğiniz özelliklerdeki emlağı kolayca bulun"
+      title: t('home.features.easySearch.title'),
+      description: t('home.features.easySearch.description')
     },
     {
       icon: <LocationOnIcon sx={{ fontSize: 40, color: '#1976D2' }} />,
-      title: "Güvenilir Konum",
-      description: "Türkiye'nin her yerinden güvenilir emlak ilanları"
+      title: t('home.features.reliableLocation.title'),
+      description: t('home.features.reliableLocation.description')
     },
     {
       icon: <AttachMoneyIcon sx={{ fontSize: 40, color: '#1976D2' }} />,
-      title: "Uygun Fiyat",
-      description: "Piyasa değerine uygun, şeffaf fiyatlandırma"
+      title: t('home.features.fairPrice.title'),
+      description: t('home.features.fairPrice.description')
     }
   ];
 
@@ -105,7 +110,7 @@ const FeaturesSection = () => {
     <Box sx={{ py: 6 }}>
       <Container maxWidth="lg">
         <Typography variant="h3" sx={{ textAlign: 'center', mb: 6, fontWeight: 600, color: '#1976D2' }}>
-          Neden Proptimo?
+          {t('home.features.title')}
         </Typography>
         <Box sx={{ 
           display: 'grid', 
@@ -146,14 +151,16 @@ const FeaturesSection = () => {
 
 // Popular Cities Section Component
 const PopularCitiesSection = () => {
+  const { t } = useLanguage();
+  
   return (
     <Box sx={{ py: 6, backgroundColor: '#f8f9fa' }}>
       <Container maxWidth="lg">
         <Typography variant="h3" sx={{ textAlign: 'center', mb: 2, fontWeight: 600, color: '#1976D2' }}>
-          Popüler Şehirler
+          {t('home.popularCities.title')}
         </Typography>
         <Typography variant="h6" sx={{ textAlign: 'center', mb: 6, color: '#666' }}>
-          Türkiye'nin en çok tercih edilen şehirlerinde emlak fırsatları
+          {t('home.popularCities.subtitle')}
         </Typography>
         <CityGrid />
       </Container>
@@ -163,11 +170,13 @@ const PopularCitiesSection = () => {
 
 // Stats Section Component
 const StatsSection = () => {
+  const { t } = useLanguage();
+  
   const stats = [
-    { number: "50,000+", label: "Aktif İlan" },
-    { number: "25,000+", label: "Mutlu Müşteri" },
-    { number: "81", label: "İl Kapsamı" },
-    { number: "24/7", label: "Destek" }
+    { number: "50,000+", label: t('home.stats.activeListings') },
+    { number: "25,000+", label: t('home.stats.happyCustomers') },
+    { number: "81", label: t('home.stats.citiesCovered') },
+    { number: "24/7", label: t('home.stats.support') }
   ];
 
   return (

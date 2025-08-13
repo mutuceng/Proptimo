@@ -12,38 +12,32 @@ const AdminSidebarItem = ({ name, path }: AdminSidebarItemProps) => {
     const location = useLocation();
     
     const getIcon = (itemName: string) => {
-        switch (itemName.toLowerCase()) {
-            case 'home':
+        const itemNameLower = itemName.toLowerCase();
+        switch (itemNameLower) {
+            case 'anasayfa':
                 return <Home fontSize="small" />;
-            case 'users':
-                return <People fontSize="small" />;
-            case 'real estates':
+            case 'emlaklar':
                 return <HomeWork fontSize="small" />;
-            case 'real estate types':
+            case 'emlak tipleri':
                 return <Category fontSize="small" />;
-            case 'currencies':
+            case 'para birimleri':
                 return <CurrencyExchange fontSize="small" />;
-            case 'settings':
-                return <Settings fontSize="small" />;
             default:
                 return null;
         }
     };
 
     const getPath = (itemName: string) => {
-        switch (itemName.toLowerCase()) {
-            case 'home':
+        const itemNameLower = itemName.toLowerCase();
+        switch (itemNameLower) {
+            case 'anasayfa':
                 return '/admin';
-            case 'users':
-                return '/admin/users';
-            case 'real estates':
+            case 'emlaklar':
                 return '/admin/real-estates';
-            case 'real estate types':
+            case 'emlak tipleri':
                 return '/admin/real-estate-types';
-            case 'currencies':
+            case 'para birimleri':
                 return '/admin/currencies';
-            case 'settings':
-                return '/admin/settings';
             default:
                 return '/admin';
         }

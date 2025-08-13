@@ -154,8 +154,8 @@ namespace Proptimo.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateRealEstate(UpdateRealEstateCommand command)
         {
-            await _mediator.Send(command);
-            return Ok("Basarıyla güncellendi.");
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
     }
 }

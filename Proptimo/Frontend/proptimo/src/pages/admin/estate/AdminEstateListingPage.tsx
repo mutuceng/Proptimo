@@ -13,7 +13,6 @@ const AdminEstateListingPage = () => {
     const [deleteRealEstate] = useDeleteRealEstateMutation();
     const navigate = useNavigate();
 
-    // Backend doğrudan array döndürüyor
     const realEstates: RealEstate[] = (data as unknown as RealEstate[]) || [];
 
     const loading = isLoading || isFetching;
@@ -34,29 +33,23 @@ const AdminEstateListingPage = () => {
 
     // Format fonksiyonları
     const formatPrice = (value: number) => {
-        console.log('formatPrice called with:', value, 'type:', typeof value);
         if (value === null || value === undefined) return "0 ₺";
         return `${Number(value).toLocaleString('tr-TR')} ₺`;
     };
 
     const formatListingType = (value: number) => {
-        console.log('formatListingType called with:', value, 'type:', typeof value);
         if (value === null || value === undefined) return "Bilinmiyor";
         const result = listingTypeMap[value] || "Bilinmiyor";
-        console.log('formatListingType result:', result);
         return result;
     };
 
     const formatState = (value: number) => {
-        console.log('formatState called with:', value, 'type:', typeof value);
         if (value === null || value === undefined) return "Bilinmiyor";
         const result = stateMap[value] || "Bilinmiyor";
-        console.log('formatState result:', result);
         return result;
     };
 
     const formatDate = (value: string) => {
-        console.log('formatDate called with:', value, 'type:', typeof value);
         if (!value) return "Belirtilmemiş";
         try {
             return new Date(value).toLocaleDateString('tr-TR');
@@ -175,14 +168,6 @@ const AdminEstateListingPage = () => {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-            {import.meta.env.DEV && (
-                <Alert severity="info" sx={{ mb: 2 }}>
-                    <strong>Debug:</strong> Loading: {loading.toString()} | 
-                    Data: {data ? 'Var' : 'Yok'} | 
-                    Error: {error ? 'Var' : 'Yok'} | 
-                    Count: {realEstates.length}
-                </Alert>
-            )}
 
             {error && (
                 <Alert severity="error" sx={{ mb: 2 }}>

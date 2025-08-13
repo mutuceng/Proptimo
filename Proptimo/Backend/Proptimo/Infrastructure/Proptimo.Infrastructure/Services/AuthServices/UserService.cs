@@ -35,8 +35,10 @@ namespace Proptimo.Infrastructure.Services.AuthServices
 
                 await _userManager.UpdateAsync(user);
             }
-
-            throw new UserNotFoundException("Kullanıcı bulunamadı.");
+            else
+            {
+                throw new UserNotFoundException("Kullanıcı bulunamadı.");
+            }
         }
 
         public async Task<TokenResponseDto> RefreshAccessToken(RefreshAccessTokenRequest request)

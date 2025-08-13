@@ -23,8 +23,7 @@ const EstateTypeAddForm = () => {
         e.preventDefault();
 
         try {
-            const type = await createEstateType(formData).unwrap();
-            console.log('created',type);
+            await createEstateType(formData).unwrap();
 
             setFormData({
                 name:''

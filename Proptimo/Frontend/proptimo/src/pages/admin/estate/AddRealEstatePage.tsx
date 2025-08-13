@@ -298,14 +298,9 @@ const AddRealEstatePage = () => {
                             SelectProps={{
                                 displayEmpty: true,
                                 renderValue: (value) => {
-                                    console.log("RenderValue gelen value:", value);
-                                    console.log("Tip:", typeof value);
-                                    console.log("RealEstateTypes:", realEstateTypes);
-                                    
                                     if (!value || value === "") return 'Seçiniz';
                                     
                                     const found = realEstateTypes.find((t) => String(t.id) === String(value));
-                                    console.log("Bulunan:", found);
                                     return found ? found.name : 'Seçiniz';
                                 },
                             }}

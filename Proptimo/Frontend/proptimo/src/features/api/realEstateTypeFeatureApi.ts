@@ -47,12 +47,17 @@ export const realEstateTypeFeatureApi = baseApi.injectEndpoints({
                 method: 'PUT',
                 body : updatedTypeFeature
             }),
-            invalidatesTags : (result, error, {id}) => [{type: 'RealEstateTypeFeature', id}],
+            invalidatesTags : (result, error, updatedTypeFeature) => [
+                {type: 'RealEstateTypeFeature', id: updatedTypeFeature.realEstateTypeId}
+            ],
 
             async onQueryStarted(updatedTypeFeature, {dispatch, queryFulfilled}) {
                 const patchResult = dispatch(
                     realEstateTypeFeatureApi.util.updateQueryData('getAllRealEstateTypeFeaturesByTypeId', updatedTypeFeature.realEstateTypeId, (draft) =>{
-                        Object.assign(draft, updatedTypeFeature);
+                        const index = draft.data.findIndex((feature: RealEstateTypeFeature) => feature.id === updatedTypeFeature.id);
+                        if (index !== -1) {
+                            draft.data[index] = { ...draft.data[index], ...updatedTypeFeature };
+                        }
                     })
                 )
 

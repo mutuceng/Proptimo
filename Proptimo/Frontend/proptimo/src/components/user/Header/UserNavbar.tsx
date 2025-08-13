@@ -16,24 +16,34 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../../context/AuthContext';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export const UserNavbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { isAuthenticated, logout, user } = useAuth();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  const handleLogout = () => {
+    logout();
+  };
+
   const navigationItems = [
-    { name: 'Emlak Listesi', path: '/listings' },
-    { name: 'Satılık', path: '/listings?listingType=0' },
-    { name: 'Kiralık', path: '/listings?listingType=1' },
-    { name: 'Hakkımızda', path: '/about' },
-    { name: 'İletişim', path: '/contact' }
+    { name: t('navigation.listings'), path: '/listings' },
+    { name: t('realEstate.listingType.sale'), path: '/listings?listingType=0' },
+    { name: t('realEstate.listingType.rent'), path: '/listings?listingType=1' },
+    { name: t('navigation.about'), path: '/about' },
+    { name: t('navigation.contact'), path: '/contact' }
   ];
 
   const drawer = (
@@ -65,45 +75,52 @@ export const UserNavbar = () => {
       
       {/* Mobile Butonlar */}
       <Box sx={{ p: 3, pt: 2 }}>
-        <Button
-          variant="outlined"
-          fullWidth
-          sx={{
-            color: '#1976d2',
-            borderColor: '#1976d2',
-            borderRadius: '8px',
-            textTransform: 'none',
-            fontWeight: 600,
-            py: 1.5,
-            mb: 2,
-            transition: 'all 0.2s ease-in-out',
-            '&:hover': {
-              backgroundColor: '#1976d2',
-              color: 'white',
-              borderColor: '#1976d2'
-            }
-          }}
-        >
-          Giriş Yap
-        </Button>
+        {isAuthenticated ? (
         
-        <Button
-          variant="contained"
-          fullWidth
-          sx={{
-            backgroundColor: '#1976d2',
-            borderRadius: '8px',
-            textTransform: 'none',
-            fontWeight: 600,
-            py: 1.5,
-            transition: 'all 0.2s ease-in-out',
-            '&:hover': {
-              backgroundColor: '#1565c0'
-            }
-          }}
-        >
-          Kaydol
-        </Button>
+                         <Button
+               variant="outlined"
+               fullWidth
+               startIcon={<LogoutIcon />}
+               onClick={handleLogout}
+               sx={{
+                 color: '#666',
+                 borderColor: '#e0e0e0',
+                 backgroundColor: '#f5f5f5',
+                 borderRadius: '8px',
+                 textTransform: 'none',
+                 fontWeight: 600,
+                 py: 1.5,
+                 transition: 'all 0.2s ease-in-out',
+                 '&:hover': {
+                   backgroundColor: '#e8e8e8',
+                   color: '#333',
+                   borderColor: '#d0d0d0'
+                 }
+               }}
+             >
+               {t('navigation.logout')}
+             </Button>
+      
+        ) : (
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={() => navigate('/login')}
+            sx={{
+              backgroundColor: '#1976d2',
+              borderRadius: '8px',
+              textTransform: 'none',
+              fontWeight: 600,
+              py: 1.5,
+              transition: 'all 0.2s ease-in-out',
+              '&:hover': {
+                backgroundColor: '#1565c0'
+              }
+            }}
+          >
+            {t('navigation.login')}
+          </Button>
+        )}
       </Box>
     </Box>
   );
@@ -215,69 +232,56 @@ export const UserNavbar = () => {
           {/* Sağ Taraf - Butonlar */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, ml: 'auto' }}>
             {/* Dil Seçimi */}
-            <IconButton
-              sx={{
-                color: '#666',
-                backgroundColor: '#f5f5f5',
-                border: '1px solid #e0e0e0',
-                borderRadius: '10px',
-                padding: '10px',
-                transition: 'all 0.2s ease-in-out',
-                '&:hover': {
-                  backgroundColor: '#e8e8e8',
-                  borderColor: '#d0d0d0',
-                  transform: 'scale(1.05)'
-                }
-              }}
-            >
-              🌐
-            </IconButton>
+            <LanguageSwitcher />
 
-            {/* Giriş Yap Butonu */}
-            <Button
-              variant="outlined"
-              sx={{
-                color: '#1976d2',
-                borderColor: '#1976d2',
-                borderRadius: '8px',
-                textTransform: 'none',
-                fontWeight: 600,
-                px: 3,
-                py: 1,
-                transition: 'all 0.2s ease-in-out',
-                '&:hover': {
+            {isAuthenticated ? (
+              <>
+                                 {/* Çıkış Yap Butonu */}
+                 <IconButton
+                   onClick={handleLogout}
+                   sx={{
+                     color: '#666',
+                     backgroundColor: '#f5f5f5',
+                     border: '1px solid #e0e0e0',
+                     borderRadius: '10px',
+                     padding: { xs: '8px', sm: '12px' },
+                     transition: 'all 0.2s ease-in-out',
+                     '&:hover': {
+                       backgroundColor: '#e8e8e8',
+                       borderColor: '#d0d0d0',
+                       transform: 'scale(1.05)',
+                       color: '#333'
+                     }
+                   }}
+                 >
+                   <LogoutIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
+                 </IconButton>
+              </>
+            ) : (
+              /* Giriş Yap Butonu */
+              <Button
+                variant="contained"
+                onClick={() => navigate('/login')}
+                sx={{
                   backgroundColor: '#1976d2',
-                  color: 'white',
-                  borderColor: '#1976d2',
-                  transform: 'translateY(-1px)',
-                  boxShadow: '0 4px 12px rgba(25, 118, 210, 0.3)'
-                }
-              }}
-            >
-              Giriş Yap
-            </Button>
-
-            {/* Kaydol Butonu */}
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: '#1976d2',
-                borderRadius: '8px',
-                textTransform: 'none',
-                fontWeight: 600,
-                px: 3,
-                py: 1,
-                transition: 'all 0.2s ease-in-out',
-                boxShadow: '0 2px 8px rgba(25, 118, 210, 0.2)',
-                '&:hover': {
-                  backgroundColor: '#1565c0',
-                  transform: 'translateY(-1px)',
-                  boxShadow: '0 4px 12px rgba(25, 118, 210, 0.4)'
-                }
-              }}
-            >
-              Kaydol
-            </Button>
+                  borderRadius: '8px',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  px: { xs: 2, sm: 3 },
+                  py: { xs: 0.75, sm: 1 },
+                  fontSize: { xs: '0.85rem', sm: '1rem' },
+                  transition: 'all 0.2s ease-in-out',
+                  boxShadow: '0 2px 8px rgba(25, 118, 210, 0.2)',
+                  '&:hover': {
+                    backgroundColor: '#1565c0',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 4px 12px rgba(25, 118, 210, 0.4)'
+                  }
+                }}
+              >
+                {t('navigation.login')}
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </Container>

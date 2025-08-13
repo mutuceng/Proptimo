@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useGetRealEstateDetailQuery } from '../../features/api/realEstateApi';
 import { useGetAllCurrenciesQuery, useConvertCurrencyMutation } from '../../features/api/currencyApi';
+import { useLanguage } from '../../context/LanguageContext';
 import {Box,
   Container,
   Typography,
@@ -87,6 +88,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ lat, lng, title, address })
 const UserEstateDetailPage = () => {
   const { estateId } = useParams<{ estateId: string }>();
   const { data, isLoading, error } = useGetRealEstateDetailQuery(estateId || '');
+  const { t } = useLanguage();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [convertedPrices, setConvertedPrices] = useState<{[key: string]: number}>({});
   const [loadingCurrencies, setLoadingCurrencies] = useState<{[key: string]: boolean}>({});
@@ -126,7 +128,7 @@ const UserEstateDetailPage = () => {
     return (
       <Container maxWidth="xl" sx={{ py: 4 }}>
         <Alert severity="error" sx={{ borderRadius: 2 }}>
-          Emlak detayları yüklenirken bir hata oluştu. Lütfen tekrar deneyin.
+          {t('errors.loadingError')}
         </Alert>
       </Container>
     );
@@ -145,16 +147,16 @@ const UserEstateDetailPage = () => {
 
   // Listing type'ı string'e çevir
   const getListingTypeText = (type: number) => {
-    if (type === 0) return 'Satılık';
-    if (type === 1) return 'Kiralık';
-    if (type === 2) return 'Günlük Kiralık';
+    if (type === 0) return t('realEstate.listingType.sale');
+    if (type === 1) return t('realEstate.listingType.rent');
+    if (type === 2) return t('realEstate.listingType.dailyRent');
     return '';
   };
 
   // State'i string'e çevir
   const getStateText = (state: number) => {
-    if (state === 0) return 'Aktif';
-    if (state === 1) return 'Pasif';
+    if (state === 0) return t('realEstate.status.active');
+    if (state === 1) return t('realEstate.status.hidden');
     return '';
   };
 
@@ -237,7 +239,7 @@ const UserEstateDetailPage = () => {
                 }}
               >
                 <Typography variant="h6" color="text.secondary">
-                  Resim bulunamadı
+                  {t('realEstate.images')}
                 </Typography>
               </Box>
             )}
@@ -285,7 +287,7 @@ const UserEstateDetailPage = () => {
                   startIcon={<Share />}
                   size="small"
                 >
-                  Paylaş
+                  {t('common.share')}
                 </Button>
               </Stack>
             </Box>
@@ -314,7 +316,7 @@ const UserEstateDetailPage = () => {
           {/* Açıklama */}
           <Paper elevation={2} sx={{ p: 3, borderRadius: 2, mb: 3 }}>
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              Açıklama
+              {t('realEstate.description')}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.6 }}>
               {realEstate.description}
@@ -325,7 +327,7 @@ const UserEstateDetailPage = () => {
           {featureMap.size > 0 && (
             <Paper elevation={2} sx={{ p: 3, borderRadius: 2, mb: 3 }}>
               <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                Özellikler
+                {t('realEstate.features')}
               </Typography>
               <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' }, gap: 2 }}>
                 {Array.from(featureMap.values()).map(({ feature, value }) => (
@@ -340,8 +342,8 @@ const UserEstateDetailPage = () => {
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                           {value.valueString || value.valueInt || value.valueDecimal || 
-                           (value.valueBool !== undefined ? (value.valueBool ? 'Evet' : 'Hayır') : '') ||
-                           value.valueDate || 'Belirtilmemiş'}
+                           (value.valueBool !== undefined ? (value.valueBool ? t('common.yes') : t('common.no')) : '') ||
+                           value.valueDate || t('common.notSpecified')}
                         </Typography>
                       </Box>
                     </Box>
@@ -357,7 +359,7 @@ const UserEstateDetailPage = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                 <MapIcon sx={{ color: 'primary.main', mr: 1, fontSize: 28 }} />
                 <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Konum
+                  {t('realEstate.location')}
                 </Typography>
               </Box>
               <Box sx={{ borderRadius: 2, overflow: 'hidden', border: '1px solid', borderColor: 'grey.300' }}>
@@ -429,7 +431,7 @@ const UserEstateDetailPage = () => {
               }}>
                 <CheckCircle sx={{ fontSize: 20, opacity: 0.9 }} />
                 <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                  Güvenilir fiyat garantisi
+                  {t('currency.reliablePrice')}
                 </Typography>
               </Box>
 
@@ -437,7 +439,7 @@ const UserEstateDetailPage = () => {
               {currencies && currencies.length > 0 && (
                 <Box sx={{ mt: 3 }}>
                   <Typography variant="h6" sx={{ mb: 2, opacity: 0.9, fontWeight: 600 }}>
-                    Uluslararası Birimler
+                    {t('currency.internationalUnits')}
                   </Typography>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                     {currencies.map((currency) => (
@@ -461,7 +463,7 @@ const UserEstateDetailPage = () => {
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           {loadingCurrencies[currency.id] ? (
                             <Typography variant="body2" sx={{ opacity: 0.7, fontStyle: 'italic' }}>
-                              Çevriliyor...
+                              {t('currency.converting')}
                             </Typography>
                           ) : convertedPrices[currency.id] ? (
                             <Typography variant="body2" sx={{ opacity: 0.9, fontWeight: 600 }}>
@@ -485,7 +487,7 @@ const UserEstateDetailPage = () => {
                                 transition: 'all 0.2s ease-in-out'
                               }}
                             >
-                              Çevir
+                              {t('currency.convert')}
                             </Button>
                           )}
                         </Box>
@@ -500,7 +502,7 @@ const UserEstateDetailPage = () => {
           {/* İletişim Kartı */}
           <Paper elevation={2} sx={{ p: 3, borderRadius: 3, mb: 3, border: '1px solid', borderColor: 'grey.200' }}>
             <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#1976D2' }}>
-              İletişim
+              {t('realEstate.contact')}
             </Typography>
             <Stack spacing={2.5}>
               <Button
@@ -520,7 +522,7 @@ const UserEstateDetailPage = () => {
                   transition: 'all 0.3s ease-in-out'
                 }}
               >
-                Telefon Et
+                {t('contact.call')}
               </Button>
               <Button
                 variant="outlined"
@@ -539,7 +541,7 @@ const UserEstateDetailPage = () => {
                   transition: 'all 0.3s ease-in-out'
                 }}
               >
-                Mesaj Gönder
+                {t('contact.message')}
               </Button>
             </Stack>
           </Paper>
@@ -547,7 +549,7 @@ const UserEstateDetailPage = () => {
           {/* Detay Bilgileri */}
           <Paper elevation={2} sx={{ p: 3, borderRadius: 3, border: '1px solid', borderColor: 'grey.200' }}>
             <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#1976D2' }}>
-              Detay Bilgileri
+              {t('realEstate.details')}
             </Typography>
             <List dense>
               <ListItem sx={{ px: 0, py: 1 }}>
@@ -564,7 +566,7 @@ const UserEstateDetailPage = () => {
                   </Box>
                 </ListItemIcon>
                 <ListItemText
-                  primary="İlan Tarihi"
+                  primary={t('realEstate.listingDate')}
                   secondary={formatDate(realEstate.createdAt.toString())}
                   primaryTypographyProps={{ fontWeight: 500, fontSize: '0.9rem' }}
                   secondaryTypographyProps={{ fontSize: '0.85rem' }}
@@ -584,8 +586,8 @@ const UserEstateDetailPage = () => {
                   </Box>
                 </ListItemIcon>
                 <ListItemText
-                  primary="Emlak Tipi"
-                  secondary="Konut"
+                  primary={t('realEstate.type')}
+                  secondary={t('realEstate.type')}
                   primaryTypographyProps={{ fontWeight: 500, fontSize: '0.9rem' }}
                   secondaryTypographyProps={{ fontSize: '0.85rem' }}
                 />
@@ -604,7 +606,7 @@ const UserEstateDetailPage = () => {
                   </Box>
                 </ListItemIcon>
                 <ListItemText
-                  primary="Adres"
+                  primary={t('contact.address')}
                   secondary={`${address.street} ${address.buildingNo}/${address.doorNumber}`}
                   primaryTypographyProps={{ fontWeight: 500, fontSize: '0.9rem' }}
                   secondaryTypographyProps={{ fontSize: '0.85rem' }}
@@ -633,7 +635,7 @@ const UserEstateDetailPage = () => {
                     transition: 'all 0.3s ease-in-out'
                   }}
                 >
-                  Haritada Göster
+                  {t('map.viewDetails')}
                 </Button>
               </Box>
             )}

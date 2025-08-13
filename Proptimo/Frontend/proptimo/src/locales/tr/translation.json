@@ -1,0 +1,198 @@
+{
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "add": "Ekle",
+    "search": "Ara",
+    "filter": "Filtrele",
+    "clear": "Temizle",
+    "back": "Geri",
+    "next": "İleri",
+    "previous": "Önceki",
+    "submit": "Gönder",
+    "close": "Kapat",
+    "yes": "Evet",
+    "no": "Hayır",
+    "ok": "Tamam",
+    "share": "Paylaş",
+    "notSpecified": "Belirtilmemiş"
+  },
+  "navigation": {
+    "home": "Ana Sayfa",
+    "listings": "Emlak Listesi",
+    "about": "Hakkımızda",
+    "contact": "İletişim",
+    "login": "Giriş Yap",
+    "register": "Kayıt Ol",
+    "logout": "Çıkış Yap",
+    "admin": "Yönetim Paneli"
+  },
+  "realEstate": {
+    "title": "Emlak",
+    "listings": "Emlak Listesi",
+    "details": "Emlak Detayları",
+    "price": "Fiyat",
+    "location": "Konum",
+    "type": "Emlak Tipi",
+    "status": "Durum",
+    "features": "Özellikler",
+    "description": "Açıklama",
+    "images": "Resimler",
+    "contact": "İletişim",
+    "map": "Harita",
+    "listingDate": "İlan Tarihi",
+    "listingType": {
+      "sale": "Satılık",
+      "rent": "Kiralık",
+      "dailyRent": "Günlük Kiralık"
+    },
+    "status": {
+      "active": "Yayında",
+      "rented": "Kiralandı",
+      "sold": "Satıldı",
+      "expired": "Süresi Doldu",
+      "hidden": "Gizli"
+    }
+  },
+  "filters": {
+    "title": "Filtreler",
+    "propertyType": "Emlak Tipi",
+    "listingType": "İlan Tipi",
+    "priceRange": "Fiyat Aralığı",
+    "location": "Konum",
+    "city": "Şehir",
+    "district": "İlçe",
+    "dateRange": "Tarih Aralığı",
+    "startDate": "Başlangıç Tarihi",
+    "endDate": "Bitiş Tarihi",
+    "minPrice": "Minimum Fiyat",
+    "maxPrice": "Maksimum Fiyat",
+    "apply": "Uygula",
+    "clear": "Temizle"
+  },
+  "map": {
+    "title": "Harita Görünümü",
+    "noProperties": "Haritada gösterilecek emlak bulunamadı.",
+    "viewDetails": "Detayları Görüntüle"
+  },
+  "currency": {
+    "convert": "Çevir",
+    "converting": "Çevriliyor...",
+    "internationalUnits": "Uluslararası Birimler",
+    "reliablePrice": "Güvenilir fiyat garantisi"
+  },
+  "contact": {
+    "call": "Telefon Et",
+    "message": "Mesaj Gönder",
+    "email": "E-posta",
+    "phone": "Telefon",
+    "address": "Adres"
+  },
+  "pagination": {
+    "page": "Sayfa",
+    "of": "/",
+    "showing": "Gösteriliyor",
+    "results": "sonuç"
+  },
+  "errors": {
+    "general": "Bir hata oluştu. Lütfen tekrar deneyin.",
+    "notFound": "Sayfa bulunamadı.",
+    "unauthorized": "Bu işlem için yetkiniz yok.",
+    "networkError": "Ağ bağlantısı hatası.",
+    "loadingError": "Veriler yüklenirken bir hata oluştu."
+  },
+  "footer": {
+    "description": "Türkiye'nin en güvenilir emlak platformu. Hayalinizdeki evi bulun, güvenle alın veya kiralayın.",
+    "quickLinks": "Hızlı Linkler",
+    "followUs": "Bizi Takip Edin",
+    "privacyPolicy": "Gizlilik Politikası",
+    "termsOfService": "Kullanım Şartları",
+    "copyright": "Tüm hakları saklıdır."
+  },
+  "auth": {
+    "login": {
+      "title": "Tekrar Hoş Geldiniz",
+      "subtitle": "Proptimo ile yolculuğunuza devam etmek için hesabınıza giriş yapın",
+      "email": "E-posta",
+      "emailPlaceholder": "E-posta adresinizi girin",
+      "password": "Şifre",
+      "passwordPlaceholder": "Şifrenizi girin",
+      "button": "Giriş Yap",
+      "loading": "Giriş Yapılıyor...",
+      "noAccount": "Hesabınız yok mu?",
+      "signUp": "Kayıt Ol",
+      "fillFields": "Lütfen e-posta ve şifre alanlarını doldurun.",
+      "error": "Giriş yapılırken bir hata oluştu.",
+      "heroTitle": "Hayalinizdeki Evi Bulun",
+      "heroSubtitle": "Yaşam tarzınıza ve bütçenize uygun mükemmel mülkü keşfedin"
+    },
+    "register": {
+      "title": "Hesap Oluştur",
+      "subtitle": "Mülkleri keşfetmeye başlamak ve emlak profesyonelleriyle bağlantı kurmak için kayıt olun",
+      "username": "Kullanıcı Adı",
+      "usernamePlaceholder": "Kullanıcı adınızı girin",
+      "firstName": "Ad",
+      "firstNamePlaceholder": "Adınızı girin",
+      "lastName": "Soyad",
+      "lastNamePlaceholder": "Soyadınızı girin",
+      "phoneNumber": "Telefon Numarası (İsteğe Bağlı)",
+      "phoneNumberPlaceholder": "Telefon numaranızı girin (isteğe bağlı)",
+      "email": "E-posta Adresi",
+      "emailPlaceholder": "E-posta adresinizi girin",
+      "birthDate": "Doğum Tarihi",
+      "password": "Şifre",
+      "passwordPlaceholder": "Güçlü bir şifre oluşturun",
+      "confirmPassword": "Şifre Onayla",
+      "confirmPasswordPlaceholder": "Şifrenizi onaylayın",
+      "button": "Hesap Oluştur",
+      "loading": "Hesap Oluşturuluyor...",
+      "haveAccount": "Zaten hesabınız var mı?",
+      "signIn": "Giriş Yap",
+      "fillFields": "Lütfen zorunlu alanları doldurun.",
+      "passwordMismatch": "Şifreler eşleşmiyor.",
+      "passwordLength": "Şifre en az 6 karakter olmalıdır.",
+      "invalidEmail": "Geçerli bir e-posta adresi girin.",
+      "success": "Hesabınız başarıyla oluşturuldu!",
+      "error": "Kayıt olurken bir hata oluştu.",
+      "heroTitle": "Bugün Proptimo'ya Katılın",
+      "heroSubtitle": "Hesabınızı oluşturun ve mükemmel mülkü bulma yolculuğunuza başlayın"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Hayalinizdeki Evi Bulun",
+      "subtitle": "Türkiye'nin en güvenilir emlak platformu ile doğru adrese ulaşın",
+      "searchButton": "Emlak Ara"
+    },
+    "features": {
+      "title": "Neden Proptimo?",
+      "easySearch": {
+        "title": "Kolay Arama",
+        "description": "Gelişmiş filtreler ile istediğiniz özelliklerdeki emlağı kolayca bulun"
+      },
+      "reliableLocation": {
+        "title": "Güvenilir Konum",
+        "description": "Türkiye'nin her yerinden güvenilir emlak ilanları"
+      },
+      "fairPrice": {
+        "title": "Uygun Fiyat",
+        "description": "Piyasa değerine uygun, şeffaf fiyatlandırma"
+      }
+    },
+    "popularCities": {
+      "title": "Popüler Şehirler",
+      "subtitle": "Türkiye'nin en çok tercih edilen şehirlerinde emlak fırsatları"
+    },
+    "stats": {
+      "activeListings": "Aktif İlan",
+      "happyCustomers": "Mutlu Müşteri",
+      "citiesCovered": "İl Kapsamı",
+      "support": "Destek"
+    }
+  }
+}

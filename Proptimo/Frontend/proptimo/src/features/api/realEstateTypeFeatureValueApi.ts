@@ -5,7 +5,7 @@ export const realEstateTypeFeatureValueApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getRealEstateTypeFeatureValuesByRealEstateId: builder.query<GetRealEstateTypeFeatureValuesByRealEstateIdResponse, string>({
             query: (realEstateId) => ({
-                url: `/realestatetypefeaturevalues/realestate/${realEstateId}`
+                url: `/realestatetypefeaturevalues/${realEstateId}`
             }),
             providesTags: (result, error, realEstateId) => [
                 { type: 'RealEstateTypeFeatureValue', id: 'LIST' },
@@ -52,34 +52,43 @@ export const realEstateTypeFeatureValueApi = baseApi.injectEndpoints({
             }
         }),
 
-        updateRealEstateTypeFeatureValue: builder.mutation<RealEstateTypeFeatureValue, UpdateRealEstateTypeFeatureValueRequest>({
-            query: (updatedFeatureValue) => ({
+        updateRealEstateTypeFeatureValue: builder.mutation<RealEstateTypeFeatureValue[], RealEstateTypeFeatureValue[]>({
+            query: (updatedFeatureValues) => ({
                 url: '/realestatetypefeaturevalues',
                 method: 'PUT',
-                body: updatedFeatureValue,
+                body: {
+                    commands: updatedFeatureValues
+                },
             }),
-            invalidatesTags: (result, error, updatedFeatureValue) => [
-                { type: 'RealEstateTypeFeatureValue', id: updatedFeatureValue.id },
-                { type: 'RealEstateTypeFeatureValue', id: updatedFeatureValue.realEstateId }
-            ],
+            invalidatesTags: (result, error, updatedFeatureValues) => {
+                // Array'deki tüm realEstateId'leri invalidate et
+                const realEstateIds = [...new Set(updatedFeatureValues.map(item => item.realEstateId))];
+                return [
+                    { type: 'RealEstateTypeFeatureValue' as const, id: 'LIST' },
+                    ...realEstateIds.map(id => ({ type: 'RealEstateTypeFeatureValue' as const, id }))
+                ];
+            },
 
-            async onQueryStarted(updatedFeatureValue, { dispatch, queryFulfilled }) {
-                const patchResultByRealEstateId = dispatch(
-                    realEstateTypeFeatureValueApi.util.updateQueryData('getRealEstateTypeFeatureValuesByRealEstateId', updatedFeatureValue.realEstateId, (draft) => {
-                        if (draft && draft.data) {
-                            const index = draft.data.findIndex((item) => item.id === updatedFeatureValue.id);
-                            if (index !== -1) {
-                                draft.data[index] = updatedFeatureValue;
+            async onQueryStarted(updatedFeatureValues, { dispatch, queryFulfilled }) {
+                // Her bir realEstateId için cache'i güncelle
+                const patchResults = updatedFeatureValues.map(updatedFeatureValue => 
+                    dispatch(
+                        realEstateTypeFeatureValueApi.util.updateQueryData('getRealEstateTypeFeatureValuesByRealEstateId', updatedFeatureValue.realEstateId, (draft) => {
+                            if (draft && draft.data) {
+                                const index = draft.data.findIndex((item) => item.id === updatedFeatureValue.id);
+                                if (index !== -1) {
+                                    draft.data[index] = updatedFeatureValue;
+                                }
                             }
-                        }
-                    })
-                )
+                        })
+                    )
+                );
 
                 try {
                     await queryFulfilled;
                 } catch (err) {
                     console.error(err);
-                    patchResultByRealEstateId.undo();
+                    patchResults.forEach(patchResult => patchResult.undo());
                 }
             }
         }),

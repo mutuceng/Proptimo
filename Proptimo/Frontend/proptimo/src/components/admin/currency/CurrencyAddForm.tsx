@@ -24,8 +24,7 @@ const CurrencyAddForm = ( ) => {
         e.preventDefault();
 
         try{
-            const created = await createCurrency(formData).unwrap();
-            console.log('created', created);
+            await createCurrency(formData).unwrap();
 
             setFormData({
                 name: '',

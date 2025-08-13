@@ -33,7 +33,6 @@ const UploadImagesPage = () => {
 
   const [uploadRealEstateImages, { isLoading: isUploading }] = useUploadRealEstateImagesMutation();
 
-  // Dosya seçimi
   const handleFileSelect = useCallback((files: FileList) => {
     const maxSize = 5 * 1024 * 1024; // 5MB
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
@@ -103,17 +102,8 @@ const UploadImagesPage = () => {
     try {
       setError("");
 
-      // Debug
-      if (import.meta.env.DEV) {
-        console.log("=== UPLOAD PAYLOAD DEBUG ===");
-        console.log("Commands:", JSON.stringify(payload.commands, null, 2));
-        console.log("ImageFiles count:", payload.imageFiles.length);
-      }
-
-      // API çağrısı (FormData server katmanında oluşturuluyor)
       await uploadRealEstateImages(payload).unwrap();
 
-      // Başarılı yükleme
       navigate('/admin/real-estates', { 
         state: { message: 'Görseller başarıyla yüklendi!' } 
       });
@@ -124,7 +114,6 @@ const UploadImagesPage = () => {
     }
   };
 
-  // Drag & Drop handlers
   const handleDragStart = (index: number) => {
     setDraggedIndex(index);
   };
@@ -235,14 +224,6 @@ const UploadImagesPage = () => {
           </Alert>
         )}
 
-        {/* Debug bilgisi */}
-        {import.meta.env.DEV && (
-          <Alert severity="info" sx={{ mb: 3 }}>
-            <strong>Debug:</strong> Estate ID: {estateId || 'Bulunamadı'} | 
-            Görsel Sayısı: {images.length} | 
-            Primary: {images.find(img => img.isPrimary)?.order || 'Yok'}
-          </Alert>
-        )}
 
         {/* Yükleme alanı */}
         <Paper
