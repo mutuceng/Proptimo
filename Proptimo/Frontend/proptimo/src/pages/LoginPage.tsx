@@ -28,9 +28,7 @@ const LoginPage = () => {
 
         try {
             await login(email, password);
-            console.log('Başarılı login');
         } catch (error: any) {
-            console.error('Login hatası:', error);
             setError(error.data?.message || t('auth.login.error'));
         }
     };

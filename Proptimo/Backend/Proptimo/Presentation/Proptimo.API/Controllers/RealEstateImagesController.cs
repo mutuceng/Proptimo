@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Proptimo.Application.Abstractions;
@@ -24,6 +25,7 @@ namespace Proptimo.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UploadPhotos([FromForm] UploadRealEstatePhotosDto photos)
         {
             if (photos.ImageFiles == null || photos.ImageFiles.Count == 0)

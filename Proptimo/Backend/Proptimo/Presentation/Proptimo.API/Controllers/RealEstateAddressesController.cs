@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateAddressCommands;
@@ -40,6 +41,7 @@ namespace Proptimo.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateAddress(CreateAddressCommand command)
         {
             var result = await _mediator.Send(command);
@@ -47,6 +49,7 @@ namespace Proptimo.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateAddress (UpdateAddressCommand command)
         {
             await _mediator.Send(command);

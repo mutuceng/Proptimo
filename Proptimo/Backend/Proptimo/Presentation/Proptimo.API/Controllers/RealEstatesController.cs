@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Proptimo.Application.Dtos.FilterDtos;
@@ -136,6 +137,7 @@ namespace Proptimo.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateRealEstate(CreateRealEstateCommand command)
         {
             var result = await _mediator.Send(command);
@@ -144,6 +146,7 @@ namespace Proptimo.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteRealEstate(string id)
         {
             await _mediator.Send(new DeleteRealEstateCommand { Id = id });
@@ -152,6 +155,7 @@ namespace Proptimo.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateRealEstate(UpdateRealEstateCommand command)
         {
             var result = await _mediator.Send(command);

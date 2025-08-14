@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeFeatureValueCommands;
@@ -21,6 +22,7 @@ namespace Proptimo.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateEstateTypeFeatureValue(List<CreateRealEstateTypeFeatureValueCommand> commands)
         {
             var returnedList = new List<RealEstateTypeFeatureValueReturnDto>();
@@ -33,6 +35,7 @@ namespace Proptimo.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateEstateTypeFeatureValue(List<UpdateRealEstateTypeFeatureValueCommand> commands)
         {
             var returnedList = new List<RealEstateTypeFeatureValueReturnDto>();

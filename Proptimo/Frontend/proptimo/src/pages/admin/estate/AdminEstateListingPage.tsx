@@ -201,7 +201,12 @@ const AdminEstateListingPage = () => {
                     rows={realEstates}
                     columns={columns}
                     getRowId={(row) => row.id}
-                    pageSizeOptions={[10]}
+                    pageSizeOptions={[10, 25, 50]}
+                    initialState={{
+                        pagination: {
+                            paginationModel: { pageSize: 10 },
+                        },
+                    }}
                     disableRowSelectionOnClick
                     loading={loading}
                     rowHeight={52}

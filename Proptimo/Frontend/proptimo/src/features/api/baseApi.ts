@@ -30,7 +30,7 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) =>
         if (refreshToken) {
             try {
                 // Refresh token endpoint'ini çağır
-                const refreshResult = await fetch(`${import.meta.env.VITE_API_URL}/auth/refresh`, {
+                const refreshResult = await fetch(`${import.meta.env.VITE_API_URL}/auth/refresh-token`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

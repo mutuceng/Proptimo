@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Proptimo.Application.Abstractions;
@@ -43,7 +44,9 @@ namespace Proptimo.API.Controllers
             return Ok(new { success = true });
         }
 
+
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateCurrency(CreateCurrencyCommand command)
         {
             var result = await _mediator.Send(command);
@@ -59,6 +62,7 @@ namespace Proptimo.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateCurrency(UpdateCurrencyCommand command)
         {
             await _mediator.Send(command);

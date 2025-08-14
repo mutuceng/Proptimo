@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeCommands;
@@ -36,6 +37,7 @@ namespace Proptimo.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateEstateType(CreateEstateTypeCommand command)
         {
             var result = await _mediator.Send(command);
@@ -44,6 +46,7 @@ namespace Proptimo.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteEstateType(string id)
         {
             await _mediator.Send(new DeleteEstateTypeCommand(id));
@@ -52,6 +55,7 @@ namespace Proptimo.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateEstateType(UpdateEstateTypeCommand command)
         {
             await _mediator.Send(command);

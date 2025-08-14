@@ -52,14 +52,46 @@ const ListingFilterBox: React.FC<ListingFilterBoxProps> = ({ onFilterChange }) =
 
 
 
+  // Türkçe karakterler için doğru büyük harf dönüşümü
+  const toTurkishTitleCase = (text: string): string => {
+    return text
+      .split(' ')
+      .map((word: string) => {
+        if (word.length === 0) return word;
+        
+        const firstChar = word.charAt(0);
+        let upperFirstChar = firstChar;
+        
+        // Türkçe karakter dönüşümleri
+        if (firstChar === 'i') {
+          upperFirstChar = 'İ';
+        } else if (firstChar === 'ı') {
+          upperFirstChar = 'I';
+        } else if (firstChar === 'ğ') {
+          upperFirstChar = 'Ğ';
+        } else if (firstChar === 'ü') {
+          upperFirstChar = 'Ü';
+        } else if (firstChar === 'ş') {
+          upperFirstChar = 'Ş';
+        } else if (firstChar === 'ö') {
+          upperFirstChar = 'Ö';
+        } else if (firstChar === 'ç') {
+          upperFirstChar = 'Ç';
+        } else {
+          // Diğer harfler için normal büyük harf dönüşümü
+          upperFirstChar = firstChar.toUpperCase();
+        }
+        
+        return upperFirstChar + word.slice(1).toLowerCase();
+      })
+      .join(' ');
+  };
+
   const handleFilterChange = (field: keyof FilterState, value: any) => {
-    // Şehir ve ilçe için baş harfleri büyük yap
+    // Şehir ve ilçe için Türkçe karakterlerle doğru baş harfleri büyük yap
     let processedValue = value;
     if (field === 'city' || field === 'district') {
-      processedValue = value
-        .split(' ')
-        .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-        .join(' ');
+      processedValue = toTurkishTitleCase(value);
     }
     
     setFilters(prev => ({
