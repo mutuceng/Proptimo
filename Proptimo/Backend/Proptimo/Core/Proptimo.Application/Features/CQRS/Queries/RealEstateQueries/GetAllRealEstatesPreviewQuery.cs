@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Proptimo.Application.Dtos.FilterDtos;
 using Proptimo.Application.Features.CQRS.Results.RealEstateQueryResults;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,6 @@ namespace Proptimo.Application.Features.CQRS.Queries.RealEstateQueries
 {
     public class GetAllRealEstatesPreviewQuery : IRequest<List<GetAllRealEstatesPreviewQueryResult>>
     {
+        public FilterDtoRequest Filter { get; set; }
     }
 }

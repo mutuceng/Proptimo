@@ -26,9 +26,44 @@ namespace Proptimo.Application.Features.CQRS.Handlers.RealEstateHandlers.RealEst
             var query = _estateRepository.Table
                 .Include(r => r.Images)
                 .Include(r => r.RealEstateType)
-                .Include(r => r.RealEstateAddress);
+                .Include(r => r.RealEstateAddress)
+                .AsQueryable();
 
-            var result = await query
+            var filter = request.Filter;
+
+            if (filter != null)
+            {
+                if (!string.IsNullOrEmpty(filter.RealEstateTypeName))
+                    query = query.Where(r => r.RealEstateType.Name == filter.RealEstateTypeName);
+
+                if (filter.MinPrice.HasValue && filter.MaxPrice.HasValue)
+                    query = query.Where(r => r.Price >= filter.MinPrice && r.Price <= filter.MaxPrice);
+
+                if (filter.RealEstateListingType.HasValue)
+                    query = query.Where(r => r.ListingType == filter.RealEstateListingType.Value);
+
+                if (!string.IsNullOrEmpty(filter.CityName))
+                    query = query.Where(r => r.RealEstateAddress.CityName == filter.CityName);
+
+                if (!string.IsNullOrEmpty(filter.DistrictName))
+                    query = query.Where(r => r.RealEstateAddress.DistrictName == filter.DistrictName);
+
+                if (filter.RealEstateStartDate.HasValue && filter.RealEstateEndDate.HasValue)
+                {
+                    var start = filter.RealEstateStartDate.Value;
+                    var end = filter.RealEstateEndDate.Value;
+                    query = query.Where(r => r.StartDate >= start && r.EndDate <= end);
+                }
+
+                if (filter.RealEstateState.HasValue)
+                    query = query.Where(r => r.State == filter.RealEstateState.Value);
+            }
+
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            var data = await query
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
                 .Select(r => new GetAllRealEstatesPreviewQueryResult
                 {
                     RealEstateId = r.Id,
@@ -44,9 +79,9 @@ namespace Proptimo.Application.Features.CQRS.Handlers.RealEstateHandlers.RealEst
                     Longitude = r.RealEstateAddress.Longitude,
                     RealEstateState = r.State,
                     RealEstateListingType = r.ListingType
-                }).ToListAsync();
+                }).ToListAsync(cancellationToken);
 
-            return result;
+            return data;
         }
     }
 }
