@@ -17,13 +17,6 @@ import UserLayout from './components/user/UserLayout';
 import AdminEstateTypesListingPage from './pages/admin/estateType/AdminEstateTypesListingPage';
 import AdminEstateTypeFeaturesListingPage from './pages/admin/estateTypeFeature/AdminEstateTypeFeaturesListingPage';
 import AddRealEstatePage from './pages/admin/estate/AddRealEstatePage';
-import AddAddressPage from './pages/admin/estate/AddAddressPage';
-import UploadImagesPage from './pages/admin/estate/UploadImagesPage';
-import AddRealEstateFeaturesPage from './pages/admin/estate/AddRealEstateFeaturesPage';
-import EditRealEstatePage from './pages/admin/estate/update/EditRealEstataPage';
-import EditAddressPage from './pages/admin/estate/update/EditAddressPage';
-import EditImagesPage from './pages/admin/estate/update/EditImagesPage';
-import EditRealEstateFeaturesPage from './pages/admin/estate/update/EditRealEstateFeaturesPage';
 import UserHomePage from './pages/user/UserHomePage';
 import UserEstateListingPage from './pages/user/UserEstateListingPage';
 import UserEstateDetailPage from './pages/user/UserEstateDetailPage';
@@ -70,43 +63,6 @@ function App() {
             <Route path="/admin/real-estates/create" element={
               <ProtectedRoute requiredRole="Admin">
                 <AdminLayout><AddRealEstatePage /></AdminLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/real-estates/create/features/:estateId/:estateTypeId" element={
-              <ProtectedRoute requiredRole="Admin">
-                <AdminLayout><AddRealEstateFeaturesPage /></AdminLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/real-estates/create/address/:estateId" element={
-              <ProtectedRoute requiredRole="Admin">
-                <AdminLayout><AddAddressPage /></AdminLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/real-estates/create/images/:estateId" element={
-              <ProtectedRoute requiredRole="Admin">
-                <AdminLayout><UploadImagesPage /></AdminLayout>
-              </ProtectedRoute>
-            } />
-            
-            {/* Update Routes */}
-            <Route path="/admin/real-estates/edit/:estateId" element={
-              <ProtectedRoute requiredRole="Admin">
-                <AdminLayout><EditRealEstatePage /></AdminLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/real-estates/edit/:estateId/features/:estateTypeId" element={
-              <ProtectedRoute requiredRole="Admin">
-                <AdminLayout><EditRealEstateFeaturesPage /></AdminLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/real-estates/edit/:estateId/address" element={
-              <ProtectedRoute requiredRole="Admin">
-                <AdminLayout><EditAddressPage /></AdminLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/real-estates/edit/:estateId/images" element={
-              <ProtectedRoute requiredRole="Admin">
-                <AdminLayout><EditImagesPage /></AdminLayout>
               </ProtectedRoute>
             } />
         

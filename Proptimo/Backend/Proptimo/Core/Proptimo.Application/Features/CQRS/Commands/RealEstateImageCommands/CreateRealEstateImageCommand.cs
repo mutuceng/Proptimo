@@ -13,7 +13,5 @@ namespace Proptimo.Application.Features.CQRS.Commands.RealEstateImageCommands
         public string ImageUrl { get; set; }
         public bool IsPrimary { get; set; }
         public int Order { get; set; }
-
-        public string RealEstateId { get; set; }
     }
 }

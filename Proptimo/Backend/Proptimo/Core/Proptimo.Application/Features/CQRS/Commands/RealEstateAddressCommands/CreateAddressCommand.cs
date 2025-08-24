@@ -19,6 +19,5 @@ namespace Proptimo.Application.Features.CQRS.Commands.RealEstateAddressCommands
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
 
-        public string RealEstateId { get; set; }
     }
 }

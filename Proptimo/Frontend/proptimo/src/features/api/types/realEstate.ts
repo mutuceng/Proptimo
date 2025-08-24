@@ -109,3 +109,68 @@ export interface GetRealEstateById {
     updatedAt: Date,
     realEstateTypeId: string,
 }
+
+// Yeni tek seferde create için tipler
+export interface CreateEstateCommand {
+    title: string,
+    description: string,
+    startDate: Date,
+    endDate: Date,
+    price: number,
+    listingType: number,
+    state: number,
+    realEstateTypeId: string,
+}
+
+export interface CreateAddressCommand {
+    cityName: string,
+    districtName: string,
+    neighborhoodName: string,
+    street: string,
+    buildingNo: string,
+    doorNumber: string,
+    latitude: number,
+    longitude: number,
+}
+
+export interface CreateRealEstateImageCommand {
+    imageUrl: string,
+    isPrimary: boolean,
+    order: number,
+}
+
+export interface CreateRealEstateTypeFeatureValueCommand {
+    realEstateTypeFeatureId: string,
+    valueInt?: number | null,
+    valueDecimal?: number | null,
+    valueBool?: boolean | null,
+    valueString?: string | null,
+    valueDate?: string | null,
+}
+
+export interface UploadRealEstatePhotosDto {
+    commands: CreateRealEstateImageCommand[],
+    imageFiles: File[]
+}
+
+export interface CreateRealEstateCompleteRequest {
+    createEstateCommand: CreateEstateCommand,
+    createAddressCommand: CreateAddressCommand,
+    createRealEstateTypeFeatureValueCommand: CreateRealEstateTypeFeatureValueCommand[],
+    uploadRealEstatePhotosDto: UploadRealEstatePhotosDto,
+}
+
+export interface CreateRealEstateCompleteResponse {
+    realEstateId: string,
+    primaryImageUrl: string,
+    realEstateTypeName: string,
+    realEstateTitle: string,
+    realEstateStartDate: string,
+    realEstateEndDate: string,
+    price: number,
+    cityName: string,
+    districtName: string,
+    latitude: number,
+    longitude: number,
+    realEstateState: number,
+}

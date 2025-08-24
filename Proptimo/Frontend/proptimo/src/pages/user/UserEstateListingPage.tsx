@@ -17,7 +17,7 @@ import {
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ListingFilterBox from "../../components/user/Listing/ListingFilterBox";
 import { useGetAllRealEstatesPreviewQuery } from "../../features/api/realEstateApi";
-import type { GetAllRealEstatesPreviewRequest, GetAllRealEstatesPreviewResponseWithPaging } from "../../features/api/types/realEstate";
+import type { GetAllRealEstatesPreviewRequest, GetAllRealEstatesPreviewResponse } from "../../features/api/types/realEstate";
 import ListingMap from "../../components/user/Listing/ListingMap";
 import { useLanguage } from "../../context/LanguageContext";
 
@@ -104,8 +104,8 @@ const UserEstateListingPage = () => {
         setFilterParams(prev => ({ ...prev, pageNumber: page }));
     };
 
-    // Backend'den gelen paging bilgilerini kullan
-    const totalPages = realEstates ? Math.ceil(realEstates.totalCount / realEstates.pageSize) : 0;
+    // Backend direkt array döndürüyor, paging bilgisi yok
+    const totalPages = realEstates && realEstates.length > 0 ? Math.ceil(realEstates.length / 12) : 0;
 
     return (
         <Box sx={{ 
@@ -207,7 +207,7 @@ const UserEstateListingPage = () => {
                         </Alert>
                     )}
 
-                    {!isLoading && !error && (!realEstates || realEstates.data.length === 0) && (
+                    {!isLoading && !error && (!realEstates || realEstates.length === 0) && (
                         <Box sx={{
                             backgroundColor: 'white',
                             borderRadius: 2,
@@ -224,7 +224,7 @@ const UserEstateListingPage = () => {
                         </Box>
                     )}
 
-                    {!isLoading && !error && realEstates && realEstates.data.length > 0 && viewMode === 0 && (
+                    {!isLoading && !error && realEstates && realEstates.length > 0 && viewMode === 0 && (
                         <>
                             <Box sx={{ 
                                 display: 'grid', 
@@ -238,7 +238,7 @@ const UserEstateListingPage = () => {
                                 gap: { xs: 2, sm: 3 },
                                 mb: { xs: 3, sm: 4 }
                             }}>
-                                {realEstates.data.map((estate, index) => (
+                                {realEstates.map((estate, index) => (
                                 <Card key={index} sx={{ 
                                     height: '100%',
                                     display: 'flex',
@@ -338,7 +338,7 @@ const UserEstateListingPage = () => {
                     )}
 
                     {/* Harita Görünümü */}
-                    {!isLoading && !error && realEstates && realEstates.data.length > 0 && viewMode === 1 && (
+                    {!isLoading && !error && realEstates && realEstates.length > 0 && viewMode === 1 && (
                         <Box sx={{
                             backgroundColor: 'white',
                             borderRadius: 2,
@@ -349,7 +349,7 @@ const UserEstateListingPage = () => {
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}>
-                            <ListingMap realEstates={realEstates} />
+                                                         <ListingMap realEstates={{ data: realEstates, totalCount: realEstates.length, pageNumber: 1, pageSize: 12 }} />
                         </Box>
                     )}
                 </Container>

@@ -1,5 +1,12 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
+using Proptimo.Application.Dtos;
+using Proptimo.Application.Dtos.ImageDtos;
+using Proptimo.Application.Features.CQRS.Commands.RealEstateAddressCommands;
+using Proptimo.Application.Features.CQRS.Commands.RealEstateImageCommands;
+using Proptimo.Application.Features.CQRS.Commands.RealEstateTypeFeatureValueCommands;
 using Proptimo.Application.Features.CQRS.Results.CommandQueryResults;
+using Proptimo.Application.Features.CQRS.Results.RealEstateQueryResults;
 using Proptimo.Domain.Entities.Enum;
 using System;
 using System.Collections.Generic;
@@ -9,19 +16,11 @@ using System.Threading.Tasks;
 
 namespace Proptimo.Application.Features.CQRS.Commands.RealEstateCommands
 {
-    public class CreateRealEstateCommand : IRequest<RealEstateReturnDto>
+    public class CreateRealEstateCommand : IRequest<GetAllRealEstatesPreviewQueryResult>
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public decimal Price { get; set; }
-
-        public RealEstateListingType ListingType { get; set; }
-        public RealEstateState State { get; set; } = 0;
-
-        public DateTime CreatedAt { get; set; }
-
-        public string RealEstateTypeId { get; set; }
+        public CreateEstateCommand CreateEstateCommand { get; set; }
+        public CreateAddressCommand CreateAddressCommand { get; set; }
+        public List<CreateRealEstateTypeFeatureValueCommand> CreateRealEstateTypeFeatureValueCommand { get; set; }
+        public UploadRealEstatePhotosDto UploadRealEstatePhotosDto { get; set; }
     }
 }

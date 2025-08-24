@@ -1,5 +1,5 @@
 import { baseApi } from "./baseApi";
-import { type GetRealEstateById, type GetAllRealEstates, type RealEstate, type CreateRealEstateRequest, type UpdateEstateRequest, type GetAllRealEstatesPreviewRequest, type GetAllRealEstatesPreviewResponse, type GetRealEstateDetailResponse, type GetAllRealEstatesPreviewResponseWithPaging } from "./types/realEstate";
+import { type GetRealEstateById, type GetAllRealEstates, type RealEstate, type CreateRealEstateRequest, type UpdateEstateRequest, type GetAllRealEstatesPreviewRequest, type GetAllRealEstatesPreviewResponse, type GetRealEstateDetailResponse, type GetAllRealEstatesPreviewResponseWithPaging, type CreateRealEstateCompleteRequest, type CreateRealEstateCompleteResponse } from "./types/realEstate";
 
 export const realEstateApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -15,7 +15,7 @@ export const realEstateApi = baseApi.injectEndpoints({
                 ] : [{ type: 'RealEstate', id:'LIST'}]
         }),
 
-        getAllRealEstatesPreview: builder.query<GetAllRealEstatesPreviewResponseWithPaging,GetAllRealEstatesPreviewRequest>({
+        getAllRealEstatesPreview: builder.query<GetAllRealEstatesPreviewResponse[],GetAllRealEstatesPreviewRequest>({
             query: (params) => {
                 const queryParams = new URLSearchParams();
 
@@ -62,6 +62,83 @@ export const realEstateApi = baseApi.injectEndpoints({
                             draft.unshift(createdEstate);
                         })
                     )
+                } catch(err) {
+                    console.error(err);
+                }
+            }
+        }),
+
+        // Yeni tek seferde create endpoint'i
+        createRealEstateComplete: builder.mutation<CreateRealEstateCompleteResponse, CreateRealEstateCompleteRequest>({
+            query: (completeData) => {
+                console.log('=== API CALL DEBUG ===');
+                console.log('URL:', '/realestates');
+                console.log('Method:', 'POST');
+                console.log('Complete Data:', completeData);
+                
+                // Backend'in yeni API yapısına uygun olarak FormData kullanıyoruz
+                const formData = new FormData();
+                
+                // JSON verilerini string olarak ekle
+                const jsonData = {
+                    createEstateCommand: completeData.createEstateCommand,
+                    createAddressCommand: completeData.createAddressCommand,
+                    createRealEstateTypeFeatureValueCommand: completeData.createRealEstateTypeFeatureValueCommand,
+                    uploadRealEstatePhotosDto: {
+                        commands: completeData.uploadRealEstatePhotosDto.commands
+                    }
+                };
+                
+                formData.append('JsonData', JSON.stringify(jsonData));
+                
+                // Resim dosyalarını ekle
+                if (completeData.uploadRealEstatePhotosDto.imageFiles) {
+                    completeData.uploadRealEstatePhotosDto.imageFiles.forEach((file: File, index: number) => {
+                        formData.append('Images', file);
+                    });
+                }
+                
+                console.log('FormData created with JsonData:', jsonData);
+                console.log('Image files count:', completeData.uploadRealEstatePhotosDto.imageFiles?.length || 0);
+                
+                return {
+                    url: '/realestates',
+                    method: 'POST',
+                    body: formData,
+                    // FormData kullanırken Content-Type header'ı otomatik olarak multipart/form-data olacak
+                };
+            },
+            invalidatesTags: [{type: 'RealEstate', id:'LIST'}],
+
+            async onQueryStarted(completeData, {dispatch, queryFulfilled}){
+                try {
+                    const {data: createdEstate} = await queryFulfilled;
+
+                    // Preview data'yı cache'e ekle
+                    dispatch(
+                        realEstateApi.util.updateQueryData('getAllRealEstatesPreview', {
+                            pageNumber: 1
+                        }, (draft: any) => {
+                            if (draft?.data) {
+                                draft.data.unshift({
+                                    realEstateId: createdEstate.realEstateId,
+                                    primaryImageUrl: createdEstate.primaryImageUrl,
+                                    realEstateTypeName: createdEstate.realEstateTypeName,
+                                    realEstateTitle: createdEstate.realEstateTitle,
+                                    realEstateStartDate: createdEstate.realEstateStartDate,
+                                    realEstateEndDate: createdEstate.realEstateEndDate,
+                                    price: createdEstate.price,
+                                    cityName: createdEstate.cityName,
+                                    districtName: createdEstate.districtName,
+                                    latitude: createdEstate.latitude,
+                                    longitude: createdEstate.longitude,
+                                    realEstateState: createdEstate.realEstateState,
+                                    pageNumber: 1,
+                                    pageSize: 10
+                                });
+                            }
+                        })
+                    );
                 } catch(err) {
                     console.error(err);
                 }
@@ -145,6 +222,7 @@ export const {
     useGetAllRealEstatesQuery,
     useGetRealEstateByIdQuery,
     useCreateRealEstateMutation,
+    useCreateRealEstateCompleteMutation,
     useUpdateRealEstateMutation,
     useDeleteRealEstateMutation,
     useGetAllRealEstatesPreviewQuery,

@@ -18,32 +18,32 @@ namespace Proptimo.Infrastructure.Services
             _env = env;
         }
 
-        public async Task<string> SaveFileAsync(IFormFile file, string estateId)
-        {
-            // Dosya adı (benzersiz)
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-
-            // Klasör yolu (wwwroot/uploads/{estateId})
-            var folderPath = Path.Combine(_env.WebRootPath, "uploads", estateId);
-
-            // Klasör yoksa oluştur
-            if (!Directory.Exists(folderPath))
+            public async Task<string> SaveFileAsync(IFormFile file, string estateId)
             {
-                Directory.CreateDirectory(folderPath);
+                // Dosya adı (benzersiz)
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+
+                // Klasör yolu (wwwroot/uploads/{estateId})
+                var folderPath = Path.Combine(_env.WebRootPath, "uploads", estateId);
+
+                // Klasör yoksa oluştur
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                // Dosyanın tam yolu
+                var filePath = Path.Combine(folderPath, fileName);
+
+                // Dosyayı kaydet
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                // Geriye tarayıcıdan erişilebilecek bir path döndür
+                return $"/uploads/{estateId}/{fileName}";
             }
-
-            // Dosyanın tam yolu
-            var filePath = Path.Combine(folderPath, fileName);
-
-            // Dosyayı kaydet
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-            // Geriye tarayıcıdan erişilebilecek bir path döndür
-            return $"/uploads/{estateId}/{fileName}";
-        }
 
     }
 }

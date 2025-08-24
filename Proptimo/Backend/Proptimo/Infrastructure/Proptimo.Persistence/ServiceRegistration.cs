@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Proptimo.Application.Abstractions;
 using Proptimo.Application.Repositories;
 using Proptimo.Domain.Entities.Identity;
 using Proptimo.Persistence.Context;
@@ -35,6 +36,8 @@ namespace Proptimo.Persistence
 
             services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
             services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         }
     }

@@ -2,15 +2,17 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Proptimo.Application.Dtos;
 using Proptimo.Application.Dtos.FilterDtos;
+using Proptimo.Application.Dtos.ImageDtos;
 using Proptimo.Application.Features.CQRS.Commands.RealEstateCommands;
 using Proptimo.Application.Features.CQRS.Queries.RealEstateAddressQueries;
 using Proptimo.Application.Features.CQRS.Queries.RealEstateImageQueries;
 using Proptimo.Application.Features.CQRS.Queries.RealEstateQueries;
 using Proptimo.Application.Features.CQRS.Queries.RealEstateTypeFeatureQueries;
 using Proptimo.Application.Features.CQRS.Queries.RealEstateTypeFeatureValueQueries;
-using Proptimo.Application.Features.CQRS.Results.CommandQueryResults;
-using Proptimo.Application.Features.CQRS.Results.RealEstateImageQueryResults;
+
 
 namespace Proptimo.API.Controllers
 {
@@ -53,7 +55,7 @@ namespace Proptimo.API.Controllers
             var images = await _mediator.Send(new GetAllRealEstateImagesByEstateIdQuery(id));
             var featureValues = await _mediator.Send(new GetRealEstateTypeFeatureValuesByEstateIdQuery(id));
             var features = await _mediator.Send(new GetRealEstateTypeFeaturesByTypeIdQuery(realEstate.RealEstateTypeId));
-            var RealEstateDetail = new RealEstateDetailReturnDto
+            var RealEstateDetail = new Application.Features.CQRS.Results.CommandQueryResults.RealEstateDetailReturnDto
             {
                 RealEstate = realEstate,
                 Address = address,
@@ -74,14 +76,37 @@ namespace Proptimo.API.Controllers
                 return NotFound();
             }
 
-
             return Ok(realEstate);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateRealEstate(CreateRealEstateCommand command)
+        public async Task<IActionResult> CreateRealEstate([FromForm] CreateEstateRequest request)
         {
+            if (request == null || string.IsNullOrEmpty(request.JsonData))
+            {
+                return BadRequest("Invalid request data.");
+            }
+            var jsonData = JsonConvert.DeserializeObject<CreateRealEstateCommand>(request.JsonData);
+
+            if (jsonData == null || jsonData.CreateEstateCommand == null || jsonData.CreateAddressCommand == null ||
+                jsonData.CreateRealEstateTypeFeatureValueCommand == null || jsonData.UploadRealEstatePhotosDto == null)
+            {
+                return BadRequest("Invalid JSON data.");
+            }
+
+            var command = new CreateRealEstateCommand
+            {
+                CreateEstateCommand = jsonData.CreateEstateCommand,
+                CreateAddressCommand = jsonData.CreateAddressCommand,
+                CreateRealEstateTypeFeatureValueCommand = jsonData.CreateRealEstateTypeFeatureValueCommand,
+                UploadRealEstatePhotosDto = new UploadRealEstatePhotosDto
+                {
+                    ImageFiles = request.Images?.ToList() ?? new List<IFormFile>(),
+                    Commands = jsonData.UploadRealEstatePhotosDto.Commands
+                }
+            };
+
             var result = await _mediator.Send(command);
 
             return Ok(result);

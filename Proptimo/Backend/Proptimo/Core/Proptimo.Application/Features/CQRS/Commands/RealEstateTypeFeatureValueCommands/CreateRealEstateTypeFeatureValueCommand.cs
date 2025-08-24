@@ -16,8 +16,6 @@ namespace Proptimo.Application.Features.CQRS.Commands.RealEstateTypeFeatureValue
         public bool? ValueBool { get; set; }
         public string? ValueString { get; set; }
         public DateTime? ValueDate { get; set; }
-
-        public string RealEstateId { get; set; }
         public string RealEstateTypeFeatureId { get; set; }
     }
 }

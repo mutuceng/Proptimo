@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Proptimo.Application.Dtos;
 using Proptimo.Application.Features.CQRS.Commands.AppUserCommands;
 using Proptimo.Application.Features.CQRS.Commands.CsvLocationCommands;
 using Proptimo.Application.Features.CQRS.Commands.CurrencyCommands;
@@ -35,7 +36,7 @@ namespace Proptimo.Application.Mapping
     {
         public GeneralMapping() 
         {
-            CreateMap<RealEstate, CreateRealEstateCommand>().ReverseMap();
+            CreateMap<RealEstate, CreateEstateCommand>().ReverseMap();
             CreateMap<RealEstate, UpdateRealEstateCommand>().ReverseMap();
             CreateMap<RealEstate, GetAllEstatesQueryResult>().ReverseMap();
             CreateMap<RealEstate, GetEstateByIdQueryResult>().ReverseMap();
