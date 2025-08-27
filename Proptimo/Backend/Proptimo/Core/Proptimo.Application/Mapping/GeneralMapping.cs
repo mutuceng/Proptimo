@@ -37,7 +37,7 @@ namespace Proptimo.Application.Mapping
         public GeneralMapping() 
         {
             CreateMap<RealEstate, CreateEstateCommand>().ReverseMap();
-            CreateMap<RealEstate, UpdateRealEstateCommand>().ReverseMap();
+            CreateMap<RealEstate, UpdateEstateCommand>().ReverseMap();
             CreateMap<RealEstate, GetAllEstatesQueryResult>().ReverseMap();
             CreateMap<RealEstate, GetEstateByIdQueryResult>().ReverseMap();
 
@@ -59,10 +59,12 @@ namespace Proptimo.Application.Mapping
 
             CreateMap<RealEstateTypeFeatureValue, CreateRealEstateTypeFeatureValueCommand>().ReverseMap();
             CreateMap<RealEstateTypeFeatureValue, GetRealEstateTypeFeatureValuesByEstateIdQueryResult>().ReverseMap();
+            CreateMap<RealEstateTypeFeatureValue, UpdateRealEstateTypeFeatureValueCommand>().ReverseMap();
 
 
             CreateMap<RealEstateImage, CreateRealEstateImageCommand>().ReverseMap();
             CreateMap<RealEstateImage, GetAllRealEstateImagesByEstateIdQueryResult>().ReverseMap();
+            CreateMap<RealEstateImage, UpdateRealEstateImageCommand>().ReverseMap();
 
             CreateMap<Currency, CreateCurrencyCommand>().ReverseMap();
             CreateMap<Currency, UpdateCurrencyCommand>().ReverseMap();

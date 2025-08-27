@@ -17,6 +17,7 @@ import UserLayout from './components/user/UserLayout';
 import AdminEstateTypesListingPage from './pages/admin/estateType/AdminEstateTypesListingPage';
 import AdminEstateTypeFeaturesListingPage from './pages/admin/estateTypeFeature/AdminEstateTypeFeaturesListingPage';
 import AddRealEstatePage from './pages/admin/estate/AddRealEstatePage';
+import UpdateRealEstatePage from './pages/admin/estate/UpdateRealEstatePage';
 import UserHomePage from './pages/user/UserHomePage';
 import UserEstateListingPage from './pages/user/UserEstateListingPage';
 import UserEstateDetailPage from './pages/user/UserEstateDetailPage';
@@ -63,6 +64,12 @@ function App() {
             <Route path="/admin/real-estates/create" element={
               <ProtectedRoute requiredRole="Admin">
                 <AdminLayout><AddRealEstatePage /></AdminLayout>
+              </ProtectedRoute>
+            } />
+            
+            <Route path="/admin/real-estates/edit/:id" element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminLayout><UpdateRealEstatePage /></AdminLayout>
               </ProtectedRoute>
             } />
         

@@ -174,3 +174,77 @@ export interface CreateRealEstateCompleteResponse {
     longitude: number,
     realEstateState: number,
 }
+
+// Update için tipler
+export interface UpdateEstateCommand {
+    id: string,
+    title: string,
+    description: string,
+    startDate: Date,
+    endDate: Date,
+    price: number,
+    listingType: number,
+    state: number,
+    realEstateTypeId: string,
+}
+
+export interface UpdateAddressCommand {
+    realEstateId: string,
+    id: string,
+    cityName: string,
+    districtName: string,
+    neighborhoodName: string,
+    street: string,
+    buildingNo: string,
+    doorNumber: string,
+    latitude: number,
+    longitude: number,
+}
+
+export interface UpdateRealEstateImageCommand {
+    realEstateId: string,
+    id?: string, // Yeni eklenen görseller için undefined
+    imageUrl?: string, // Yeni eklenen görseller için undefined
+    isPrimary: boolean,
+    order: number,
+}
+
+export interface UpdateRealEstateTypeFeatureValueCommand {
+    realEstateId: string,
+    id?: string, // Mevcut değerler için ID, yeni değerler için undefined
+    realEstateTypeFeatureId: string,
+    valueInt?: number | null,
+    valueDecimal?: number | null,
+    valueBool?: boolean | null,
+    valueString?: string | null,
+    valueDate?: string | null,
+}
+
+export interface UpdateRealEstatePhotosDto {
+    commands: UpdateRealEstateImageCommand[],
+    deletedImageIds: string[],
+    imageFiles: File[]
+}
+
+export interface UpdateRealEstateCompleteRequest {
+    realEstateId: string,
+    updateEstateCommand: UpdateEstateCommand,
+    updateAddressCommand?: UpdateAddressCommand, // Sadece değiştirilmişse gönder
+    updateRealEstateTypeFeatureValueCommand?: UpdateRealEstateTypeFeatureValueCommand[], // Sadece değiştirilmişse gönder
+    updateRealEstatePhotosDto?: UpdateRealEstatePhotosDto, // Sadece değiştirilmişse gönder
+}
+
+export interface UpdateRealEstateCompleteResponse{
+    realEstateId: string,
+    primaryImageUrl: string,
+    realEstateTypeName: string,
+    realEstateTitle: string,
+    realEstateStartDate: string,
+    realEstateEndDate: string,
+    price: number,
+    cityName: string,
+    districtName: string,
+    latitude: number,
+    longitude: number,
+    realEstateState: number,
+}

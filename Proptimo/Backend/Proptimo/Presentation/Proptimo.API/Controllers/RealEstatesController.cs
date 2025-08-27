@@ -123,8 +123,34 @@ namespace Proptimo.API.Controllers
 
         [HttpPut]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateRealEstate(UpdateRealEstateCommand command)
+        public async Task<IActionResult> UpdateRealEstate(UpdateEstateRequest request)
         {
+            if (request == null || string.IsNullOrEmpty(request.JsonData))
+            {
+                return BadRequest("Invalid request data.");
+            }
+            var jsonData = JsonConvert.DeserializeObject<UpdateRealEstateCommand>(request.JsonData);
+
+            if (jsonData == null )
+            {
+                return BadRequest("Invalid JSON data.");
+            }
+
+            var command = new UpdateRealEstateCommand
+            {
+                RealEstateId = jsonData.RealEstateId,
+                UpdateEstateCommand = jsonData.UpdateEstateCommand,
+                UpdateAddressCommand = jsonData.UpdateAddressCommand,
+                UpdateRealEstateTypeFeatureValueCommand = jsonData.UpdateRealEstateTypeFeatureValueCommand,
+                UpdateRealEstatePhotosDto = jsonData.UpdateRealEstatePhotosDto != null ? 
+                new UpdateRealEstatePhotosDto
+                {
+                    ImageFiles = request.Images?.ToList() ?? new List<IFormFile>(),
+                    Commands = jsonData.UpdateRealEstatePhotosDto.Commands
+                }
+        : null
+            };
+
             var result = await _mediator.Send(command);
             return Ok(result);
         }

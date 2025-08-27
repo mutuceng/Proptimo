@@ -10,10 +10,10 @@ namespace Proptimo.Application.Repositories
 {
     public interface IWriteRepository<T> : IRepository<T> where T : BaseEntity
     {
-        Task<bool> AddAsync(T entity);
-        Task<bool> Update(T entity);
+        Task AddAsync(T entity);
+        Task Update(T entity);
         Task<bool> DeleteAsync(string id);
-        Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
+        Task AddRangeAsync(IEnumerable<T> entities);
         Task<bool> SaveChangesAsync();
     }
 }

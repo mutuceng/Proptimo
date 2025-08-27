@@ -22,11 +22,15 @@ namespace Proptimo.Persistence.Repositories
             _dbSet = _context.Set<T>();
         }
 
-        public async Task<bool> AddAsync(T entity)
+        public Task AddAsync(T entity)
         {
-            EntityEntry<T> entityEntry= await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
-            return entityEntry.State == EntityState.Added;
+            return _dbSet.AddAsync(entity).AsTask();
+        }
+
+        public Task AddRangeAsync(IEnumerable<T> entities)
+        {
+            _dbSet.AddRange(entities);
+            return Task.CompletedTask;
         }
 
         public async Task<bool> DeleteAsync(string id)
@@ -39,25 +43,16 @@ namespace Proptimo.Persistence.Repositories
             return entityEntry.State == EntityState.Deleted;
         }
 
-        public async Task<bool> Update(T entity)
-        {
-            EntityEntry<T> entityEntry = _dbSet.Update(entity);
-            await _context.SaveChangesAsync();
-            return entityEntry.State == EntityState.Modified;
-
-        }
-
         public async Task<bool> SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
+        public Task Update(T entity)
         {
-            _dbSet.AddRange(entities);
-            await _context.SaveChangesAsync();
-            return entities;
+            _dbSet.Update(entity);
+            return Task.CompletedTask;
         }
     }
 }

@@ -18,32 +18,46 @@ namespace Proptimo.Infrastructure.Services
             _env = env;
         }
 
-            public async Task<string> SaveFileAsync(IFormFile file, string estateId)
+        public async Task<string> SaveFileAsync(IFormFile file, string estateId)
+        {
+            // Dosya adı (benzersiz)
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+
+            // Klasör yolu (wwwroot/uploads/{estateId})
+            var folderPath = Path.Combine(_env.WebRootPath, "uploads", estateId);
+
+            // Klasör yoksa oluştur
+            if (!Directory.Exists(folderPath))
             {
-                // Dosya adı (benzersiz)
-                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-
-                // Klasör yolu (wwwroot/uploads/{estateId})
-                var folderPath = Path.Combine(_env.WebRootPath, "uploads", estateId);
-
-                // Klasör yoksa oluştur
-                if (!Directory.Exists(folderPath))
-                {
-                    Directory.CreateDirectory(folderPath);
-                }
-
-                // Dosyanın tam yolu
-                var filePath = Path.Combine(folderPath, fileName);
-
-                // Dosyayı kaydet
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-
-                // Geriye tarayıcıdan erişilebilecek bir path döndür
-                return $"/uploads/{estateId}/{fileName}";
+                Directory.CreateDirectory(folderPath);
             }
+
+            // Dosyanın tam yolu
+            var filePath = Path.Combine(folderPath, fileName);
+
+            // Dosyayı kaydet
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            // Geriye tarayıcıdan erişilebilecek bir path döndür
+            return $"/uploads/{estateId}/{fileName}";
+        }
+
+
+        public Task<bool> DeleteFileAsync(string filePath)
+        {
+            return Task.Run(() =>
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                    return true;
+                }
+                return false;
+            });
+        }
 
     }
 }

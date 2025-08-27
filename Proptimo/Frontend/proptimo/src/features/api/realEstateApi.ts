@@ -1,5 +1,5 @@
 import { baseApi } from "./baseApi";
-import { type GetRealEstateById, type GetAllRealEstates, type RealEstate, type CreateRealEstateRequest, type UpdateEstateRequest, type GetAllRealEstatesPreviewRequest, type GetAllRealEstatesPreviewResponse, type GetRealEstateDetailResponse, type GetAllRealEstatesPreviewResponseWithPaging, type CreateRealEstateCompleteRequest, type CreateRealEstateCompleteResponse } from "./types/realEstate";
+import { type GetRealEstateById, type UpdateRealEstateCompleteRequest, type RealEstate, type CreateRealEstateRequest, type UpdateEstateRequest, type GetAllRealEstatesPreviewRequest, type GetAllRealEstatesPreviewResponse, type GetRealEstateDetailResponse, type UpdateRealEstateCompleteResponse, type CreateRealEstateCompleteRequest, type CreateRealEstateCompleteResponse } from "./types/realEstate";
 
 export const realEstateApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -71,11 +71,6 @@ export const realEstateApi = baseApi.injectEndpoints({
         // Yeni tek seferde create endpoint'i
         createRealEstateComplete: builder.mutation<CreateRealEstateCompleteResponse, CreateRealEstateCompleteRequest>({
             query: (completeData) => {
-                console.log('=== API CALL DEBUG ===');
-                console.log('URL:', '/realestates');
-                console.log('Method:', 'POST');
-                console.log('Complete Data:', completeData);
-                
                 // Backend'in yeni API yapısına uygun olarak FormData kullanıyoruz
                 const formData = new FormData();
                 
@@ -97,9 +92,7 @@ export const realEstateApi = baseApi.injectEndpoints({
                         formData.append('Images', file);
                     });
                 }
-                
-                console.log('FormData created with JsonData:', jsonData);
-                console.log('Image files count:', completeData.uploadRealEstatePhotosDto.imageFiles?.length || 0);
+            
                 
                 return {
                     url: '/realestates',
@@ -181,6 +174,72 @@ export const realEstateApi = baseApi.injectEndpoints({
             },
         }),
 
+        updateRealEstateComplete: builder.mutation<UpdateRealEstateCompleteResponse, UpdateRealEstateCompleteRequest>({
+            query: (completeData) => {
+                console.log('=== UPDATE API CALL DEBUG ===');
+                console.log('URL:', '/realestates/update');
+                console.log('Method:', 'PUT');
+                console.log('Complete Data:', completeData);
+        
+                const formData = new FormData();
+        
+                // JSON verilerini ekle
+                const jsonData: any = { ...completeData };
+                formData.append('JsonData', JSON.stringify(jsonData));
+        
+                // Resim dosyalarını ekle
+                const imageFiles = completeData?.updateRealEstatePhotosDto?.imageFiles
+                    || completeData?.updateRealEstatePhotosDto?.imageFiles
+                    || [];
+        
+                if (Array.isArray(imageFiles)) {
+                    imageFiles.forEach((file: File) => {
+                        formData.append('Images', file);
+                    });
+                }
+        
+                console.log('FormData created with JsonData:', jsonData);
+                console.log('Image files count:', imageFiles?.length || 0);
+        
+                return {
+                    url: '/realestates',
+                    method: 'PUT',
+                    body: formData
+                };
+            },
+            invalidatesTags: [{ type: 'RealEstate', id: 'LIST' }],
+            
+            async onQueryStarted(completeData, { dispatch, queryFulfilled }) {
+                try {
+                    const { data: updatedEstate } = await queryFulfilled;
+        
+                    // Cache'deki preview listesini manuel olarak güncelle
+                    dispatch(
+                        realEstateApi.util.updateQueryData(
+                            'getAllRealEstatesPreview',
+                            { pageNumber: 1 },
+                            (draft: any) => {
+                                if (!draft?.data) return;
+        
+                                // Güncellenen kaydı bul ve değiştir
+                                const index = draft.data.findIndex(
+                                    (item: any) => item.realEstateId === updatedEstate.realEstateId
+                                );
+                                if (index > -1) {
+                                    draft.data[index] = {
+                                        ...draft.data[index],
+                                        ...updatedEstate
+                                    };
+                                }
+                            }
+                        )
+                    );
+                } catch (err) {
+                    console.error('Update cache error:', err);
+                }
+            }
+        }),
+        
         deleteRealEstate: builder.mutation<{success:boolean},string>({
             query : (id) => ({
                 url: `/realestates/${id}`,
@@ -224,6 +283,7 @@ export const {
     useCreateRealEstateMutation,
     useCreateRealEstateCompleteMutation,
     useUpdateRealEstateMutation,
+    useUpdateRealEstateCompleteMutation,
     useDeleteRealEstateMutation,
     useGetAllRealEstatesPreviewQuery,
     useGetRealEstateDetailQuery,
